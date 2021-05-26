@@ -1,28 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/26 08:46:43 by pgomez-a          #+#    #+#             */
+/*   Updated: 2021/05/26 10:03:53 by pgomez-a         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "prompt.h"
 
-static void	check_command_line(char *str)
+static void	check_command_line(char *line)
 {
-	t_cmd	elem;
+	t_que	*tail;
 	char	**div;
-	int	error;
-	int	x;
+	char	*str;
+	int		x;
 
+	div = ft_split(line, ';');
 	x = 0;
-	div = ft_split(str, ';');
 	while (div[x])
 	{
-		init_queue(div[x]);
-		elem.tot = ft_strtrim(div[x], " ");
-		error = set_command(elem.tot, &elem);
-		clear_cmand_struct(&elem);
+		str = ft_strtrim(div[x], " ");
+		push_que(str, &tail);
+		free(str);
 		free(div[x]);
-		if (error)
-			break;
 		x++;
 	}
-	if (!error)
-		ft_printf("Ejecutar comandos cola\n");;
 	free(div);
+
+
+
+	while (tail)
+	{
+		ft_printf("%s\n", tail->line);
+		free(tail->line);
+		free(tail);
+		tail = tail->next;
+	}
 }
 
 int	main(void)
@@ -35,7 +52,7 @@ int	main(void)
 	while (1)
 	{
 		str = ft_strdup("");
-		write(1, "# ", 2);
+		write(1, "koala# ", 7);
 		read(1, buffer, 1);
 		while (buffer[0] != '\n')
 		{
