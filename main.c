@@ -3,18 +3,17 @@
 static void	check_command_line(char *str)
 {
 	t_cmd	elem;
-	//t_col	que;
 	char	**div;
 	int	error;
 	int	x;
 
-	div = ft_split(str, ';');
 	x = 0;
+	div = ft_split(str, ';');
 	while (div[x])
 	{
+		init_queue(div[x]);
 		elem.tot = ft_strtrim(div[x], " ");
 		error = set_command(elem.tot, &elem);
-		//put_que(elem);
 		clear_cmand_struct(&elem);
 		free(div[x]);
 		if (error)
@@ -22,7 +21,7 @@ static void	check_command_line(char *str)
 		x++;
 	}
 	if (!error)
-		ft_printf("Ejecutar comandos pila\n");;
+		ft_printf("Ejecutar comandos cola\n");;
 	free(div);
 }
 
