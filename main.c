@@ -29,17 +29,6 @@ static void	check_command_line(char *line)
 		free(div[x]);
 		x++;
 	}
-	free(div);
-
-
-
-	while (tail)
-	{
-		ft_printf("%s\n", tail->line);
-		free(tail->line);
-		free(tail);
-		tail = tail->next;
-	}
 }
 
 int	main(void)
