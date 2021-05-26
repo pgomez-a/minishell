@@ -14,17 +14,19 @@
 # define PROMPT_H
 
 # include "./queue/queue.h"
+# include <stdio.h>
 
-typedef struct s_cmd {
-	char	*tot;
-	char	*cmand;
-	char	*param;
-	char	*argum;
-	int	error;
+typedef struct	s_cmd
+{
+	char	*builtin;
+	char	**flags;
+	char	**args;
+	//void	*next;
+	//char	link;
 }	t_cmd;
 
-/* get_command.c */
-int	set_command(char *str, t_cmd *elem);
+/* exec_command.c */
+void	exec_command_line(t_que **tail);
 
 /* ft_utils */
 void	clear_cmand_struct(t_cmd *elem);

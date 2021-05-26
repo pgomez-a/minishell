@@ -12,27 +12,50 @@
 
 #include "prompt.h"
 
-static void	check_command_line(char *line)
+static void	check_command_line(char *line, t_que **tail)
 {
-	t_que	*tail;
-	char	**div;
-	char	*str;
-	int		x;
+	char	*tmp;
+	int	single;
+	int	doble;
+	int	x;
 
-	div = ft_split(line, ';');
+	tmp = line;
+	single = -1;
+	doble = -1;
 	x = 0;
-	while (div[x])
+	while (tmp[x])
 	{
-		str = ft_strtrim(div[x], " ");
-		push_que(str, &tail);
-		free(str);
-		free(div[x]);
+		if (tmp[x] == '\"' && single == -1)
+			doble *= -1;
+		else if (tmp[x] == '\'' && doble == -1)
+			single *= -1;
+		else if (tmp[x] == ';' && single == -1 && doble == -1)
+		{
+			tmp[x] = '\0';
+			push_que(tmp, tail);
+			tmp = tmp + x + 1;
+			x = 0;
+		}
 		x++;
+	}
+	if (x > 0)
+		push_que(tmp, tail);
+
+
+
+	/* Eliminar en el futuro, porque se libera al hacer pop_que */
+	while (*tail)
+	{
+		ft_printf("%s\n", (*tail)->line);
+		free((*tail)->line);
+		free(*tail);
+		(*tail) = (*tail)->next;
 	}
 }
 
 int	main(void)
 {
+	t_que	*tail;
 	char	buffer[2];
 	char	*str;
 	char	*tmp;
@@ -40,6 +63,7 @@ int	main(void)
 	buffer[1] = '\0';
 	while (1)
 	{
+		tail = NULL;
 		str = ft_strdup("");
 		write(1, "koala# ", 7);
 		read(1, buffer, 1);
@@ -50,7 +74,8 @@ int	main(void)
 			free(tmp);
 			read(1, buffer, 1);
 		}
-		check_command_line(str);
+		check_command_line(str, &tail);
+		//exec_command_line(&tail);
 		free(str);
 	}
 }

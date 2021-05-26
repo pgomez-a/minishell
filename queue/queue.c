@@ -22,13 +22,13 @@ void	push_que(char *line, t_que **que)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = (t_que *)malloc(sizeof(t_que));
-		tmp->next->line = ft_strdup(line);
+		tmp->next->line = ft_strtrim(line, " ");
 		tmp->next->next = NULL;
 	}
 	else
 	{
 		(*que) = (t_que *)malloc(sizeof(t_que));
-		(*que)->line = ft_strdup(line);
+		(*que)->line = ft_strtrim(line, " ");
 		(*que)->next = NULL;
 	}
 }
