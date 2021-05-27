@@ -13,6 +13,18 @@
 #include "minishell.h"
 
 /**
+ ** Check if opened quotes have been closed
+ **/
+
+static void	check_if_quotes(int single, int doble, char *buffer)
+{
+	if (buffer[0] == '\n' && single == 1)
+		write(1, "quote> ", 7);
+	else if (buffer[0] == '\n' && doble == 1)
+		write(1, "dquote> ", 8);
+}
+
+/**
  ** Reads the command line considering " & ' and stopping when \n is found
  **/
 
@@ -37,10 +49,7 @@ static void	read_command_line(char **str)
 			doble *= -1;
 		else if (buffer[0] == '\'' && doble == -1)
 			single *= -1;
-		if (buffer[0] == '\n' && single == 1)
-			write(1, "quote> ", 7);
-		else if (buffer[0] == '\n' && doble == 1)
-			write(1, "dquote> ", 8);
+		check_if_quotes(single, doble, buffer);
 		read(1, buffer, 1);
 	}
 }

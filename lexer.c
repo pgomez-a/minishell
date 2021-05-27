@@ -15,7 +15,7 @@ static int	look_pipes(int count, char *line, int *verif, t_que **lex)
 		tmp--;
 	if (tmp < count)
 		push_que(line + tmp, lex);
-	push_que("PIPE", lex);
+	push_que("|", lex);
 	return (count + 1);
 }
 
