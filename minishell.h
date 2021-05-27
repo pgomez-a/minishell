@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROMPT_H
-# define PROMPT_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include "./queue/queue.h"
 # include <stdio.h>
@@ -25,10 +25,10 @@ typedef struct	s_cmd
 	//char	link;
 }	t_cmd;
 
-/* exec_command.c */
-void	exec_command_line(t_que **tail);
+/* manipulate_line.c */
+void	man_command_line(t_que **tail);
 
-/* ft_utils */
-void	clear_cmand_struct(t_cmd *elem);
+/* lexer.c */
+void	call_lexer(char *line, t_que **lex);
 
 #endif

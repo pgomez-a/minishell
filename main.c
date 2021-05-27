@@ -10,7 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "prompt.h"
+#include "minishell.h"
+
+/**
+ ** Reads the command line considering " & ' and stopping when \n is found
+ **/
 
 static void	read_command_line(char **str)
 {
@@ -40,6 +44,10 @@ static void	read_command_line(char **str)
 		read(1, buffer, 1);
 	}
 }
+
+/**
+ ** Use a queu struct to push lines separated by ; considering " & '
+ **/
 
 static void	check_command_line(char *line, t_que **tail)
 {
@@ -82,7 +90,7 @@ int	main(void)
 		line = ft_strdup("");
 		read_command_line(&line);
 		check_command_line(line, &tail);
-		//exec_command_line(&tail);
+		man_command_line(&tail);
 		free(line);
 	}
 }

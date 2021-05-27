@@ -14,8 +14,10 @@
 
 NAME	= prompt
 
-SRCS	= main.c			\
-		  ./queue/queue.c
+SRCS	= ./queue/queue.c	\
+	  main.c		\
+	  manipulate_line.c	\
+	  lexer.c
 
 OBJS	= $(SRCS:.c=.o)
 
