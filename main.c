@@ -12,6 +12,35 @@
 
 #include "prompt.h"
 
+static void	read_command_line(char **str)
+{
+	char	buffer[2];
+	char	*tmp;
+	int	single;
+	int	doble;
+
+	single = -1;
+	doble = -1;
+	buffer[1] = '\0';
+	write(1, "koala# ", 7);
+	read(1, buffer, 1);
+	while (buffer[0] != '\n' || single == 1 || doble == 1)
+	{
+		tmp = *str;
+		(*str) = ft_strjoin(*str, buffer);
+		free(tmp);
+		if (buffer[0] == '\"' && single == -1)
+			doble *= -1;
+		else if (buffer[0] == '\'' && doble == -1)
+			single *= -1;
+		if (buffer[0] == '\n' && single == 1)
+			write(1, "quote> ", 7);
+		else if (buffer[0] == '\n' && doble == 1)
+			write(1, "dquote> ", 8);
+		read(1, buffer, 1);
+	}
+}
+
 static void	check_command_line(char *line, t_que **tail)
 {
 	char	*tmp;
@@ -40,42 +69,20 @@ static void	check_command_line(char *line, t_que **tail)
 	}
 	if (x > 0)
 		push_que(tmp, tail);
-
-
-
-	/* Eliminar en el futuro, porque se libera al hacer pop_que */
-	while (*tail)
-	{
-		ft_printf("%s\n", (*tail)->line);
-		free((*tail)->line);
-		free(*tail);
-		(*tail) = (*tail)->next;
-	}
 }
 
 int	main(void)
 {
 	t_que	*tail;
-	char	buffer[2];
-	char	*str;
-	char	*tmp;
+	char	*line;
 
-	buffer[1] = '\0';
 	while (1)
 	{
 		tail = NULL;
-		str = ft_strdup("");
-		write(1, "koala# ", 7);
-		read(1, buffer, 1);
-		while (buffer[0] != '\n')
-		{
-			tmp = str;
-			str = ft_strjoin(str, buffer);
-			free(tmp);
-			read(1, buffer, 1);
-		}
-		check_command_line(str, &tail);
+		line = ft_strdup("");
+		read_command_line(&line);
+		check_command_line(line, &tail);
 		//exec_command_line(&tail);
-		free(str);
+		free(line);
 	}
 }
