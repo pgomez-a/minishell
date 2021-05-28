@@ -37,31 +37,23 @@ static int	look_quotes(char c, int count, char *line)
 
 static int	look_redirections(int count, char *line, int *verif, t_que **lex)
 {
-	char	*str;
-	char	buff[2];
-	int	tmp;
+	char	buff[3];
 
-	(*verif = 2);
+	(*verif) = 2;
+	ft_bzero(buff, 3);
 	buff[0] = line[count];
-	buff[1] = '\0';
+	if (line[count] == line[count + 1])
+	{
+		buff[1] = line[count];
+		line[count + 1] = '\0';
+	}
 	line[count] = '\0';
-	tmp = count;
-	while (tmp && line[tmp - 1] && line[tmp - 1] != ' ')
-		tmp--;
-	if (tmp < count)
-		push_que(line + tmp, lex);
-	tmp = ++count;
-	while (line[tmp] == ' ')
-		tmp++;
-	while (line[tmp] && line[tmp] != ' ')
-		tmp++;
-	line[tmp] = '\0';
-	str = ft_strjoin(buff, line + count);
-	push_que(str, lex);
-	free(str);
-	if (!line[tmp])
-		return (tmp);
-	return (tmp + 1);
+	if (count && line[count - 1] != '\0')
+		push_que(line, lex);
+	push_que(buff, lex);
+	if (buff[0] == buff[1])
+		return (count + 2);
+	return (count + 1);
 }
 
 /**
