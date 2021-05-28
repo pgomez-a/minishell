@@ -6,14 +6,14 @@
 #    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
-#    Updated: 2021/05/28 11:28:38 by mmunoz-f         ###   ########.fr        #
+#    Updated: 2021/05/28 12:32:12 by mmunoz-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CC = clang
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
 SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
