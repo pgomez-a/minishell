@@ -6,7 +6,7 @@
 #    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
-#    Updated: 2021/05/28 19:26:25 by mmunoz-f         ###   ########.fr        #
+#    Updated: 2021/05/28 19:41:38 by mmunoz-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ M =
 CC = clang
 CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
-SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c read_cmds.c #termcaps_op.c
+SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c read_cmds.c ft_utils.c #termcaps_op.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
 LIBFT_PATH = libft
 

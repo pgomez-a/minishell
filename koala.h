@@ -32,10 +32,17 @@ typedef struct	s_cmd
 /* read from the tty */
 void	read_command_line(int tty_fd, char **line);
 
+/* divides lines by ';' */
+void	check_command_line(char *line, t_que **tail);
+
 /* manipulate_line.c */
 void	man_command_line(t_que **tail);
 
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
+
+/* ft_utils.c */
+void	do_join(char **src, char *dst);
+void	set_prompt(int tty_fd);
 
 #endif

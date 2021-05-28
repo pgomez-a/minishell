@@ -35,49 +35,11 @@ static int		prepare_terminal(int tty_fd, int reset)
 	return (tty_fd);
 }
 
-void	set_prompt(int tty_fd)
-{
-	char	*prompt;
-
-	prompt = "koala# ";
-	write (tty_fd, prompt, ft_strlen(prompt));
-}
-
-static void	check_command_line(char *line, t_que **tail)
-{
-	char	*tmp;
-	int	single;
-	int	doble;
-	int	x;
-
-	tmp = line;
-	single = -1;
-	doble = -1;
-	x = 0;
-	while (tmp[x])
-	{
-		if (tmp[x] == '\"' && single == -1)
-			doble *= -1;
-		else if (tmp[x] == '\'' && doble == -1)
-			single *= -1;
-		else if (tmp[x] == ';' && single == -1 && doble == -1)
-		{
-			tmp[x] = '\0';
-			push_que(tmp, tail);
-			tmp = tmp + x + 1;
-			x = -1;
-		}
-		x++;
-	}
-	if (x > 0)
-		push_que(tmp, tail);
-}
-
 int	main(void)
 {
-	int		tty_fd;
-	char	*line;
 	t_que	*cmds;
+	char	*line;
+	int	tty_fd;
 
 	tty_fd = -1;
 	tty_fd = prepare_terminal(tty_fd, 0);
