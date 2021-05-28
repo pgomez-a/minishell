@@ -27,8 +27,9 @@ void	man_command_line(t_que **tail)
 	{
 		line = pop_que(tail);
 		lex = NULL;
-		call_lexer(line, &lex);
+		//call_lexer(line, &lex);
 		free_lexer(&lex);
+		ft_printf("%s\n", line);
 		free(line);
 	}
 }

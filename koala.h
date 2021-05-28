@@ -35,4 +35,8 @@ void	man_command_line(t_que **tail);
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
 
+/* ft_utils.c */
+void	do_join(char **src, char *dst);
+void	set_prompt(int tty_fd);
+
 #endif

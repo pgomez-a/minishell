@@ -37,18 +37,13 @@ static int		prepare_terminal(int tty_fd, int reset)
 		return (tty_fd);
 }
 
-void	set_prompt(int tty_fd)
-{
-	char	*prompt;
+/**
+ ** Read user input from prompt
+ **/
 
-	prompt = "koala# ";
-	write (tty_fd, prompt, ft_strlen(prompt));
-}
-
-void	read_command_line(int tty_fd, char **line)
+static void	read_command_line(int tty_fd, char **line)
 {
 	char	buffer[2];
-	char	*tmp;
 	int	single;
 	int	doble;
 
@@ -58,13 +53,15 @@ void	read_command_line(int tty_fd, char **line)
 	read(tty_fd, buffer, 1);
 	while (buffer[0] != '\n' || single == 1 || doble == 1)
 	{
-		tmp = *line;
-		(*line) = ft_strjoin(*line, buffer);
-		free(tmp);
-		if (buffer[0] == '\"' && single == -1)
+		do_join(line, buffer);
+		if (buffer[0] == '\"' && single == -1 && (*line)[ft_strlen(*line) - 2] != '\\')
 			doble *= -1;
 		else if (buffer[0] == '\'' && doble == -1)
-			single *= -1;
+		{
+			if (((*line)[ft_strlen(*line) - 2] == '\\' && single == 1)
+				|| ((*line)[ft_strlen(*line) - 2] != '\\'))
+				single *= -1;
+		}
 		if (buffer[0] == '\n' && single == 1)
 			write(tty_fd, "quote> ", 7);
 		else if (buffer[0] == '\n' && doble == 1)
@@ -73,34 +70,41 @@ void	read_command_line(int tty_fd, char **line)
 	}
 }
 
+/**
+ ** Put each line separated by ; in a queue
+ **/
+
 static void	check_command_line(char *line, t_que **tail)
 {
-	char	*tmp;
+	char	*beg;
+	char	*end;
 	int	single;
 	int	doble;
-	int	x;
 
-	tmp = line;
+	beg = line;
+	end = line;
 	single = -1;
 	doble = -1;
-	x = 0;
-	while (tmp[x])
+	while (*end)
 	{
-		if (tmp[x] == '\"' && single == -1)
+		if ((*end) == '\"' && single == -1 && !(end > beg && *(end - 1) == '\\'))
 			doble *= -1;
-		else if (tmp[x] == '\'' && doble == -1)
-			single *= -1;
-		else if (tmp[x] == ';' && single == -1 && doble == -1)
+		else if ((*end) == '\'' && doble == -1)
 		{
-			tmp[x] = '\0';
-			push_que(tmp, tail);
-			tmp = tmp + x + 1;
-			x = -1;
+			if (!(end > beg && *(end - 1) == '\\' && single == -1))
+				single *= -1;
 		}
-		x++;
+		else if ((*end) == ';' && doble == -1 && single == -1)
+		{
+			(*end) = '\0';
+			if (*beg)
+				push_que(beg, tail);
+			beg = end + 1;
+		}
+		end++;
 	}
-	if (x > 0)
-		push_que(tmp, tail);
+	if (*beg)
+		push_que(beg, tail);
 }
 
 int	main(void)

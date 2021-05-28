@@ -15,7 +15,7 @@ M =
 CC = clang
 CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
-SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c
+SOURCE = koala.c lexer.c manipulate_line.c ft_utils.c queue/queue.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
 LIBFT_PATH = libft
 
