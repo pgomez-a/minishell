@@ -37,14 +37,13 @@ void	set_prompt(int tty_fd)
 	write (tty_fd, prompt, ft_strlen(prompt));
 }
 
-void	read_line(int tty_fd, char **line)
+void	read_command_line(int tty_fd, char **line)
 {
 	char	buffer[2];
 	char	*tmp;
 	int	single;
 	int	doble;
 
-	*line = ft_strdup("");
 	single = -1;
 	doble = -1;
 	buffer[1] = '\0';
@@ -66,18 +65,52 @@ void	read_line(int tty_fd, char **line)
 	}
 }
 
+static void	check_command_line(char *line, t_que **tail)
+{
+	char	*tmp;
+	int	single;
+	int	doble;
+	int	x;
+
+	tmp = line;
+	single = -1;
+	doble = -1;
+	x = 0;
+	while (tmp[x])
+	{
+		if (tmp[x] == '\"' && single == -1)
+			doble *= -1;
+		else if (tmp[x] == '\'' && doble == -1)
+			single *= -1;
+		else if (tmp[x] == ';' && single == -1 && doble == -1)
+		{
+			tmp[x] = '\0';
+			push_que(tmp, tail);
+			tmp = tmp + x + 1;
+			x = 0;
+		}
+		x++;
+	}
+	if (x > 0)
+		push_que(tmp, tail);
+}
 
 int	main(void)
 {
 	int		tty_fd;
 	char	*line;
+	t_que	*cmds;
 
 	tty_fd = prepare_terminal();
 	while (1)
 	{
+		cmds = 0;
 		set_prompt(tty_fd);
-		read_line(tty_fd, &line);
-		man_command_line() //recibe cola modificar la line anterior para que devuelva la cola;
+		line = ft_strdup("");
+		read_command_line(tty_fd, &line);
+		check_command_line(line, &cmds);
+		man_command_line(&cmds); //recibe cola modificar la line anterior para que devuelva la cola;
+		free(line);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
-#    Updated: 2021/05/28 11:01:30 by mmunoz-f         ###   ########.fr        #
+#    Updated: 2021/05/28 11:28:38 by mmunoz-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ M =
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 NAME = koala
-SOURCE = koala.c
+SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
 LIBFT_PATH = libft
 
