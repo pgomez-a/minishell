@@ -3,44 +3,42 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/05/26 09:56:35 by pgomez-a          #+#    #+#              #
-#    Updated: 2021/05/26 09:56:37 by pgomez-a         ###   ########.fr        #
+#    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
+#    Updated: 2021/05/27 11:22:54 by mmunoz-f         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.PHONY:	all run clean fclean re
+TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
+M =
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+NAME = koala
+SOURCE = koala.c
+OBJS_SOURCE = $(SOURCE:.c=.o)
+LIBFT_PATH = libft
 
-NAME	= prompt
+all: $(NAME)
 
-SRCS	= main.c			\
-		  ./queue/queue.c
+libft/libft.a:
+	make -C ./libft
 
-OBJS	= $(SRCS:.c=.o)
-
-LIB	= -L./libft/ -lft
-
-CC 	= gcc
-
-RM	= rm -f
-
-$(NAME):	$(OBJS)
-	@make -C ./libft/
-	@gcc $(OBJS) $(LIB) -o $(NAME)
-
-all:		$(NAME)
-
-run:
-	@./prompt
+$(NAME): libft/libft.a $(OBJS_SOURCE)
+	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft
 
 clean:
-	@make clean -C ./libft/
-	@$(RM) $(OBJS)
+	rm -f $(OBJS_SOURCE) $(OBJS_BONUS)
+	make fclean -C ./libft
 
-fclean:		clean
-	@make fclean -C ./libft/
-	@$(RM) $(NAME)
+fclean: clean
+	rm -f $(NAME)
 
-re:		fclean all
+re: fclean all
 
+push: fclean
+	git add .
+	git commit -m "$(TIME) - $(M)"
+	git push
+
+.PHONY: all clean fclean re bonus push

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_hextoa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 08:56:13 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/03/04 11:39:37 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/05/27 11:43:10 by mmunoz-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ static void	hex_to_pos(unsigned long n, char **str)
 
 char	*ft_hextoa(unsigned long n, char **str)
 {
-	if (n >= 0)
-		hex_to_pos(n, str);
+	/* if (n >= 0)*/
+	hex_to_pos(n, str);
+	/*
 	else
 		(*str) = NULL;
+	*/
 	return (*str);
 }
