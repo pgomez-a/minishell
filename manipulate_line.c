@@ -29,7 +29,7 @@ void	man_command_line(t_que **tail)
 		lex = NULL;
 		//call_lexer(line, &lex);
 		free_lexer(&lex);
-		ft_printf("%s\n", line);
+		ft_printf("line: %s\n", line);
 		free(line);
 	}
 }
