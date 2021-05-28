@@ -29,6 +29,9 @@ typedef struct	s_cmd
 	//char	link;
 }	t_cmd;
 
+/* read from the tty */
+void	read_command_line(int tty_fd, char **line);
+
 /* manipulate_line.c */
 void	man_command_line(t_que **tail);
 

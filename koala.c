@@ -27,14 +27,12 @@ static int		prepare_terminal(int tty_fd, int reset)
 		if (tty_fd == -1)
 			exit(-1);
 		ft_memcpy(&tty_settings, &original_tty_settings, sizeof(struct termios));
-		//ft_bzero(&tty_settings, sizeof(struct termios));
-		tty_settings.c_lflag |= ICANON;
-		tty_settings.c_lflag |= ECHO;
-		tty_settings.c_lflag |= ISIG; //permite recibir señales
-		tty_settings.c_lflag |= ECHOE;
+		tty_settings.c_iflag &= ~(IXON);
+		tty_settings.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
+		tty_settings.c_oflag &= ~(OPOST);
 		tcsetattr(tty_fd, TCSANOW, &tty_settings);
 	}
-		return (tty_fd);
+	return (tty_fd);
 }
 
 void	set_prompt(int tty_fd)
@@ -43,34 +41,6 @@ void	set_prompt(int tty_fd)
 
 	prompt = "koala# ";
 	write (tty_fd, prompt, ft_strlen(prompt));
-}
-
-void	read_command_line(int tty_fd, char **line)
-{
-	char	buffer[2];
-	char	*tmp;
-	int	single;
-	int	doble;
-
-	single = -1;
-	doble = -1;
-	buffer[1] = '\0';
-	read(tty_fd, buffer, 1);
-	while (buffer[0] != '\n' || single == 1 || doble == 1)
-	{
-		tmp = *line;
-		(*line) = ft_strjoin(*line, buffer);
-		free(tmp);
-		if (buffer[0] == '\"' && single == -1)
-			doble *= -1;
-		else if (buffer[0] == '\'' && doble == -1)
-			single *= -1;
-		if (buffer[0] == '\n' && single == 1)
-			write(tty_fd, "quote> ", 7);
-		else if (buffer[0] == '\n' && doble == 1)
-			write(tty_fd, "dquote> ", 8);
-		read(tty_fd, buffer, 1);
-	}
 }
 
 static void	check_command_line(char *line, t_que **tail)
@@ -117,7 +87,7 @@ int	main(void)
 		set_prompt(tty_fd);
 		line = ft_strdup("");
 		read_command_line(tty_fd, &line);
-		if (*line == 'q') // esto borrar
+		if (*line == 'q') // salida temporal para probar hasta tener el builtin de exit
 		{
 			free(line);
 			prepare_terminal(tty_fd, 1);
