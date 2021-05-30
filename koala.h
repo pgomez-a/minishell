@@ -20,7 +20,7 @@
 # include "libft/libft.h"
 # include "./queue/queue.h"
 
-typedef struct	s_cmd
+typedef struct s_cmd
 {
 	char	*builtin;
 	t_que	*flags;
@@ -29,13 +29,18 @@ typedef struct	s_cmd
 	//char	link;
 }	t_cmd;
 
+/* read_check.c */
+void	read_command_line(int tty_fd, char **line);
+void	check_command_line(char *line, t_que **tail);
+
 /* manipulate_line.c */
 void	man_command_line(t_que **tail);
 
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
 
-/* ft_utils.c */
+/* ko_utils.c */
+int		look_back_slash(char *beg, char *end);
 void	do_join(char **src, char *dst);
 void	set_prompt(int tty_fd);
 

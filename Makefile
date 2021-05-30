@@ -13,9 +13,9 @@
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g
+#CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
-SOURCE = koala.c lexer.c manipulate_line.c ft_utils.c queue/queue.c
+SOURCE = koala.c lexer.c read_check.c manipulate_line.c ko_utils.c queue/queue.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
 LIBFT_PATH = libft
 

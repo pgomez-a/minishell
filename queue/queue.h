@@ -17,12 +17,13 @@
 
 typedef struct s_que {
 	char			*line;
+	int		op;
 	struct s_que	*next;
 }	t_que;
 
 /** queue.c **/
 
-void	push_que(char *line, t_que **que);
+void	push_que(int op, char *line, t_que **que);
 char	*pop_que(t_que **que);
 
 #endif

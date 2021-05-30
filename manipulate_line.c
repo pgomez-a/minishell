@@ -8,7 +8,7 @@ static void	free_lexer(t_que **lex)
 {
 	while (*lex)
 	{
-		ft_printf("%s\n", (*lex)->line);
+		ft_printf("*%s*\n", (*lex)->line);
 		free(pop_que(lex));
 	}
 	ft_printf("\n");
@@ -27,9 +27,8 @@ void	man_command_line(t_que **tail)
 	{
 		line = pop_que(tail);
 		lex = NULL;
-		//call_lexer(line, &lex);
+		call_lexer(line, &lex);
 		free_lexer(&lex);
-		ft_printf("line: %s\n", line);
 		free(line);
 	}
 }
