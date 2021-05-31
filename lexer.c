@@ -1,109 +1,128 @@
 #include "koala.h"
 
-static void	check_space(char **out, t_que **lex)
+static void	check_if_push(int mode, int *x, char **out, t_que **lex)
 {
 	if (*(*out) != '\0')
-		push_que(0, *out, lex);
+		push_que(x[1], *out, lex);
 	free(*out);
-	(*out) = ft_strdup("");
+	if (mode == 1)
+	{
+		(*out) = ft_strdup("");
+		x[1] = 0;
+	}
+	else if (mode == 0)
+		(*out) = NULL;
 }
 
-static void	check_if_join(int x, int back, char *line, char **out)
+static void	check_if_join(int *x, int back, char *line, char **out)
 {
 	char	*str;
 
-	str = ft_charstr(line[x]);
-	if (line[x] != '\n' || (line[x] == '\n' && back == 0))
+	str = ft_charstr(line[x[0]]);
+	if (line[x[0]] != '\n' || (line[x[0]] == '\n' && back == 0))
 		do_join(out, str);
+	if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
+		x[1] = 1;
 	free(str);
 }
 
-static int	check_sin_quote(int x, char *line, char **out, t_que **lex)
+static int	check_sin_quote(int *x, char *line, char **out, t_que **lex)
 {
 	int	back;
 
-	back = look_back_slash(line, line + x - 1); 
+	back = look_back_slash(line, line + x[0] - 1);
 	if (back == 0)
 	{
-		check_space(out, lex);
-		x++;
-		while (line[x] != '\'')
-			check_if_join(x++, back, line, out);
-		check_space(out, lex);
-		return (x);
-	}
-	check_if_join(x, back, line, out);
-	return (x);
-}
-
-static int	check_dob_quote(int x, char *line, char **out, t_que **lex)
-{
-	int	back;
-
-	back = look_back_slash(line, line + x - 1);
-	if (back == 0)
-	{
-		check_space(out, lex);
-		x++;
-		while ((line[x] && line[x] != '\"') || (line[x] == '\"' && back != 0))
+		check_if_push(1, x, out, lex);
+		x[0]++;
+		while (line[x[0]] != '\'')
 		{
-			if (line[x] != '\\' || (line[x] == '\\' && back == 1 && line[x + 1] != '\n'))
-				check_if_join(x, back, line, out);
-			x++;
-			back = look_back_slash(line, line + x - 1);
+			check_if_join(x, back, line, out);
+			x[0] += 1;
 		}
-		check_space(out, lex);
-		return (x);
+		x[1] = 0;
+		check_if_push(1, x, out, lex);
+		return (x[0]);
 	}
 	check_if_join(x, back, line, out);
-	return (x);
+	return (x[0]);
 }
 
-static int	check_redirections(int x, char *line, char **out, t_que **lex)
+static int	check_dob_quote(int *x, char *line, char **out, t_que **lex)
+{
+	int	ops;
+	int	back;
+
+	ops = 0;
+	back = look_back_slash(line, line + x[0] - 1);
+	if (back == 0)
+	{
+		check_if_push(1, x, out, lex);
+		x[0]++;
+		while ((line[x[0]] && line[x[0]] != '\"') || (line[x[0]] == '\"' && back != 0))
+		{
+			if ((line[x[0]] == '\\' && line[x[0] + 1] != '\n' && line[x[0] + 1] != '$' && back == 0)
+				|| line[x[0]] != '\\')
+				check_if_join(x, back, line, out);
+			if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
+				ops++;
+			x[0]++;
+			back = look_back_slash(line, line + x[0] - 1);
+		}
+		x[1] = ops;
+		check_if_push(1, x, out, lex);
+		return (x[0]);
+	}
+	check_if_join(x, back, line, out);
+	return (x[0]);
+}
+
+static int	check_redirections(int *x, char *line, char **out, t_que **lex)
 {
 	int	back;
 
-	back = look_back_slash(line, line + x - 1);
+	back = look_back_slash(line, line + x[0] - 1);
 	if (back == 0)
 	{
-		check_space(out, lex);
+		check_if_push(1, x, out, lex);
 		check_if_join(x, back, line, out);
-		if (line[x] == '>' && line[x + 1] == '>')
-			check_if_join(x++, back, line, out);
-		check_space(out, lex);
-		return (x);
+		if (line[x[0]] == '>' && line[x[0] + 1] == '>')
+		{
+			check_if_join(x, back, line, out);
+			x[0] += 1;
+		}
+		x[1] = 1;
+		check_if_push(1, x, out, lex);
+		return (x[0]);
 	}
 	check_if_join(x, back, line, out);
-	return (x);
+	return (x[0]);
 }
 
 void	call_lexer(char *line, t_que **lex)
 {
 	char	*out;
 	int		back;
-	int		x;
+	int		x[2];
 
-	x = 0;
+	x[0] = 0;
+	x[1] = 0;
 	back = 0;
-	ft_printf("line: |%s|\n", line);
 	out = ft_strdup("");
-	while (line[x])
+	while (line[x[0]])
 	{
-		back = look_back_slash(line, line + x - 1);
-		if (line[x] == '\'')
-			x = check_sin_quote(x, line, &out, lex);
-		else if (line[x] == '\"')
-			x = check_dob_quote(x, line, &out, lex);
-		else if (line[x] == '<' || line[x] == '>' || line[x] == '|')
-			x = check_redirections(x, line, &out, lex);
-		else if (line[x] == ' ' && back == 0)
-			check_space(&out, lex);
-		else if (line[x] != '\\' || (line[x] == '\\' && back != 0))
+		back = look_back_slash(line, line + x[0] - 1);
+		if (line[x[0]] == '\'')
+			x[0] = check_sin_quote(x, line, &out, lex);
+		else if (line[x[0]] == '\"')
+			x[0] = check_dob_quote(x, line, &out, lex);
+		else if (line[x[0]] == '<' || line[x[0]] == '>' || line[x[0]] == '|')
+			x[0] = check_redirections(x, line, &out, lex);
+		else if (line[x[0]] == ' ' && back == 0)
+			check_if_push(1, x, &out, lex);
+		else if (line[x[0]] != '\\' || (line[x[0]] == '\\' && back != 0))
 			check_if_join(x, back, line, &out);
-		x++;
+		x[0]++;
 	}
-	if (*out != '\0')
-		push_que(0, out, lex);
-	free(out);
-	out = NULL;
+	check_if_push(0, x,  &out, lex);
 }

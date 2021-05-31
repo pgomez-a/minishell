@@ -17,7 +17,7 @@
 
 typedef struct s_que {
 	char			*line;
-	int		op;
+	int				op;
 	struct s_que	*next;
 }	t_que;
 

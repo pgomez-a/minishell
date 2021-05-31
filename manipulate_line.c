@@ -8,7 +8,7 @@ static void	free_lexer(t_que **lex)
 {
 	while (*lex)
 	{
-		ft_printf("*%s*\n", (*lex)->line);
+		ft_printf("op: %d --> *%s*\n", (*lex)->op, (*lex)->line);
 		free(pop_que(lex));
 	}
 	ft_printf("\n");
