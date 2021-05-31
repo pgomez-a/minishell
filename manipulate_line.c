@@ -12,19 +12,30 @@
 
 #include "koala.h"
 
-/**
- ** Frees lexer queue
- **
-
-static void	free_lexer(t_que **lex)
+static void	free_cmd(t_cmd **par)
 {
-	while (*lex)
+	while ((*par)->cmd != NULL)
 	{
-		ft_printf("op: %d --> *%s*\n", (*lex)->op, (*lex)->line);
-		free(pop_que(lex));
+		if ((*par)->err != 1)
+			ft_printf("cmd: %s\n", (*par)->cmd->line);
+		free(pop_que(&((*par)->cmd)));
 	}
-	ft_printf("\n");
-}*/
+	while ((*par)->inp != NULL)
+	{
+		if ((*par)->err != 1)
+			ft_printf("inp: %s\n", (*par)->inp->line);
+		free(pop_que(&((*par)->inp)));
+	}
+	while ((*par)->out != NULL)
+	{
+		if ((*par)->err != 1)
+		{
+			ft_printf("mode: %d -->", (*par)->out->op);
+			ft_printf(" out: %s\n", (*par)->out->line);
+		}
+		free(pop_que(&((*par)->out)));
+	}
+}
 
 static void	free_parser(t_cmd **par)
 {
@@ -33,21 +44,7 @@ static void	free_parser(t_cmd **par)
 	while (*par != NULL)
 	{
 		ft_printf("NUEVO COMANDO\n");
-		while ((*par)->cmd != NULL)
-		{
-			ft_printf("cmd: %s\n", (*par)->cmd->line);
-			free(pop_que(&((*par)->cmd)));
-		}
-		while ((*par)->inp != NULL)
-		{
-			ft_printf("inp: %s\n", (*par)->inp->line);
-			free(pop_que(&((*par)->inp)));
-		}
-		while ((*par)->out != NULL)
-		{
-			ft_printf("mode: %d --> out: %s\n", (*par)->out->op, (*par)->out->line);
-			free(pop_que(&((*par)->out)));
-		}
+		free_cmd(par);
 		tmp = *par;
 		(*par) = (*par)->next;
 		free(tmp);

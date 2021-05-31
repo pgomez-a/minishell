@@ -25,6 +25,7 @@ typedef struct s_cmd
 	t_que			*cmd;
 	t_que			*inp;
 	t_que			*out;
+	int				err;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -37,6 +38,13 @@ void	man_command_line(t_que **tail);
 
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
+
+/* check_lexer.c */
+void	check_if_push(int mode, int *x, char **out, t_que **lex);
+void	check_if_join(int *x, int back, char *line, char **out);
+int		check_sin_quote(int *x, char *line, char **out, t_que **lex);
+int		check_dob_quote(int *x, char *line, char **out, t_que **lex);
+int		check_redirections(int *x, char *line, char **out, t_que **lex);
 
 /* parser.c */
 void	call_parser(t_que **lex, t_cmd **par);
