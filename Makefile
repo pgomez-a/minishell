@@ -6,16 +6,16 @@
 #    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
-#    Updated: 2021/05/28 12:32:12 by mmunoz-f         ###   ########.fr        #
+#    Updated: 2021/05/31 17:00:02 by pgomez-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 CC = clang
-#CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
-SOURCE = koala.c lexer.c read_check.c manipulate_line.c ko_utils.c queue/queue.c
+SOURCE = koala.c read_check.c manipulate_line.c lexer.c parser.c ko_utils.c queue/queue.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
 LIBFT_PATH = libft
 

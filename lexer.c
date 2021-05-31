@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/31 16:18:05 by pgomez-a          #+#    #+#             */
+/*   Updated: 2021/05/31 16:22:25 by pgomez-a         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "koala.h"
 
 static void	check_if_push(int mode, int *x, char **out, t_que **lex)
@@ -59,9 +71,11 @@ static int	check_dob_quote(int *x, char *line, char **out, t_que **lex)
 	{
 		check_if_push(1, x, out, lex);
 		x[0]++;
-		while ((line[x[0]] && line[x[0]] != '\"') || (line[x[0]] == '\"' && back != 0))
+		while ((line[x[0]] && line[x[0]] != '\"')
+			|| (line[x[0]] == '\"' && back != 0))
 		{
-			if ((line[x[0]] == '\\' && line[x[0] + 1] != '\n' && line[x[0] + 1] != '$' && back == 0)
+			if ((line[x[0]] == '\\' && line[x[0] + 1] != '\n'
+				&& line[x[0] + 1] != '$' && back == 0)
 				|| line[x[0]] != '\\')
 				check_if_join(x, back, line, out);
 			if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])

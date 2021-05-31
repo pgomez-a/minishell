@@ -6,7 +6,7 @@
 /*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 11:24:53 by mmunoz-f          #+#    #+#             */
-/*   Updated: 2021/05/27 11:24:53 by mmunoz-f         ###   ########.fr       */
+/*   Updated: 2021/05/31 17:19:43 by pgomez-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@
 
 typedef struct s_cmd
 {
-	char	*builtin;
-	t_que	*flags;
-	t_que	*args;
-	//void	*next;
-	//char	link;
+	t_que			*cmd;
+	t_que			*inp;
+	t_que			*out;
+	struct s_cmd	*next;
 }	t_cmd;
 
 /* read_check.c */
@@ -38,6 +37,9 @@ void	man_command_line(t_que **tail);
 
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
+
+/* parser.c */
+void	call_parser(t_que **lex, t_cmd **par);
 
 /* ko_utils.c */
 int		look_back_slash(char *beg, char *end);

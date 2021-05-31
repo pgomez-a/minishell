@@ -6,7 +6,7 @@
 #    By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 09:56:24 by pgomez-a          #+#    #+#              #
-#    Updated: 2021/04/28 14:10:49 by pgomez-a         ###   ########.fr        #
+#    Updated: 2021/05/31 15:48:32 by pgomez-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,8 @@ BON_OB		= $(BON:.c=.o)
 .PHONY:	all clean fclean re bonus normi normi_h
 
 NAME	= libft.a
+
+CC		= clang
 
 CFLAGS	= -Wall -Werror -Wextra
 
