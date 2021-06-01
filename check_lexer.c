@@ -12,6 +12,10 @@
 
 #include "koala.h"
 
+/**
+ ** Push a token if it's valid and create a new one
+ **/
+
 void	check_if_push(int mode, int *x, char **out, t_que **lex)
 {
 	if (*(*out) != '\0')
@@ -26,6 +30,10 @@ void	check_if_push(int mode, int *x, char **out, t_que **lex)
 		(*out) = NULL;
 }
 
+/**
+ ** Check if a char should be joined to the token string
+ **/
+
 void	check_if_join(int *x, int back, char *line, char **out)
 {
 	char	*str;
@@ -38,6 +46,10 @@ void	check_if_join(int *x, int back, char *line, char **out)
 	free(str);
 }
 
+/**
+ ** Tokenize when valid sin quote is found with no special elements
+ **/
+
 int	check_sin_quote(int *x, char *line, char **out, t_que **lex)
 {
 	int	back;
@@ -45,7 +57,7 @@ int	check_sin_quote(int *x, char *line, char **out, t_que **lex)
 	back = look_back_slash(line, line + x[0] - 1);
 	if (back == 0)
 	{
-		check_if_join(x, back, line, out);
+		check_if_push(1, x, out, lex);
 		x[0]++;
 		while (line[x[0]] != '\'')
 		{
@@ -60,6 +72,32 @@ int	check_sin_quote(int *x, char *line, char **out, t_que **lex)
 	return (x[0]);
 }
 
+/**
+ ** Tokenize when valid dob quote is found and count number of valid $
+ **/
+
+static int	bool_dob_quote(int *x, char *line, char **out, t_que **lex)
+{
+	int	op;
+	int	back;
+
+	op = 0;
+	back = look_back_slash(line, line + x[0] - 1);
+	while ((line[x[0]] && line[x[0]] != '\"')
+		|| (line[x[0]] == '\"' && back != 0))
+	{
+		if ((line[x[0]] == '\\' && line[x[0] + 1] != '\n'
+				&& line[x[0] + 1] != '$' && line[x[0] + 1] != '\"'
+				&& back == 0) || line[x[0]] != '\\')
+			check_if_join(x, back, line, out);
+		if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
+			op++;
+		x[0]++;
+		back = look_back_slash(line, line + x[0] - 1);
+	}
+	return (op);
+}
+
 int	check_dob_quote(int *x, char *line, char **out, t_que **lex)
 {
 	int	op;
@@ -71,41 +109,7 @@ int	check_dob_quote(int *x, char *line, char **out, t_que **lex)
 	{
 		check_if_push(1, x, out, lex);
 		x[0]++;
-		while ((line[x[0]] && line[x[0]] != '\"')
-			|| (line[x[0]] == '\"' && back != 0))
-		{
-			if ((line[x[0]] == '\\' && line[x[0] + 1] != '\n'
-					&& line[x[0] + 1] != '$' && back == 0)
-				|| line[x[0]] != '\\')
-				check_if_join(x, back, line, out);
-			if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
-				op++;
-			x[0]++;
-			back = look_back_slash(line, line + x[0] - 1);
-		}
-		x[1] = op;
-		check_if_push(1, x, out, lex);
-		return (x[0]);
-	}
-	check_if_join(x, back, line, out);
-	return (x[0]);
-}
-
-int	check_redirections(int *x, char *line, char **out, t_que **lex)
-{
-	int	back;
-
-	back = look_back_slash(line, line + x[0] - 1);
-	if (back == 0)
-	{
-		check_if_push(1, x, out, lex);
-		check_if_join(x, back, line, out);
-		if (line[x[0]] == '>' && line[x[0] + 1] == '>')
-		{
-			check_if_join(x, back, line, out);
-			x[0] += 1;
-		}
-		x[1] = 1;
+		x[1] = bool_dob_quote(x, line, out, lex);
 		check_if_push(1, x, out, lex);
 		return (x[0]);
 	}

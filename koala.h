@@ -23,14 +23,15 @@
 typedef struct s_cmd
 {
 	t_que			*cmd;
-	t_que			*inp;
-	t_que			*out;
+	t_que			*red;
 	int				err;
 	struct s_cmd	*next;
 }	t_cmd;
 
-/* read_check.c */
+/* read_prompt.c */
 void	read_command_line(int tty_fd, char **line);
+
+/* check_prompt.c */
 void	check_command_line(char *line, t_que **tail);
 
 /* manipulate_line.c */
@@ -44,10 +45,15 @@ void	check_if_push(int mode, int *x, char **out, t_que **lex);
 void	check_if_join(int *x, int back, char *line, char **out);
 int		check_sin_quote(int *x, char *line, char **out, t_que **lex);
 int		check_dob_quote(int *x, char *line, char **out, t_que **lex);
-int		check_redirections(int *x, char *line, char **out, t_que **lex);
 
 /* parser.c */
 void	call_parser(t_que **lex, t_cmd **par);
+
+/* check_parser.c */
+void	init_cmd(t_cmd **par);
+void	find_pipe(t_que **lex, t_cmd **par);
+void	find_dollar(char *line, t_que **lex, t_cmd **par);
+int		find_red(int mode, char *line, t_que **lex, t_cmd **par);
 
 /* ko_utils.c */
 int		look_back_slash(char *beg, char *end);

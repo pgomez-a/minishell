@@ -11,12 +11,25 @@
 # **************************************************************************** #
 
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
+
 M =
+
 CC = clang
+
 #CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
-SOURCE = koala.c read_check.c manipulate_line.c lexer.c check_lexer.c parser.c ko_utils.c queue/queue.c
+
+SOURCE = koala.c					\
+	 read_prompt.c 					\
+	 check_prompt.c					\
+	 manipulate_line.c				\
+	 lexer.c check_lexer.c				\
+	 parser.c check_parser.c			\
+	 ko_utils.c					\
+	 queue/queue.c
+
 OBJS_SOURCE = $(SOURCE:.c=.o)
+
 LIBFT_PATH = libft
 
 all: $(NAME)

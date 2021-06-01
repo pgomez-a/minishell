@@ -12,166 +12,80 @@
 
 #include "koala.h"
 
-static void	init_cmd(t_cmd **par)
+static int	check_operator(int err, char *line, t_que **lex, t_cmd **par)
 {
-	(*par)->cmd = NULL;
-	(*par)->inp = NULL;
-	(*par)->out = NULL;
-	(*par)->next = NULL;
-	(*par)->err = 0;
-}
-
-static void	find_pipe(t_que **lex, t_cmd **par)
-{
-	if ((*lex)->next)
-	{
-		(*par)->next = (t_cmd *)malloc(sizeof(t_cmd));
-		(*par) = (*par)->next;
-		init_cmd(par);
-	}
-	else
-		ft_printf("koala: parse error near '|'\n");
-}
-
-static int	find_inp(char *line, t_que **lex, t_cmd **par)
-{
-	int	op;
-
-	(*par)->err = 1;
-	if (*lex)
-	{
-		free(pop_que(lex));
-		if (*lex)
-		{
-			free(line);
-			line = ft_strdup((*lex)->line);
-			op = (*lex)->op;
-			if (op == 0)
-			{
-				push_que(0, line, &((*par)->inp));
-				(*par)->err = 0;
-				return (0);
-			}
-			ft_printf("koala: parse error near '%s'\n", line);
-			return (1);
-		}
-		ft_printf("koala: parse error near '\\n'\n");
-		return (1);
-	}
-	ft_printf("koala: parse error near '\\n'\n");
-	return (1);
-}
-
-static int	find_out(int mode, char *line, t_que **lex, t_cmd **par)
-{
-	int	op;
-
-	(*par)->err = 1;
-	if (*lex)
-	{
-		free(pop_que(lex));
-		if (*lex)
-		{
-			free(line);
-			line = ft_strdup((*lex)->line);
-			op = (*lex)->op;
-			if (op == 0)
-			{
-				push_que(mode, line, &((*par)->out));
-				(*par)->err = 0;
-				return (0);
-			}
-			ft_printf("koala: parse error near '%s'\n", line);
-			return (1);
-		}
-		ft_printf("koala: parse error near '\\n'\n");
-		return (1);
-	}
-	ft_printf("koala: parse error near '\\n'\n");
-	return (1);
-}
-
-static void	find_dollar(char *line, t_que **lex, t_cmd **par)
-{
-	int	len;
-
-	len = ft_strlen(line);
-	if (len > 1)
-	{
-		push_que(0, line, &((*par)->cmd));
-		len = 0;
-		(*par)->cmd->op = (*lex)->op;
-	}
-}
-
-static int	check_operator(char *line, t_que **lex, t_cmd **par)
-{
-	int		verif;
-	int		out;
+	int	pipe;
+	int	redAdd;
+	int	redAtt;
+	int	redInp;
+	int	out;
 
 	out = 0;
-	verif = ft_strncmp("|", line, ft_strlen(line));
-	if (verif == 0)
+	pipe = ft_strncmp("|", line, ft_strlen(line));
+	redInp = ft_strncmp("<", line, ft_strlen(line));
+	redAtt = ft_strncmp(">>\0", line, 3);
+	redAdd = ft_strncmp(">\0", line, 2);
+	if (err == 0)
 	{
-		find_pipe(lex, par);
-		return (out);
+		if (pipe == 0)
+			find_pipe(lex, par);
+		else if (redInp == 0)
+			out = find_red(1, line, lex, par);
+		else if (redAtt == 0)
+			out = find_red(3, line, lex, par);
+		else if (redAdd == 0)
+			out = find_red(2, line, lex, par);
+		else
+			find_dollar(line, lex, par);
 	}
-	verif = ft_strncmp("<", line, ft_strlen(line));
-	if (verif == 0 && (*par)->err != 1)
-	{
-		out = find_inp(line, lex, par);
-		return (out);
-	}
-	verif = ft_strncmp(">>\0", line, 3);
-	if (verif == 0 && (*par)->err != 1)
-	{
-		out = find_out(2, line, lex, par);
-		return (out);
-	}
-	verif = ft_strncmp(">\0", line, 2);
-	if (verif == 0 && (*par)->err != 1)
-	{
-		out = find_out(1, line, lex, par);
-		return (out);
-	}
-	find_dollar(line, lex, par);
 	return (out);
+}
+
+static void	bool_if_line(t_que **lex, t_cmd **tmp)
+{
+	char	*line;
+	int		err;
+	int		op;
+
+	err = 0;
+	while (*lex)
+	{
+		err = 0;
+		line = ft_strdup((*lex)->line);
+		op = (*lex)->op;
+		if (op == 0)
+			push_que(0, line, &((*tmp)->cmd));
+		else
+			err = check_operator(err, line, lex, tmp);
+		if (*lex)
+			free(pop_que(lex));
+		free(line);
+	}
+}
+
+static void	bool_not_line(t_que **lex, t_cmd **tmp, t_cmd **par)
+{
+	ft_printf("koala: parse error near '|'\n");
+	while (*lex)
+	{
+		(*tmp)->cmd = *lex;
+		(*lex) = (*lex)->next;
+		free(pop_que(&((*tmp)->cmd)));
+	}
+	(*par)->err = 1;
 }
 
 void	call_parser(t_que **lex, t_cmd **par)
 {
 	t_cmd	*tmp;
-	char	*line;
-	int		err;
-	int		op;
 
 	tmp = *par;
 	init_cmd(&tmp);
-	if (((*lex)->line && *(*lex)->line != '|') || (*(*lex)->line == '|' && (*lex)->op != 1))
+	if ((*lex))
 	{
-		while (*lex)
-		{
-			line = ft_strdup((*lex)->line);
-			ft_printf("line: %s\n", line);
-			op = (*lex)->op;
-			if (op == 0)
-				push_que(0, line, &(tmp->cmd));
-			else
-				err = check_operator(line, lex, &tmp);
-			if (*lex)
-				free(pop_que(lex));
-			free(line);
-		}
-	}
-	else
-	{
-		ft_printf("koala: parse error near '|'\n");
-		while (*lex)
-		{
-			tmp->cmd = *lex;
-			(*lex) = (*lex)->next;
-			free(pop_que(&(tmp->cmd)));
-		}
-		(*par)->err = 1;
+		if ((*(*lex)->line != '|') || (*(*lex)->line == '|' && (*lex)->op != 1))
+			bool_if_line(lex, &tmp);
+		else
+			bool_not_line(lex, &tmp, par);
 	}
 }

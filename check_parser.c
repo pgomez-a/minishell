@@ -1,0 +1,66 @@
+#include "koala.h"
+
+/**
+ ** Set parameters of command table to NULL to be able to use
+ ** that queues
+ **/
+
+void	init_cmd(t_cmd **par)
+{
+	(*par)->cmd = NULL;
+	(*par)->red = NULL;
+	(*par)->next = NULL;
+	(*par)->err = 0;
+}
+
+void	find_pipe(t_que **lex, t_cmd **par)
+{
+	if ((*lex)->next)
+	{
+		(*par)->next = (t_cmd *)malloc(sizeof(t_cmd));
+		(*par) = (*par)->next;
+		init_cmd(par);
+	}
+	else
+		ft_printf("koala: parse error near '|'\n");
+}
+
+void	find_dollar(char *line, t_que **lex, t_cmd **par)
+{
+	int	len;
+
+	len = ft_strlen(line);
+	if (len > 1)
+	{
+		push_que(0, line, &((*par)->cmd));
+		len = 0;
+		(*par)->cmd->op = (*lex)->op;
+	}
+}
+
+int	find_red(int mode, char *line, t_que **lex, t_cmd **par)
+{
+	int	op;
+
+	(*par)->err = 1;
+	if (*lex)
+	{
+		free(pop_que(lex));
+		if (*lex)
+		{
+			free(line);
+			line = ft_strdup((*lex)->line);
+			op = (*lex)->op;
+			if (op == 0)
+			{
+				push_que(mode, line, &((*par)->red));
+				(*par)->err = 0;
+				return (0);
+			}
+			ft_printf("koala: parse error near '%s'\n", line);
+			return (1);
+		}
+	}
+	ft_printf("koala: parse error near '\\n'\n");
+	return (1);
+}

@@ -19,24 +19,18 @@ static void	free_cmd(t_cmd **par)
 		if ((*par)->err != 1)
 		{
 			ft_printf("mode: %d -->", (*par)->cmd->op);
-			ft_printf(" cmd: %s\n", (*par)->cmd->line);
+			ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
 		}
 		free(pop_que(&((*par)->cmd)));
 	}
-	while ((*par)->inp != NULL)
-	{
-		if ((*par)->err != 1)
-			ft_printf("inp: %s\n", (*par)->inp->line);
-		free(pop_que(&((*par)->inp)));
-	}
-	while ((*par)->out != NULL)
+	while ((*par)->red != NULL)
 	{
 		if ((*par)->err != 1)
 		{
-			ft_printf("mode: %d -->", (*par)->out->op);
-			ft_printf(" out: %s\n", (*par)->out->line);
+			ft_printf("mode: %d -->", (*par)->red->op);
+			ft_printf(" red: **%s**\n", (*par)->red->line);
 		}
-		free(pop_que(&((*par)->out)));
+		free(pop_que(&((*par)->red)));
 	}
 }
 

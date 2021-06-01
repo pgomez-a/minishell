@@ -12,6 +12,28 @@
 
 #include "koala.h"
 
+static int	check_redirections(int *x, char *line, char **out, t_que **lex)
+{
+	int	back;
+
+	back = look_back_slash(line, line + x[0] - 1);
+	if (back == 0)
+	{
+		check_if_push(1, x, out, lex);
+		check_if_join(x, back, line, out);
+		if (line[x[0]] == '>' && line[x[0] + 1] == '>')
+		{
+			check_if_join(x, back, line, out);
+			x[0] += 1;
+		}
+		x[1] = 1;
+		check_if_push(1, x, out, lex);
+		return (x[0]);
+	}
+	check_if_join(x, back, line, out);
+	return (x[0]);
+}
+
 void	call_lexer(char *line, t_que **lex)
 {
 	char	*out;
