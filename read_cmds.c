@@ -18,12 +18,13 @@ static char	read_fromtty(int tty_fd, char **line)
 
 	(void)line;
 	read(tty_fd, &buff, 1);
-	if (!ft_isprint(buff))
+	if (!ft_isprint(buff) && buff != '\n')
 	{
 		if (buff == 3)
 			return (reset_line_tc(line));
 		if (buff == 127)
 			return (delete_tc(line));
+		return (0);
 	}
 	write(tty_fd, &buff, 1);
 	return (buff);

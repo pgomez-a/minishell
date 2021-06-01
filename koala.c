@@ -44,6 +44,7 @@ int	main(void)
 
 	tty_fd = -1;
 	tty_fd = prepare_terminal(tty_fd, 0);
+	//nline = tgetnum();
 	while (1)
 	{
 		cmds = 0;
