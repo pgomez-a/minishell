@@ -6,7 +6,7 @@
 /*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 16:30:42 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/05/31 18:53:11 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/06/01 10:43:39 by pgomez-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,19 @@ static int	find_out(int mode, char *line, t_que **lex, t_cmd **par)
 	return (1);
 }
 
+static void	find_dollar(char *line, t_que **lex, t_cmd **par)
+{
+	int	len;
+
+	len = ft_strlen(line);
+	if (len > 1)
+	{
+		push_que(0, line, &((*par)->cmd));
+		len = 0;
+		(*par)->cmd->op = (*lex)->op;
+	}
+}
+
 static int	check_operator(char *line, t_que **lex, t_cmd **par)
 {
 	int		verif;
@@ -99,16 +112,29 @@ static int	check_operator(char *line, t_que **lex, t_cmd **par)
 	out = 0;
 	verif = ft_strncmp("|", line, ft_strlen(line));
 	if (verif == 0)
+	{
 		find_pipe(lex, par);
+		return (out);
+	}
 	verif = ft_strncmp("<", line, ft_strlen(line));
 	if (verif == 0 && (*par)->err != 1)
+	{
 		out = find_inp(line, lex, par);
+		return (out);
+	}
 	verif = ft_strncmp(">>\0", line, 3);
 	if (verif == 0 && (*par)->err != 1)
+	{
 		out = find_out(2, line, lex, par);
+		return (out);
+	}
 	verif = ft_strncmp(">\0", line, 2);
 	if (verif == 0 && (*par)->err != 1)
+	{
 		out = find_out(1, line, lex, par);
+		return (out);
+	}
+	find_dollar(line, lex, par);
 	return (out);
 }
 
@@ -121,11 +147,12 @@ void	call_parser(t_que **lex, t_cmd **par)
 
 	tmp = *par;
 	init_cmd(&tmp);
-	if (*(*lex)->line != '|' || (*(*lex)->line == '|' && (*lex)->op != 1))
+	if (((*lex)->line && *(*lex)->line != '|') || (*(*lex)->line == '|' && (*lex)->op != 1))
 	{
 		while (*lex)
 		{
 			line = ft_strdup((*lex)->line);
+			ft_printf("line: %s\n", line);
 			op = (*lex)->op;
 			if (op == 0)
 				push_que(0, line, &(tmp->cmd));

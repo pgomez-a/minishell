@@ -6,14 +6,14 @@
 #    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
-#    Updated: 2021/05/31 17:00:02 by pgomez-a         ###   ########.fr        #
+#    Updated: 2021/06/01 08:39:16 by pgomez-a         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g
+#CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
 SOURCE = koala.c read_check.c manipulate_line.c lexer.c check_lexer.c parser.c ko_utils.c queue/queue.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
