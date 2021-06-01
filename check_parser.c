@@ -13,6 +13,10 @@ void	init_cmd(t_cmd **par)
 	(*par)->err = 0;
 }
 
+/**
+ ** Create a new row of the command table if a valir pipe is found
+ **/
+
 void	find_pipe(t_que **lex, t_cmd **par)
 {
 	if ((*lex)->next)
@@ -24,6 +28,11 @@ void	find_pipe(t_que **lex, t_cmd **par)
 	else
 		ft_printf("koala: parse error near '|'\n");
 }
+
+/**
+ ** Set command of command table to op == 1 to identify a variable in
+ ** expansion phase.
+ **/
 
 void	find_dollar(char *line, t_que **lex, t_cmd **par)
 {
@@ -37,6 +46,10 @@ void	find_dollar(char *line, t_que **lex, t_cmd **par)
 		(*par)->cmd->op = (*lex)->op;
 	}
 }
+
+/**
+ ** Check if a redirection is valid and if so put the type of red
+ **/
 
 int	find_red(int mode, char *line, t_que **lex, t_cmd **par)
 {

@@ -12,6 +12,10 @@
 
 #include "koala.h"
 
+/**
+ ** Check if a redirection is valid and if so set op to 1
+ **/
+
 static int	check_redirections(int *x, char *line, char **out, t_que **lex)
 {
 	int	back;
@@ -33,6 +37,10 @@ static int	check_redirections(int *x, char *line, char **out, t_que **lex)
 	check_if_join(x, back, line, out);
 	return (x[0]);
 }
+
+/**
+ ** Check command line to tokenize it --> lexer
+ **/
 
 void	call_lexer(char *line, t_que **lex)
 {

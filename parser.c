@@ -12,6 +12,10 @@
 
 #include "koala.h"
 
+/**
+ ** Find the operator used to add to command table
+ **/
+
 static int	check_operator(int err, char *line, t_que **lex, t_cmd **par)
 {
 	int	pipe;
@@ -41,6 +45,10 @@ static int	check_operator(int err, char *line, t_que **lex, t_cmd **par)
 	return (out);
 }
 
+/**
+ ** Called if no error ocurred with pipes
+ **/
+
 static void	bool_if_line(t_que **lex, t_cmd **tmp)
 {
 	char	*line;
@@ -63,6 +71,10 @@ static void	bool_if_line(t_que **lex, t_cmd **tmp)
 	}
 }
 
+/**
+ ** Called if there is nothing after pip |
+ **/
+
 static void	bool_not_line(t_que **lex, t_cmd **tmp, t_cmd **par)
 {
 	ft_printf("koala: parse error near '|'\n");
@@ -74,6 +86,10 @@ static void	bool_not_line(t_que **lex, t_cmd **tmp, t_cmd **par)
 	}
 	(*par)->err = 1;
 }
+
+/**
+ ** Parse tokens passed by lexer
+ **/
 
 void	call_parser(t_que **lex, t_cmd **par)
 {

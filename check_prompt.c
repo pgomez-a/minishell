@@ -13,7 +13,7 @@
 #include "koala.h"
 
 /**
- ** Put each line separated by ; in a queue
+ ** Loop while sin quote is not found
  **/
 
 static void	loop_sinquote(int *num, char *beg, char *end)
@@ -21,6 +21,10 @@ static void	loop_sinquote(int *num, char *beg, char *end)
 	if (!(end > beg && *(end - 1) == '\\' && (*num) == -1))
 		(*num) *= -1;
 }
+
+/**
+ ** Push each line separated by ; in a queue
+ **/
 
 static void	loop_semicolon(int back, char **beg, char **end, t_que **tail)
 {
@@ -31,6 +35,10 @@ static void	loop_semicolon(int back, char **beg, char **end, t_que **tail)
 		push_que(0, *beg, tail);
 	(*beg) = (*end) + 1;
 }
+
+/**
+ ** Check command line considering \ " ' ;
+ **/
 
 void	check_command_line(char *line, t_que **tail)
 {
