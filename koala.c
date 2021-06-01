@@ -51,6 +51,7 @@ int	main(void)
 		set_prompt(tty_fd);
 		line = ft_strdup("");
 		read_command_line(tty_fd, &line);
+		tputs(carriage_return, 1, ko_putchar);
 		if (*line == 'q') // salida temporal para probar hasta tener el builtin de exit
 		{
 			free(line);
