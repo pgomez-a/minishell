@@ -12,7 +12,17 @@
 
 # include "koala.h"
 
-char	delete_tc(int tty_fd, **line)
+char	reset_line_tc(char **line)
+{
+	char	*tmp;
+
+	tmp = *line;
+	*line = ft_strdup("");
+	free(tmp);
+	return ('\n');
+}
+
+char	delete_tc(char **line)
 {
 	char	*tmp;
 
@@ -21,5 +31,7 @@ char	delete_tc(int tty_fd, **line)
 	tmp = *line;
 	*line = ft_substr(*line, 0, ft_strlen(*line) - 1);
 	free(tmp);
-	tputs(, 1, ec);
+	tputs(cursor_left, 1, ko_putchar);
+	tputs(delete_character, 1, ko_putchar);
+	return (0);
 }

@@ -13,9 +13,9 @@
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 NAME = koala
-SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c read_cmds.c ft_utils.c #termcaps_op.c
+SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c read_cmds.c ko_utils.c termcaps_op.c
 OBJS_SOURCE = $(SOURCE:.c=.o)
 LIBFT_PATH = libft
 
@@ -25,7 +25,7 @@ libft/libft.a:
 	make -C ./libft
 
 $(NAME): libft/libft.a $(OBJS_SOURCE)
-	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft
+	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:
 	rm -f $(OBJS_SOURCE) $(OBJS_BONUS)

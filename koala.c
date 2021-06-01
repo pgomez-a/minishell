@@ -26,6 +26,7 @@ static int		prepare_terminal(int tty_fd, int reset)
 			tty_fd = STDIN_FILENO;
 		if (tty_fd == -1)
 			exit(-1);
+		tgetent(0, getenv("TERM"));
 		ft_memcpy(&tty_settings, &original_tty_settings, sizeof(struct termios));
 		tty_settings.c_iflag &= ~(IXON);
 		tty_settings.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
@@ -39,7 +40,7 @@ int	main(void)
 {
 	t_que	*cmds;
 	char	*line;
-	int	tty_fd;
+	int		tty_fd;
 
 	tty_fd = -1;
 	tty_fd = prepare_terminal(tty_fd, 0);

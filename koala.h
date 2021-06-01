@@ -15,6 +15,8 @@
 
 # include <unistd.h>
 # include <stdio.h>
+# include <curses.h>
+# include <term.h>
 # include <termios.h>
 # include <stdlib.h>
 # include "libft/libft.h"
@@ -44,5 +46,10 @@ void	call_lexer(char *line, t_que **lex);
 /* ft_utils.c */
 void	do_join(char **src, char *dst);
 void	set_prompt(int tty_fd);
+int		ko_putchar(int c);
+
+/* termcaps output modicator functions */
+char	delete_tc(char **line);
+char	reset_line_tc(char **line);
 
 #endif

@@ -21,9 +21,9 @@ static char	read_fromtty(int tty_fd, char **line)
 	if (!ft_isprint(buff))
 	{
 		if (buff == 3)
-			return ('\n');
-		//if (buff == 127)
-			//return (delete_tc(tty_fd, line));
+			return (reset_line_tc(line));
+		if (buff == 127)
+			return (delete_tc(line));
 	}
 	write(tty_fd, &buff, 1);
 	return (buff);

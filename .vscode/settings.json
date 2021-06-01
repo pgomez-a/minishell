@@ -1,3 +1,13 @@
 {
-	"C_Cpp.errorSquiggles": "Disabled"
+	"files.associations": {
+		"koala.h": "c",
+		"termios.h": "c",
+		"termios-misc.h": "c",
+		"termios-tcflow.h": "c",
+		"termios-baud.h": "c",
+		"termios-c_lflag.h": "c",
+		"termios-c_cflag.h": "c",
+		"features.h": "c",
+		"term.h": "c"
+	}
 }
