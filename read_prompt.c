@@ -48,10 +48,7 @@ void	read_command_line(int tty_fd, char **line)
 		slash = 0;
 		do_join(line, buff);
 		look_quotes(back, buff, &sin, &dob);
-		if (buff[0] == '\\' && back == 0 && sin == -1 && dob == -1)
-			slash = set_quot_prompt(tty_fd, -2, -2, buff);
-		else
-			slash = set_quot_prompt(tty_fd, sin, dob, buff);
+		slash = set_quot_prompt(tty_fd, sin, dob, buff);
 		back = look_back_slash(*line, (*line) + ft_strlen(*line) - 1);
 		read(tty_fd, buff, 1);
 	}
