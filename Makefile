@@ -9,13 +9,13 @@ NAME = koala
 SOURCE = koala.c					\
 	 check_prompt.c					\
 	 manipulate_line.c				\
-	 lexer.c check_lexer.c				\
-	 parser.c check_parser.c			\
-	 ko_utils.c					\
+	 lexer.c check_lexer.c			\
+	 parser.c check_parser.c		\
+	 ko_utils.c						\
 	 read_cmds.c					\
 	 termcaps_op.c					\
 	 queue/queue.c
-	 #read_prompt.c 					\
+	 #read_prompt.c
 
 OBJS_SOURCE = $(SOURCE:.c=.o)
 

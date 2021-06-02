@@ -23,7 +23,7 @@ static char	read_fromtty(t_tty_info *tty_info)
 			return (reset_line_tc(tty_info));
 		if (buff == 127)
 			return (delete_tc(tty_info));
-		if (buff == '\033')
+		if (buff == 27)
 			move_cursor(tty_info, 0);
 		//printf("Valor del caracter en buff: %i\n", buff);
 		return (0);
@@ -80,6 +80,7 @@ void	read_command_line(t_tty_info *tty_info)
 	int		dob;
 	int		back;
 
+	prepare_terminal(tty_info, 1);
 	sin = -1;
 	dob = -1;
 	buff[1] = '\0';
@@ -93,4 +94,5 @@ void	read_command_line(t_tty_info *tty_info)
 		back = look_back_slash(tty_info->string, (tty_info->string) + ft_strlen(tty_info->string) - 1);
 		buff[0] = read_fromtty(tty_info);
 	}
+	prepare_terminal(tty_info, 2);
 }

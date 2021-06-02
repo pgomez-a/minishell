@@ -45,7 +45,6 @@ void	set_prompt(t_tty_info *tty_info)
 
 	//path = getenv("PWD");
 	prompt = "koala# ";
-	tputs(delete_line, 1, ko_putchar);
 	//tputs(tgoto(cursor_address, 0, nline), 1, ko_putchar);
 	tputs(carriage_return, 1, ko_putchar);
 	//write(tty_fd, path, ft_strlen(path));

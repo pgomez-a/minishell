@@ -35,7 +35,12 @@ typedef struct	s_tty_info
 	int				tty_fd;
 	unsigned int	xcursor;
 	char			*string;
+	struct termios	tty_settings;
+	struct termios	original_tty_settings;
 }	t_tty_info;
+
+/* set the the configuration for the tty */
+t_tty_info	*prepare_terminal(t_tty_info *tty_info, int tty_mode);
 
 /* read from the tty */
 void	read_command_line(t_tty_info *tty_info);

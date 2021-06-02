@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manipulate_line.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 16:18:19 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/06/01 10:43:50 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/06/02 16:35:36 by mmunoz-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	free_cmd(t_cmd **par)
 		{
 			ft_printf("mode: %d -->", (*par)->cmd->op);
 			ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
-			tputs(carriage_return, 1, ko_putchar);
 		}
 		free(pop_que(&((*par)->cmd)));
 	}
@@ -30,7 +29,6 @@ static void	free_cmd(t_cmd **par)
 		{
 			ft_printf("mode: %d -->", (*par)->red->op);
 			ft_printf(" red: **%s**\n", (*par)->red->line);
-			tputs(carriage_return, 1, ko_putchar);
 		}
 		free(pop_que(&((*par)->red)));
 	}
@@ -43,7 +41,6 @@ static void	free_parser(t_cmd **par)
 	while (*par != NULL)
 	{
 		ft_printf("\nNUEVO COMANDO\n");
-		tputs(carriage_return, 1, ko_putchar);
 		free_cmd(par);
 		tmp = *par;
 		(*par) = (*par)->next;
