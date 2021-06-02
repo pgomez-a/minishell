@@ -44,7 +44,6 @@ int	main(void)
 
 	tty_fd = -1;
 	tty_fd = prepare_terminal(tty_fd, 0);
-	//nline = tgetnum();
 	while (1)
 	{
 		cmds = 0;
@@ -59,7 +58,7 @@ int	main(void)
 			exit(-1);
 		}
 		check_command_line(line, &cmds);
-		man_command_line(&cmds); // recibe cola modificar la line anterior para que devuelva la cola;
+		man_command_line(&cmds);
 		free(line);
 	}
 	return (0);
