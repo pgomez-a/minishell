@@ -12,20 +12,15 @@
 
 # include "koala.h"
 
-int	move_cursor(t_tty_info *tty_info, char n)
+int	arrow_functions(t_tty_info *tty_info, char n)
 {
-	if (n == 0)
-	{
-		read(0, &n, 1);
-		read(0, &n, 1);
-	}
 	if (n == 'C' && tty_info->xcursor != ft_strlen(tty_info->string))
 	{
 		tputs(cursor_right, 1, ko_putchar);
 		tty_info->xcursor++;
 		return (1);
 	}
-	if (n == 'D' && tty_info->xcursor != 0)
+	else if (n == 'D' && tty_info->xcursor != 0)
 	{
 		tputs(cursor_left, 1, ko_putchar);
 		tty_info->xcursor--;
@@ -51,10 +46,9 @@ char	delete_tc(t_tty_info *tty_info)
 
 	if (!*(tty_info->string))
 		return (0);
-	if (move_cursor(tty_info, 'D'))
+	if (arrow_functions(tty_info, 'D'))
 	{
 		tmp = tty_info->string;
-		tty_info->string = ft_substr(tmp, 0, tty_info->xcursor - 1);
 		tty_info->string = ko_delete_ch(tmp, tty_info->xcursor);
 		free(tmp);
 		tputs(delete_character, 1, ko_putchar);

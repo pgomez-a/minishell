@@ -53,10 +53,47 @@ void	set_prompt(t_tty_info *tty_info)
 	tty_info->xcursor = 0;
 }
 
+/**
+ ** Adds a character inside the string
+ **/
+
+void	add_character(t_tty_info *tty_info, char c)
+{
+	char	*tmp;
+	int		len;
+	int		i;
+	int		j;
+
+	tmp = tty_info->string;
+	len = ft_strlen(tmp) + 1;
+	tty_info->string = malloc(ft_strlen(tmp) + 2);
+	i = 0;
+	j = 0;
+	while (len)
+	{
+		if (i == tty_info->xcursor - 1)
+			tty_info->string[i] = c;
+		else
+			tty_info->string[i] = tmp[j++];
+		i++;
+		len--;
+	}
+	tty_info->string[i] = 0;
+	free(tmp);
+}
+
+/**
+ ** ft_putchar but for standard output fd
+ **/
+
 int	ko_putchar(int c)
 {
 	return (write(1, &c, 1));
 }
+
+/**
+ ** Deletes the d positoned character in the string
+ **/
 
 char	*ko_delete_ch(const char *str, int d)
 {

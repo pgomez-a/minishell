@@ -12,6 +12,14 @@
 
 #include "koala.h"
 
+static void	save_history(t_tty_info *tty_info)
+{
+	if (tty_info->history_fd == 0)
+		tty_info->history_fd = open(".history", O_CREAT | O_RDWR | O_APPEND, 0666);
+	write(tty_info->history_fd, tty_info->string, ft_strlen(tty_info->string));
+	write(tty_info->history_fd, "\n", 1);
+}
+
 t_tty_info	*prepare_terminal(t_tty_info *tty_info, int tty_mode)
 {
 	if (tty_mode == 2)
@@ -54,6 +62,7 @@ int	main(void)
 			free(tty_info->string);
 			exit(-1);
 		}
+		save_history(tty_info);
 		check_command_line(tty_info->string, &cmds);
 		man_command_line(&cmds);
 		free(tty_info->string);

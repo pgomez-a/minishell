@@ -24,11 +24,15 @@ static char	read_fromtty(t_tty_info *tty_info)
 		if (buff == 127)
 			return (delete_tc(tty_info));
 		if (buff == 27)
-			move_cursor(tty_info, 0);
-		//printf("Valor del caracter en buff: %i\n", buff);
+		{
+			read(tty_info->tty_fd, &buff, 1);
+			read(tty_info->tty_fd, &buff, 1);
+			if (buff == 'C' || buff == 'D' || buff == 'A' || buff == 'B')
+				arrow_functions(tty_info, buff);
+		}
 		return (0);
 	}
-	write(tty_info->tty_fd, &buff, 1);
+	//write(tty_info->tty_fd, &buff, 1);
 	tty_info->xcursor++;
 	return (buff);
 }
@@ -54,19 +58,19 @@ static int	get_num_back_slash(char *beg, char *end)
  ** Read user input from prompt
  **/
 
-static void	set_quot_prompt(int tty_fd, int sin, int dob, char *buff)
+static void	set_quot_prompt(int tty_fd, int sin, int dob, char buff)
 {
-	if (buff[0] == '\n' && sin == 1)
+	if (buff == '\n' && sin == 1)
 		write(tty_fd, "quote> ", 7);
-	else if (buff[0] == '\n' && dob == 1)
+	else if (buff == '\n' && dob == 1)
 		write(tty_fd, "dquote> ", 8);
 }
 
-static void	look_quotes(int back, char *buff, int *sin, int *dob)
+static void	look_quotes(int back, char buff, int *sin, int *dob)
 {
-	if (buff[0] == '\"' && (*sin) == -1 && back == 0)
+	if (buff == '\"' && (*sin) == -1 && back == 0)
 		(*dob) *= -1;
-	else if (buff[0] == '\'' && (*dob) == -1)
+	else if (buff == '\'' && (*dob) == -1)
 	{
 		if ((back == 0 && (*sin) == -1) || (*sin) == 1)
 			(*sin) *= -1;
@@ -83,14 +87,20 @@ void	read_command_line(t_tty_info *tty_info)
 	prepare_terminal(tty_info, 1);
 	sin = -1;
 	dob = -1;
-	buff[1] = '\0';
+	buff[1] = 0;
 	buff[0] = read_fromtty(tty_info);
 	back = 0;
 	while (buff[0] != '\n' || sin == 1 || dob == 1)
 	{
-		do_join(&tty_info->string, buff);
-		look_quotes(back, buff, &sin, &dob);
-		set_quot_prompt(tty_info->tty_fd, sin, dob, buff);
+		if (buff[0])
+		{
+			add_character(tty_info, buff[0]);
+			tputs(enter_insert_mode, 1, ko_putchar);
+			tputs(buff, 1, ko_putchar);
+			tputs(exit_insert_mode, 1, ko_putchar);
+		}
+		look_quotes(back, buff[0], &sin, &dob);
+		set_quot_prompt(tty_info->tty_fd, sin, dob, buff[0]);
 		back = look_back_slash(tty_info->string, (tty_info->string) + ft_strlen(tty_info->string) - 1);
 		buff[0] = read_fromtty(tty_info);
 	}

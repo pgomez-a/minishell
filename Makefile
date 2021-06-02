@@ -3,6 +3,7 @@ TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 
 CC = clang
+CFLAGS = -g
 #CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 NAME = koala
 
@@ -30,7 +31,7 @@ $(NAME): libft/libft.a $(OBJS_SOURCE)
 	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:
-	rm -f $(OBJS_SOURCE) $(OBJS_BONUS)
+	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) .history
 	make fclean -C ./libft
 
 fclean: clean

@@ -19,6 +19,7 @@
 # include <term.h>
 # include <termios.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include "libft/libft.h"
 # include "./queue/queue.h"
 
@@ -37,6 +38,7 @@ typedef struct	s_tty_info
 	char			*string;
 	struct termios	tty_settings;
 	struct termios	original_tty_settings;
+	int				history_fd;
 }	t_tty_info;
 
 /* set the the configuration for the tty */
@@ -71,7 +73,7 @@ int		find_red(int mode, char *line, t_que **lex, t_cmd **par);
 
 /* ko_utils.c */
 int		look_back_slash(char *beg, char *end);
-void	do_join(char **src, char *dst);
+void	add_character(t_tty_info *tty_info, char dst);
 void	set_prompt(t_tty_info *tty_info);
 int		ko_putchar(int c);
 char	*ko_delete_ch(const char *str, int d);
@@ -79,6 +81,6 @@ char	*ko_delete_ch(const char *str, int d);
 /* termcaps output modicator functions */
 char	delete_tc(t_tty_info *tty_info);
 char	reset_line_tc(t_tty_info *tty_info);
-int		move_cursor(t_tty_info *tty_info, char n);
+int		arrow_functions(t_tty_info *tty_info, char n);
 
 #endif
