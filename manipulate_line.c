@@ -20,6 +20,7 @@ static void	free_cmd(t_cmd **par)
 		{
 			ft_printf("mode: %d -->", (*par)->cmd->op);
 			ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
+			tputs(carriage_return, 1, ko_putchar);
 		}
 		free(pop_que(&((*par)->cmd)));
 	}
@@ -29,6 +30,7 @@ static void	free_cmd(t_cmd **par)
 		{
 			ft_printf("mode: %d -->", (*par)->red->op);
 			ft_printf(" red: **%s**\n", (*par)->red->line);
+			tputs(carriage_return, 1, ko_putchar);
 		}
 		free(pop_que(&((*par)->red)));
 	}
@@ -41,6 +43,7 @@ static void	free_parser(t_cmd **par)
 	while (*par != NULL)
 	{
 		ft_printf("\nNUEVO COMANDO\n");
+		tputs(carriage_return, 1, ko_putchar);
 		free_cmd(par);
 		tmp = *par;
 		(*par) = (*par)->next;
