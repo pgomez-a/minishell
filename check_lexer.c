@@ -19,7 +19,10 @@
 void	check_if_push(int mode, int *x, char **out, t_que **lex)
 {
 	if (*(*out) != '\0')
+	{
 		push_que(x[1], *out, lex);
+		x[2] = 0;
+	}
 	free(*out);
 	if (mode == 1)
 	{
@@ -37,12 +40,20 @@ void	check_if_push(int mode, int *x, char **out, t_que **lex)
 void	check_if_join(int *x, int back, char *line, char **out)
 {
 	char	*str;
+	int		ct;
+	int		var;
 
 	str = ft_charstr(line[x[0]]);
 	if (line[x[0]] != '\n' || (line[x[0]] == '\n' && back == 0))
 		do_join(out, str);
 	if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
-		x[1] = 1;
+	{
+		ct = 1;
+		ct = ct << x[2];
+		x[1] |= ct;
+	}
+	if (line[x[0]] == '$')
+		x[2] += 1;
 	free(str);
 }
 
@@ -79,9 +90,11 @@ int	check_sin_quote(int *x, char *line, char **out, t_que **lex)
 static int	bool_dob_quote(int *x, char *line, char **out, t_que **lex)
 {
 	int	op;
+	int	var;
 	int	back;
 
 	op = 0;
+	var = 0;
 	back = look_back_slash(line, line + x[0] - 1);
 	while ((line[x[0]] && line[x[0]] != '\"')
 		|| (line[x[0]] == '\"' && back != 0))
@@ -91,11 +104,13 @@ static int	bool_dob_quote(int *x, char *line, char **out, t_que **lex)
 				&& back == 0) || line[x[0]] != '\\')
 			check_if_join(x, back, line, out);
 		if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
+			var |= (1 << op);
+		if (line[x[0]] == '$')
 			op++;
 		x[0]++;
 		back = look_back_slash(line, line + x[0] - 1);
 	}
-	return (op);
+	return (var);
 }
 
 int	check_dob_quote(int *x, char *line, char **out, t_que **lex)

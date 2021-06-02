@@ -46,10 +46,11 @@ void	call_lexer(char *line, t_que **lex)
 {
 	char	*out;
 	int		back;
-	int		x[2];
+	int		x[3];
 
 	x[0] = 0;
 	x[1] = 0;
+	x[2] = 0;
 	back = 0;
 	out = ft_strdup("");
 	while (line[x[0]])
