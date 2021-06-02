@@ -1,22 +1,24 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/05/27 11:22:54 by mmunoz-f          #+#    #+#              #
-#    Updated: 2021/05/28 19:41:38 by mmunoz-f         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
+
 M =
+
 CC = clang
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+#CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 NAME = koala
-SOURCE = koala.c lexer.c manipulate_line.c queue/queue.c read_cmds.c ko_utils.c termcaps_op.c
+
+SOURCE = koala.c					\
+	 check_prompt.c					\
+	 manipulate_line.c				\
+	 lexer.c check_lexer.c				\
+	 parser.c check_parser.c			\
+	 ko_utils.c					\
+	 read_cmds.c					\
+	 termcaps_op.c					\
+	 queue/queue.c
+	 #read_prompt.c 					\
+
 OBJS_SOURCE = $(SOURCE:.c=.o)
+
 LIBFT_PATH = libft
 
 all: $(NAME)

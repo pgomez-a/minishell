@@ -1,17 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   manipulate_line.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/31 16:18:19 by pgomez-a          #+#    #+#             */
+/*   Updated: 2021/06/01 10:43:50 by pgomez-a         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "koala.h"
 
-/**
- ** Frees lexer queue
- **/
-
-static void	free_lexer(t_que **lex)
+static void	free_cmd(t_cmd **par)
 {
-	while (*lex)
+	while ((*par)->cmd != NULL)
 	{
-		ft_printf("%s\n", (*lex)->line);
-		free(pop_que(lex));
+		if ((*par)->err != 1)
+		{
+			ft_printf("mode: %d -->", (*par)->cmd->op);
+			ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
+		}
+		free(pop_que(&((*par)->cmd)));
 	}
-	ft_printf("\n");
+	while ((*par)->red != NULL)
+	{
+		if ((*par)->err != 1)
+		{
+			ft_printf("mode: %d -->", (*par)->red->op);
+			ft_printf(" red: **%s**\n", (*par)->red->line);
+		}
+		free(pop_que(&((*par)->red)));
+	}
+}
+
+static void	free_parser(t_cmd **par)
+{
+	t_cmd	*tmp;
+
+	while (*par != NULL)
+	{
+		ft_printf("\nNUEVO COMANDO\n");
+		free_cmd(par);
+		tmp = *par;
+		(*par) = (*par)->next;
+		free(tmp);
+		tmp = NULL;
+	}
 }
 
 /**
@@ -21,15 +56,17 @@ static void	free_lexer(t_que **lex)
 void	man_command_line(t_que **tail)
 {
 	t_que	*lex;
+	t_cmd	*par;
 	char	*line;
 
 	while (*tail)
 	{
 		line = pop_que(tail);
 		lex = NULL;
-		//call_lexer(line, &lex);
-		free_lexer(&lex);
-		ft_printf("line: %s\n", line);
+		par = (t_cmd *)malloc(sizeof(t_cmd));
+		call_lexer(line, &lex);
+		call_parser(&lex, &par);
+		free_parser(&par);
 		free(line);
 	}
 }

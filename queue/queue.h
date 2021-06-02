@@ -6,7 +6,7 @@
 /*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 08:42:38 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/05/26 08:56:20 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/05/31 16:51:10 by pgomez-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 
 typedef struct s_que {
 	char			*line;
+	int				op;
 	struct s_que	*next;
 }	t_que;
 
 /** queue.c **/
 
-void	push_que(char *line, t_que **que);
+void	push_que(int op, char *line, t_que **que);
 char	*pop_que(t_que **que);
 
 #endif

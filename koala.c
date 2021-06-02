@@ -12,7 +12,7 @@
 
 #include "koala.h"
 
-static int		prepare_terminal(int tty_fd, int reset)
+static int	prepare_terminal(int tty_fd, int reset)
 {
 	static struct termios	original_tty_settings;
 	struct termios			tty_settings;

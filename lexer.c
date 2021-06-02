@@ -1,94 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/31 16:18:05 by pgomez-a          #+#    #+#             */
+/*   Updated: 2021/05/31 16:22:25 by pgomez-a         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "koala.h"
 
 /**
- ** Lexer looks for pipes |
+ ** Check if a redirection is valid and if so set op to 1
  **/
 
-static int	look_pipes(int count, char *line, int *verif, t_que **lex)
+static int	check_redirections(int *x, char *line, char **out, t_que **lex)
 {
-	int	tmp;
+	int	back;
 
-	(*verif) = 2;
-	line[count] = '\0';
-	tmp = count;
-	while (tmp && line[tmp - 1] && line[tmp - 1] != ' ')
-		tmp--;
-	if (tmp < count)
-		push_que(line + tmp, lex);
-	push_que("|", lex);
-	return (count + 1);
-}
-
-/**
- ** Lexer looks for quotes ' & "
- **/
-
-static int	look_quotes(char c, int count, char *line)
-{
-	count++;
-	while (line[count] && line[count] != c)
-		count++;
-	return (count);
-}
-
-/**
- ** Lexer looks for redirections
- **/
-
-static int	look_redirections(int count, char *line, int *verif, t_que **lex)
-{
-	char	buff[3];
-
-	(*verif) = 2;
-	ft_bzero(buff, 3);
-	buff[0] = line[count];
-	if (line[count] == line[count + 1])
+	back = look_back_slash(line, line + x[0] - 1);
+	if (back == 0)
 	{
-		buff[1] = line[count];
-		line[count + 1] = '\0';
+		check_if_push(1, x, out, lex);
+		check_if_join(x, back, line, out);
+		if (line[x[0]] == '>' && line[x[0] + 1] == '>')
+		{
+			check_if_join(x, back, line, out);
+			x[0] += 1;
+		}
+		x[1] = 1;
+		check_if_push(1, x, out, lex);
+		return (x[0]);
 	}
-	line[count] = '\0';
-	if (count && line[count - 1] != '\0')
-		push_que(line, lex);
-	push_que(buff, lex);
-	if (buff[0] == buff[1])
-		return (count + 2);
-	return (count + 1);
+	check_if_join(x, back, line, out);
+	return (x[0]);
 }
 
 /**
- ** Lexer looks for: | ' " < > >>
+ ** Check command line to tokenize it --> lexer
  **/
 
 void	call_lexer(char *line, t_que **lex)
 {
-	int	x;
-	int	t;
-	int	verif;
+	char	*out;
+	int		back;
+	int		x[3];
 
-	x = 0;
-	t = 0;
-	while (line[x])
+	x[0] = 0;
+	x[1] = 0;
+	x[2] = 0;
+	back = 0;
+	out = ft_strdup("");
+	while (line[x[0]])
 	{
-		verif = 0;
-		while (line[x] && line[x] != ' ' && verif != 2)
-		{
-			verif = 1;
-			if (line[x] == '|')
-				x = look_pipes(x, line, &verif, lex);
-			else if (line[x] == '\'' || line[x] == '\"')
-				x = look_quotes(line[x], x, line);
-			else if (line[x] == '<' || line[x] == '>')
-				x = look_redirections(x, line, &verif, lex);
-			else
-				x++;
-		}
-		if (line[x] != '\0' && verif == 1)
-			line[x++] = '\0';
-		if (verif == 1)
-			push_que(line + t, lex);
-		while (line[x] == ' ')
-			line[x++] = '\0';
-		t = x;
+		back = look_back_slash(line, line + x[0] - 1);
+		if (line[x[0]] == '\'')
+			x[0] = check_sin_quote(x, line, &out, lex);
+		else if (line[x[0]] == '\"')
+			x[0] = check_dob_quote(x, line, &out, lex);
+		else if (line[x[0]] == '<' || line[x[0]] == '>' || line[x[0]] == '|')
+			x[0] = check_redirections(x, line, &out, lex);
+		else if (line[x[0]] == ' ' && back == 0)
+			check_if_push(1, x, &out, lex);
+		else if (line[x[0]] != '\\' || (line[x[0]] == '\\' && back != 0))
+			check_if_join(x, back, line, &out);
+		x[0]++;
 	}
+	check_if_push(0, x, &out, lex);
 }

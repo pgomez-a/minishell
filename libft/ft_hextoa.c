@@ -25,7 +25,7 @@ static int	len_num(unsigned long n, int base)
 	return (len);
 }
 
-static void	hex_to_pos(unsigned long n, char **str)
+char	*ft_hextoa(unsigned long n, char **str)
 {
 	unsigned long	len;
 	unsigned long	num;
@@ -50,15 +50,5 @@ static void	hex_to_pos(unsigned long n, char **str)
 		(*str)[len] = n + '0';
 	else
 		(*str)[len] = n + '7';
-}
-
-char	*ft_hextoa(unsigned long n, char **str)
-{
-	/* if (n >= 0)*/
-	hex_to_pos(n, str);
-	/*
-	else
-		(*str) = NULL;
-	*/
 	return (*str);
 }

@@ -51,74 +51,43 @@ static int	get_num_back_slash(char *beg, char *end)
  ** Read user input from prompt
  **/
 
-void	read_command_line(int tty_fd, char **line)
+static void	set_quot_prompt(int tty_fd, int sin, int dob, char *buff)
 {
-	char	buffer[2];
-	int	single;
-	int	doble;
-	int	back;
+	if (buff[0] == '\n' && sin == 1)
+		write(tty_fd, "quote> ", 7);
+	else if (buff[0] == '\n' && dob == 1)
+		write(tty_fd, "dquote> ", 8);
+}
 
-	single = -1;
-	doble = -1;
-	buffer[1] = '\0';
-	buffer[0] = read_fromtty(tty_fd, line);
-	back = 0;
-	while (buffer[0] != '\n' || single == 1 || doble == 1)
+static void	look_quotes(int back, char *buff, int *sin, int *dob)
+{
+	if (buff[0] == '\"' && (*sin) == -1 && back == 0)
+		(*dob) *= -1;
+	else if (buff[0] == '\'' && (*dob) == -1)
 	{
-		do_join(line, buffer);
-		if (buffer[0] == '\"' && single == -1 && (back % 2 == 0))
-			doble *= -1;
-		else if (buffer[0] == '\'' && doble == -1)
-		{
-			if ((back % 2 == 0 && single == -1) || single == 1)
-				single *= -1;
-		}
-		if (buffer[0] == '\n' && single == 1)
-			write(tty_fd, "quote> ", 7);
-		else if (buffer[0] == '\n' && doble == 1)
-			write(tty_fd, "dquote> ", 8);
-		back = get_num_back_slash(*line, (*line) + ft_strlen(*line) - 1);
-		buffer[0] = read_fromtty(tty_fd, line);
+		if ((back == 0 && (*sin) == -1) || (*sin) == 1)
+			(*sin) *= -1;
 	}
 }
 
-/**
- ** Put each line separated by ; in a queue
- **/
-
-void	check_command_line(char *line, t_que **tail)
+void	read_command_line(int tty_fd, char **line)
 {
-	char	*beg;
-	char	*end;
-	int	single;
-	int	doble;
-	int	back;
+	char	buff[2];
+	int		sin;
+	int		dob;
+	int		back;
 
-	beg = line;
-	end = line;
-	single = -1;
-	doble = -1;
-	while (*end)
+	sin = -1;
+	dob = -1;
+	buff[1] = '\0';
+	buff[0] = read_fromtty(tty_fd, line);
+	back = 0;
+	while (buff[0] != '\n' || sin == 1 || dob == 1)
 	{
-		back = get_num_back_slash(beg, end - 1);
-		if ((*end) == '\"' && single == -1 && back % 2 == 0)
-			doble *= -1;
-		else if ((*end) == '\'' && doble == -1 && back % 2 == 0)
-		{
-			if (!(end > beg && *(end - 1) == '\\' && single == -1))
-				single *= -1;
-		}
-		else if ((*end) == ';' && back % 2 == 0 && doble == -1 && single == -1)
-		{
-			(*end) = '\0';
-			if (back % 2 != 0)
-				*(end - 1) = '\0';
-			if (*beg)
-				push_que(beg, tail);
-			beg = end + 1;
-		}
-		end++;
+		do_join(line, buff);
+		look_quotes(back, buff, &sin, &dob);
+		set_quot_prompt(tty_fd, sin, dob, buff);
+		back = look_back_slash(*line, (*line) + ft_strlen(*line) - 1);
+		buff[0] = read_fromtty(tty_fd, line);
 	}
-	if (*beg)
-		push_que(beg, tail);
 }

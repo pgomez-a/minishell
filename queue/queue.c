@@ -12,7 +12,7 @@
 
 #include "queue.h"
 
-void	push_que(char *line, t_que **que)
+void	push_que(int op, char *line, t_que **que)
 {
 	t_que	*tmp;
 
@@ -22,13 +22,15 @@ void	push_que(char *line, t_que **que)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = (t_que *)malloc(sizeof(t_que));
-		tmp->next->line = ft_strtrim(line, " ");
+		tmp->next->line = ft_strdup(line);
+		tmp->next->op = op;
 		tmp->next->next = NULL;
 	}
 	else
 	{
 		(*que) = (t_que *)malloc(sizeof(t_que));
-		(*que)->line = ft_strtrim(line, " ");
+		(*que)->line = ft_strdup(line);
+		(*que)->op = op;
 		(*que)->next = NULL;
 	}
 }
@@ -49,5 +51,4 @@ char	*pop_que(t_que **que)
 		tmp = NULL;
 	}
 	return (out);
-	
 }
