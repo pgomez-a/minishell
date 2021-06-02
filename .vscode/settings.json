@@ -9,6 +9,9 @@
 		"termios-c_cflag.h": "c",
 		"features.h": "c",
 		"term.h": "c",
-		"curses.h": "c"
+		"curses.h": "c",
+		"libft.h": "c",
+		"stdlib.h": "c",
+		"stdio.h": "c"
 	}
 }

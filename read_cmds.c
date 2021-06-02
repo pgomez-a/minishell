@@ -12,21 +12,24 @@
 
 # include "koala.h"
 
-static char	read_fromtty(int tty_fd, char **line)
+static char	read_fromtty(t_tty_info *tty_info)
 {
 	char	buff;
 
-	(void)line;
-	read(tty_fd, &buff, 1);
+	read(tty_info->tty_fd, &buff, 1);
 	if (!ft_isprint(buff) && buff != '\n')
 	{
 		if (buff == 3)
-			return (reset_line_tc(line));
+			return (reset_line_tc(tty_info));
 		if (buff == 127)
-			return (delete_tc(line));
+			return (delete_tc(tty_info));
+		if (buff == '\033')
+			move_cursor(tty_info, 0);
+		//printf("Valor del caracter en buff: %i\n", buff);
 		return (0);
 	}
-	write(tty_fd, &buff, 1);
+	write(tty_info->tty_fd, &buff, 1);
+	tty_info->xcursor++;
 	return (buff);
 }
 
@@ -70,7 +73,7 @@ static void	look_quotes(int back, char *buff, int *sin, int *dob)
 	}
 }
 
-void	read_command_line(int tty_fd, char **line)
+void	read_command_line(t_tty_info *tty_info)
 {
 	char	buff[2];
 	int		sin;
@@ -80,14 +83,14 @@ void	read_command_line(int tty_fd, char **line)
 	sin = -1;
 	dob = -1;
 	buff[1] = '\0';
-	buff[0] = read_fromtty(tty_fd, line);
+	buff[0] = read_fromtty(tty_info);
 	back = 0;
 	while (buff[0] != '\n' || sin == 1 || dob == 1)
 	{
-		do_join(line, buff);
+		do_join(&tty_info->string, buff);
 		look_quotes(back, buff, &sin, &dob);
-		set_quot_prompt(tty_fd, sin, dob, buff);
-		back = look_back_slash(*line, (*line) + ft_strlen(*line) - 1);
-		buff[0] = read_fromtty(tty_fd, line);
+		set_quot_prompt(tty_info->tty_fd, sin, dob, buff);
+		back = look_back_slash(tty_info->string, (tty_info->string) + ft_strlen(tty_info->string) - 1);
+		buff[0] = read_fromtty(tty_info);
 	}
 }

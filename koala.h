@@ -30,8 +30,15 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
-/* read_prompt.c */
-void	read_command_line(int tty_fd, char **line);
+typedef struct	s_tty_info
+{
+	int				tty_fd;
+	unsigned int	xcursor;
+	char			*string;
+}	t_tty_info;
+
+/* read from the tty */
+void	read_command_line(t_tty_info *tty_info);
 
 /* check_prompt.c */
 void	check_command_line(char *line, t_que **tail);
@@ -60,11 +67,13 @@ int		find_red(int mode, char *line, t_que **lex, t_cmd **par);
 /* ko_utils.c */
 int		look_back_slash(char *beg, char *end);
 void	do_join(char **src, char *dst);
-void	set_prompt(int tty_fd);
+void	set_prompt(t_tty_info *tty_info);
 int		ko_putchar(int c);
+char	*ko_delete_ch(const char *str, int d);
 
 /* termcaps output modicator functions */
-char	delete_tc(char **line);
-char	reset_line_tc(char **line);
+char	delete_tc(t_tty_info *tty_info);
+char	reset_line_tc(t_tty_info *tty_info);
+int		move_cursor(t_tty_info *tty_info, char n);
 
 #endif
