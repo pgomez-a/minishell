@@ -31,8 +31,15 @@ typedef struct	s_cmd
 	//char	link;
 }	t_cmd;
 
+typedef struct	s_tty_info
+{
+	int				tty_fd;
+	unsigned int	xcursor;
+	char			*string;
+}	t_tty_info;
+
 /* read from the tty */
-void	read_command_line(int tty_fd, char **line);
+void	read_command_line(t_tty_info *tty_info);
 
 /* divides lines by ';' */
 void	check_command_line(char *line, t_que **tail);
@@ -45,11 +52,13 @@ void	call_lexer(char *line, t_que **lex);
 
 /* ft_utils.c */
 void	do_join(char **src, char *dst);
-void	set_prompt(int tty_fd);
+void	set_prompt(t_tty_info *tty_info);
 int		ko_putchar(int c);
+char	*ko_delete_ch(const char *str, int d);
 
 /* termcaps output modicator functions */
-char	delete_tc(char **line);
-char	reset_line_tc(char **line);
+char	delete_tc(t_tty_info *tty_info);
+char	reset_line_tc(t_tty_info *tty_info);
+int		move_cursor(t_tty_info *tty_info, char n);
 
 #endif
