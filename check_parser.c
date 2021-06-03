@@ -36,6 +36,7 @@ void	find_pipe(t_que **lex, t_cmd **par)
 
 void	find_dollar(char *line, t_que **lex, t_cmd **par)
 {
+	t_que	*tmp;
 	int	len;
 
 	len = ft_strlen(line);
@@ -43,7 +44,10 @@ void	find_dollar(char *line, t_que **lex, t_cmd **par)
 	{
 		push_que(0, line, &((*par)->cmd));
 		len = 0;
-		(*par)->cmd->op = (*lex)->op;
+		tmp = (*par)->cmd;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->op = (*lex)->op;
 	}
 }
 
