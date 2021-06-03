@@ -64,7 +64,7 @@ int	find_red(int mode, char *line, t_que **lex, t_cmd **par)
 			free(line);
 			line = ft_strdup((*lex)->line);
 			op = (*lex)->op;
-			if (op == 0 || op > 0 && ft_strchr(line, '$'))
+			if (op == 0 || (op > 0 && ft_strchr(line, '$')))
 			{
 				op = op << 2;
 				mode |= op;

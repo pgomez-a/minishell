@@ -6,7 +6,7 @@
 /*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 11:24:53 by mmunoz-f          #+#    #+#             */
-/*   Updated: 2021/05/31 17:19:43 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/06/03 08:23:51 by pgomez-a         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int		find_red(int mode, char *line, t_que **lex, t_cmd **par);
 
 /* ko_utils.c */
 int		look_back_slash(char *beg, char *end);
+void	do_join(char **src, char *dst);
 void	add_character(t_tty_info *tty_info, char dst);
 void	set_prompt(t_tty_info *tty_info);
 int		ko_putchar(int c);
