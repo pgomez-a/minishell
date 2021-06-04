@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include "libft/libft.h"
 # include "./queue/queue.h"
+# include "./dlists/dlists.h"
 
 typedef struct s_cmd
 {
@@ -33,19 +34,21 @@ typedef struct s_cmd
 
 typedef struct	s_tty_info
 {
-	int				tty_fd;
+	struct termios	read_tty_settings;
+	struct termios	output_tty_settings;
+	t_dlist			*history;
+	t_dlist			*strings;
 	unsigned int	xcursor;
-	char			*string;
-	struct termios	tty_settings;
-	struct termios	original_tty_settings;
-	int				history_fd;
 }	t_tty_info;
 
-/* set the the configuration for the tty */
-t_tty_info	*prepare_terminal(t_tty_info *tty_info, int tty_mode);
+/* koala.c */
+t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode);
 
-/* read from the tty */
+/* read_cmds.c */
 void	read_command_line(t_tty_info *tty_info);
+
+// /* check_line.c */
+// void	check_valid_line(t_tty_info *tty_info);
 
 /* check_prompt.c */
 void	check_command_line(char *line, t_que **tail);
@@ -75,13 +78,17 @@ int		find_red(int mode, char *line, t_que **lex, t_cmd **par);
 int		look_back_slash(char *beg, char *end);
 void	do_join(char **src, char *dst);
 void	add_character(t_tty_info *tty_info, char dst);
-void	set_prompt(t_tty_info *tty_info);
 int		ko_putchar(int c);
 char	*ko_delete_ch(const char *str, int d);
 
-/* termcaps output modicator functions */
+/* termcaps_op.c */
 char	delete_tc(t_tty_info *tty_info);
 char	reset_line_tc(t_tty_info *tty_info);
 int		arrow_functions(t_tty_info *tty_info, char n);
+
+/* koala_history.c */
+void	save_history(t_dlist **list);
+t_dlist	*charge_history(void);
+void	put_history(t_tty_info *tty_info, char n);
 
 #endif

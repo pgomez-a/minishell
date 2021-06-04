@@ -1,4 +1,4 @@
-#include "koala.h"
+#include "../koala.h"
 
 /**
  ** Set parameters of command table to NULL to be able to use

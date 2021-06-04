@@ -35,54 +35,6 @@ void	do_join(char **src, char *dst)
 }
 
 /**
- ** Write koala prompt
- **/
-
-void	set_prompt(t_tty_info *tty_info)
-{
-	char	*prompt;
-	//char	*path;
-
-	//path = getenv("PWD");
-	prompt = "koala# ";
-	//tputs(tgoto(cursor_address, 0, nline), 1, ko_putchar);
-	tputs(carriage_return, 1, ko_putchar);
-	//write(tty_fd, path, ft_strlen(path));
-	//write(tty_fd, " ", 1);
-	write(tty_info->tty_fd, prompt, ft_strlen(prompt));
-	tty_info->xcursor = 0;
-}
-
-/**
- ** Adds a character inside the string
- **/
-
-void	add_character(t_tty_info *tty_info, char c)
-{
-	char	*tmp;
-	int		len;
-	int		i;
-	int		j;
-
-	tmp = tty_info->string;
-	len = ft_strlen(tmp) + 1;
-	tty_info->string = malloc(ft_strlen(tmp) + 2);
-	i = 0;
-	j = 0;
-	while (len)
-	{
-		if (i == tty_info->xcursor - 1)
-			tty_info->string[i] = c;
-		else
-			tty_info->string[i] = tmp[j++];
-		i++;
-		len--;
-	}
-	tty_info->string[i] = 0;
-	free(tmp);
-}
-
-/**
  ** ft_putchar but for standard output fd
  **/
 
