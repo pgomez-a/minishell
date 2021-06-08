@@ -45,15 +45,15 @@ void	put_history(t_tty_info *tty_info, char n)
 {
 	if (n == 'A' && tty_info->strings->next)
 	{
+		set_prompt();
 		tty_info->strings = tty_info->strings->next;
-		tputs(delete_character, tty_info->xcursor, ko_putchar);
 		tputs(tty_info->strings->content, 1, ko_putchar);
 		tty_info->xcursor = ft_strlen(tty_info->strings->content);
 	}
-	else if (tty_info->strings->previous)
+	else if (n == 'B' && tty_info->strings->previous)
 	{
+		set_prompt();
 		tty_info->strings = tty_info->strings->previous;
-		tputs(delete_character, tty_info->xcursor, ko_putchar);
 		tputs(tty_info->strings->content, 1, ko_putchar);
 		tty_info->xcursor = ft_strlen(tty_info->strings->content);
 	}

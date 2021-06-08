@@ -18,7 +18,7 @@ int	arrow_functions(t_tty_info *tty_info, char n)
 		tty_info->xcursor--;
 		return (1);
 	}
-	if (n == 'A' || n == 'B')
+	else if (n == 'A' || n == 'B')
 		put_history(tty_info, n);
 	return (0);
 }
@@ -51,11 +51,6 @@ char	delete_tc(t_tty_info *tty_info)
 		tty_info->strings->content = ko_delete_ch(tmp, tty_info->xcursor);
 		free(tmp);
 		tputs(delete_character, 1, ko_putchar);
-	}
-	if (!*tty_info->strings->content)
-	{
-		free(tty_info->strings->content);
-		tty_info->strings->content = 0;
 	}
 	return (0);
 }

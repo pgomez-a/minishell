@@ -28,8 +28,8 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
 		tty_info->read_tty_settings.c_oflag &= ~(OPOST);
 		ft_memcpy(&tty_info->output_tty_settings, &original_tty_settings, sizeof(struct termios));
 		tty_info->output_tty_settings.c_lflag &= ~ISIG;
+		tty_info->history = charge_history();
 	}
-	tty_info->history = charge_history();
 	return (tty_info);
 }
 
@@ -37,12 +37,12 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
  ** Writes koala's prompt
  **/
 
-static void	set_prompt(void)
+void	set_prompt(void)
 {
 	char	*prompt;
 
 	prompt = "koala# ";
-	tputs(carriage_return, 1, ko_putchar);
+	tputs(delete_line, 1, ko_putchar);
 	write(STDIN_FILENO, prompt, ft_strlen(prompt));
 }
 
@@ -56,7 +56,7 @@ int	main(void)
 	{
 		set_prompt();
 		read_command_line(tty_info);
-		if (tty_info->strings->content && *(tty_info->strings->content) == 'q') // salida temporal para probar hasta tener el builtin de exit
+		if (tty_info->history->content && *(tty_info->history->content) == 'q') // salida temporal para probar hasta tener el builtin de exit
 		{
 			save_history(&tty_info->history);
 			init_terminal(tty_info, 3);
@@ -64,7 +64,7 @@ int	main(void)
 			return (0);
 		}
 		cmds = 0;
-		check_command_line(tty_info->strings->content, &cmds);
+		check_command_line(tty_info->history->content, &cmds);
 		man_command_line(&cmds);
 	}
 	return (0);

@@ -43,6 +43,7 @@ typedef struct	s_tty_info
 
 /* koala.c */
 t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode);
+void	set_prompt(void);
 
 /* read_cmds.c */
 void	read_command_line(t_tty_info *tty_info);
