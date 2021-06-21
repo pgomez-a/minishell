@@ -49,24 +49,34 @@ static void	free_parser(t_cmd **par)
 	}
 }
 
+static void	free_lexer(t_que **lex)
+{
+	if (*lex)
+	{
+		while (*lex)
+		{
+			ft_printf("%d --> **%s**\n", (*lex)->op, (*lex)->line);
+			free(pop_que(lex));
+		}
+	}
+}
+
 /**
  ** Calls the lexer, the parser and the executor programs
  **/
 
-void	man_command_line(t_que **tail)
+void	man_command_line(char *line)
 {
 	t_que	*lex;
-	t_cmd	*par;
-	char	*line;
+	//t_cmd	*par;
 
-	while (*tail)
+	if (line)
 	{
-		line = pop_que(tail);
 		lex = NULL;
-		par = (t_cmd *)malloc(sizeof(t_cmd));
+		//par = (t_cmd *)malloc(sizeof(t_cmd));
 		call_lexer(line, &lex);
-		call_parser(&lex, &par);
-		free_parser(&par);
-		free(line);
+		free_lexer(&lex);
+		//call_parser(&lex, &par);
+		//free_parser(&par);
 	}
 }

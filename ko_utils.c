@@ -13,37 +13,18 @@
 #include "koala.h"
 
 /**
- ** Check if the current character is affected by backslash or not
- **/
-
-int	look_back_slash(char *beg, char *end)
-{
-	char	*tmp;
-	int		count;
-
-	tmp = end;
-	count = 0;
-	while (tmp >= beg)
-	{
-		if ((*tmp) != '\\')
-			return (count % 2);
-		count++;
-		tmp--;
-	}
-	return (count % 2);
-}
-
-/**
  ** Join the two given stings and avoid memory leaks
  **/
 
-void	do_join(char **src, char *dst)
+void	do_join(int mode, char **src, char *dst)
 {
 	char	*tmp;
 
 	tmp = *src;
 	(*src) = ft_strjoin(*src, dst);
 	free(tmp);
+	if (mode == 1)
+		free(dst);
 }
 
 /**
@@ -56,4 +37,22 @@ void	set_prompt(int tty_fd)
 
 	prompt = "koala# ";
 	write(tty_fd, prompt, ft_strlen(prompt));
+}
+
+/**
+ ** Check if there are close quotes or not
+ **/
+
+int	close_quotes(char quot, char *line)
+{
+	int	count;
+
+	count = 1;
+	while (line[count])
+	{
+		if (line[count] == quot)
+			return (1);
+		count++;
+	}
+	return (0);
 }

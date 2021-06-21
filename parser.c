@@ -14,7 +14,7 @@
 
 /**
  ** Find the operator used to add to command table
- **/
+ **
 
 static int	check_operator(int err, char *line, t_que **lex, t_cmd **par)
 {
@@ -45,26 +45,49 @@ static int	check_operator(int err, char *line, t_que **lex, t_cmd **par)
 	return (out);
 }
 
-/**
+**
  ** Called if no error ocurred with pipes
  **/
+
+static int	check_pipe(char *line, t_que **lex, t_cmd **tmp)
+{
+	int	pipe;
+
+	pipe = ft_strncmp("|\0", line, 2);
+	if (pipe == 0)
+	{
+		if ((*lex)->next)
+		{
+			(*tmp)->next = (t_cmd *)malloc(sizeof(t_cmd));
+			(*tmp) = (*tmp)->next;
+			init_cmd(tmp);
+			return (1);
+		}
+		(*tmp)->err = 1;
+		ft_printf("koala: parse error near '|'\n");
+		return (-1);
+	}
+	return (0);
+}
 
 static void	bool_if_line(t_que **lex, t_cmd **tmp)
 {
 	char	*line;
-	int		err;
-	int		op;
+	int	mode;
+	int	button;
 
-	err = 0;
-	while (*lex)
+	while (*lex && (*tmp)->err == 0)
 	{
-		err = 0;
+		button = 0;
+		mode = (*lex)->op;
 		line = ft_strdup((*lex)->line);
-		op = (*lex)->op;
-		if (op == 0)
+		/*if (mode != 1)
+			button = check_red(line, lex, par);
+		*/
+		if (mode == 0 && button == 0)
+			button = check_pipe(line, lex, tmp);
+		if (button == 0)
 			push_que(0, line, &((*tmp)->cmd));
-		else
-			err = check_operator(err, line, lex, tmp);
 		if (*lex)
 			free(pop_que(lex));
 		free(line);
@@ -99,9 +122,9 @@ void	call_parser(t_que **lex, t_cmd **par)
 	init_cmd(&tmp);
 	if ((*lex))
 	{
-		if ((*(*lex)->line != '|') || (*(*lex)->line == '|' && (*lex)->op != 1))
-			bool_if_line(lex, &tmp);
-		else
+		if ((*(*lex)->line == '|' && (*lex)->op != 1))
 			bool_not_line(lex, &tmp, par);
+		else
+			bool_if_line(lex, &tmp);
 	}
 }

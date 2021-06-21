@@ -39,7 +39,6 @@ static int	prepare_terminal(int tty_fd, int reset)
 
 int	main(void)
 {
-	t_que	*cmds;
 	char	*line;
 	int		tty_fd;
 
@@ -47,7 +46,6 @@ int	main(void)
 	tty_fd = prepare_terminal(tty_fd, 0);
 	while (1)
 	{
-		cmds = 0;
 		set_prompt(tty_fd);
 		line = ft_strdup("");
 		read_command_line(tty_fd, &line);
@@ -57,8 +55,7 @@ int	main(void)
 			prepare_terminal(tty_fd, 1);
 			exit(-1);
 		}
-		check_command_line(line, &cmds);
-		man_command_line(&cmds); // recibe cola modificar la line anterior para que devuelva la cola;
+		man_command_line(line); // recibe cola modificar la line anterior para que devuelva la cola;
 		free(line);
 	}
 	return (0);

@@ -31,33 +31,21 @@ typedef struct s_cmd
 /* read_prompt.c */
 void	read_command_line(int tty_fd, char **line);
 
-/* check_prompt.c */
-void	check_command_line(char *line, t_que **tail);
-
 /* manipulate_line.c */
-void	man_command_line(t_que **tail);
+void	man_command_line(char *line);
 
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
-
-/* check_lexer.c */
-void	check_if_push(int mode, int *x, char **out, t_que **lex);
-void	check_if_join(int *x, int back, char *line, char **out);
-int		check_sin_quote(int *x, char *line, char **out, t_que **lex);
-int		check_dob_quote(int *x, char *line, char **out, t_que **lex);
 
 /* parser.c */
 void	call_parser(t_que **lex, t_cmd **par);
 
 /* check_parser.c */
 void	init_cmd(t_cmd **par);
-void	find_pipe(t_que **lex, t_cmd **par);
-void	find_dollar(char *line, t_que **lex, t_cmd **par);
-int		find_red(int mode, char *line, t_que **lex, t_cmd **par);
 
 /* ko_utils.c */
-int		look_back_slash(char *beg, char *end);
-void	do_join(char **src, char *dst);
+void	do_join(int mode, char **src, char *dst);
 void	set_prompt(int tty_fd);
+int		close_quotes(char quot, char *line);
 
 #endif

@@ -13,60 +13,128 @@
 #include "koala.h"
 
 /**
- ** Check if a redirection is valid and if so set op to 1
+ ** Create token of closed quotes
  **/
 
-static int	check_redirections(int *x, char *line, char **out, t_que **lex)
+static int	add_to_quote(char quot, char **tok, char *line, t_que **lex)
 {
-	int	back;
+	int	count;
 
-	back = look_back_slash(line, line + x[0] - 1);
-	if (back == 0)
+	if ((**tok) != '\0')
+		push_que(0, *tok, lex);
+	free(*tok);
+	(*tok) = ft_strdup("\0");
+	count = 1;
+	while (line[count])
 	{
-		check_if_push(1, x, out, lex);
-		check_if_join(x, back, line, out);
-		if (line[x[0]] == '>' && line[x[0] + 1] == '>')
+		if (line[count] == quot)
 		{
-			check_if_join(x, back, line, out);
-			x[0] += 1;
+			if (quot == '\'')
+				push_que(1, *tok, lex);
+			else if (quot == '\"')
+				push_que(2, *tok, lex);
+			free(*tok);
+			(*tok) = ft_strdup("\0");
+			return (count + 1);
 		}
-		x[1] = 1;
-		check_if_push(1, x, out, lex);
-		return (x[0]);
+		do_join(1, tok, ft_charstr(line[count]));
+		count++;
 	}
-	check_if_join(x, back, line, out);
-	return (x[0]);
+	return (-1);
 }
 
 /**
- ** Check command line to tokenize it --> lexer
+ ** Create a token of a pipe
+ **/
+
+static int	tokenize_pipe(char **tok, t_que **lex)
+{
+	if (**tok != '\0')
+		push_que(0, *tok, lex);
+	if (*tok)
+		free(*tok);
+	(*tok) = ft_strdup("|");
+	if (*tok)
+	{
+		push_que(0, *tok, lex);
+		free(*tok);
+	}
+	(*tok) = ft_strdup("\0");
+	return (0);
+}
+
+/**
+ ** Create a token of the redirection < << > >>
+ **/
+
+static int	tokenize_red(char **tok, char *line, t_que **lex)
+{
+	int	out;
+
+	if (**tok != '\0')
+		push_que(0, *tok, lex);
+	if (*tok)
+		free(*tok);
+	if (line[0] == '<' && line[1] == '<')
+		(*tok) = ft_strdup("<<");
+	else if (line[0] == '>' && line[1] == '>')
+		(*tok) = ft_strdup(">>");
+	else if (line[0] == '<')
+		(*tok) = ft_strdup("<");
+	else if (line[0] == '>')
+		(*tok) = ft_strdup(">");
+	if (*tok)
+	{
+		push_que(0, *tok, lex);
+		free(*tok);
+	}
+	out = ft_strlen(*tok);
+	(*tok) = ft_strdup("\0");
+	return (out - 1);
+}
+
+/**
+ ** Identify special char that is valid
+ **/
+
+static int	special_char(int x, char *line, char **token, t_que **lex)
+{
+	if (line[x] == '\'' && close_quotes('\'', line + x))
+		x += add_to_quote('\'', token, line + x, lex);
+	else if (line [x] == '\"' && close_quotes('\"', line + x))
+		x += add_to_quote('\"', token, line + x, lex);
+	else if (line[x] == '|')
+		x += tokenize_pipe(token, lex);
+	else if (line[x] == '<' || line[x] == '>')
+		x += tokenize_red(token, line + x, lex);
+	else if (line[x] == ' ' && (**token) != '\0')
+	{
+		push_que(0, *token, lex);
+		free(*token);
+		(*token) = ft_strdup("\0");
+	}
+	else if (line[x] != ' ')
+		do_join(1, token, ft_charstr(line[x]));
+	return (x);
+}
+
+/**
+ ** Tokenize the line read
  **/
 
 void	call_lexer(char *line, t_que **lex)
 {
-	char	*out;
-	int		back;
-	int		x[3];
+	char	*token;
+	int		x;
 
-	x[0] = 0;
-	x[1] = 0;
-	x[2] = 0;
-	back = 0;
-	out = ft_strdup("");
-	while (line[x[0]])
+	token = ft_strdup("\0");
+	x = 0;
+	while (line[x])
 	{
-		back = look_back_slash(line, line + x[0] - 1);
-		if (line[x[0]] == '\'')
-			x[0] = check_sin_quote(x, line, &out, lex);
-		else if (line[x[0]] == '\"')
-			x[0] = check_dob_quote(x, line, &out, lex);
-		else if (line[x[0]] == '<' || line[x[0]] == '>' || line[x[0]] == '|')
-			x[0] = check_redirections(x, line, &out, lex);
-		else if (line[x[0]] == ' ' && back == 0)
-			check_if_push(1, x, &out, lex);
-		else if (line[x[0]] != '\\' || (line[x[0]] == '\\' && back != 0))
-			check_if_join(x, back, line, &out);
-		x[0]++;
+		x = special_char(x, line, &token, lex);
+		x++;
 	}
-	check_if_push(0, x, &out, lex);
+	if (*token != '\0')
+		push_que(0, token, lex);
+	free(token);
 }
