@@ -23,7 +23,6 @@ SOURCE = koala.c				\
 	 read_prompt.c 				\
 	 manipulate_line.c			\
 	 lexer.c				\
-	 check_parser.c				\
 	 parser.c 				\
 	 ko_utils.c				\
 	 queue/queue.c

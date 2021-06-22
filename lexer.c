@@ -16,48 +16,25 @@
  ** Create token of closed quotes
  **/
 
-static int	add_to_quote(char quot, char **tok, char *line, t_que **lex)
-{
-	int	count;
-
-	if ((**tok) != '\0')
-		push_que(0, *tok, lex);
-	free(*tok);
-	(*tok) = ft_strdup("\0");
-	count = 1;
-	while (line[count])
-	{
-		if (line[count] == quot)
-		{
-			if (quot == '\'')
-				push_que(1, *tok, lex);
-			else if (quot == '\"')
-				push_que(2, *tok, lex);
-			free(*tok);
-			(*tok) = ft_strdup("\0");
-			return (count + 1);
-		}
-		do_join(1, tok, ft_charstr(line[count]));
-		count++;
-	}
-	return (-1);
-}
-
 /**
  ** Create a token of a pipe
  **/
 
 static int	tokenize_pipe(char **tok, t_que **lex)
 {
-	if (**tok != '\0')
-		push_que(0, *tok, lex);
 	if (*tok)
+	{
+		if (**tok != '\0')
+			push_que(0, *tok, lex);
 		free(*tok);
+		(*tok) = NULL;
+	}
 	(*tok) = ft_strdup("|");
 	if (*tok)
 	{
 		push_que(0, *tok, lex);
 		free(*tok);
+		(*tok) = NULL;
 	}
 	(*tok) = ft_strdup("\0");
 	return (0);
@@ -67,14 +44,17 @@ static int	tokenize_pipe(char **tok, t_que **lex)
  ** Create a token of the redirection < << > >>
  **/
 
-static int	tokenize_red(char **tok, char *line, t_que **lex)
+static int	tokenize_red(char *line, char **tok, t_que **lex)
 {
 	int	out;
 
-	if (**tok != '\0')
-		push_que(0, *tok, lex);
 	if (*tok)
+	{
+		if (**tok != '\0')
+			push_que(0, *tok, lex);
 		free(*tok);
+		(*tok) = NULL;
+	}
 	if (line[0] == '<' && line[1] == '<')
 		(*tok) = ft_strdup("<<");
 	else if (line[0] == '>' && line[1] == '>')
@@ -83,38 +63,78 @@ static int	tokenize_red(char **tok, char *line, t_que **lex)
 		(*tok) = ft_strdup("<");
 	else if (line[0] == '>')
 		(*tok) = ft_strdup(">");
+	out = 0;
 	if (*tok)
 	{
+		out = ft_strlen(*tok);
 		push_que(0, *tok, lex);
 		free(*tok);
+		(*tok) = NULL;
 	}
-	out = ft_strlen(*tok);
 	(*tok) = ft_strdup("\0");
 	return (out - 1);
+}
+
+/**
+ ** Create a token for closed quotes
+ **/
+
+static int	tokenize_quotes(char quot, char *line, char **tok, t_que **lex)
+{
+	int	count;
+
+	if (*tok)
+	{
+		if (**tok != '\0')
+			push_que(0, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
+	}
+	(*tok) = ft_strdup("\0");
+	count = 1;
+	while (line[count] != quot)
+	{
+		do_join(1, tok, ft_charstr(line[count]));
+		count++;	
+	}
+	if (*tok)
+	{
+		if (quot == '\'' && **tok != '\0')
+			push_que(2, *tok, lex);
+		else
+			push_que(1, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
+	}
+	(*tok) = ft_strdup("\0");
+	return (count);
 }
 
 /**
  ** Identify special char that is valid
  **/
 
-static int	special_char(int x, char *line, char **token, t_que **lex)
+static int	special_char(int x, char *line, char **tok, t_que **lex)
 {
-	if (line[x] == '\'' && close_quotes('\'', line + x))
-		x += add_to_quote('\'', token, line + x, lex);
-	else if (line [x] == '\"' && close_quotes('\"', line + x))
-		x += add_to_quote('\"', token, line + x, lex);
+	if ((line[x] == '\'' || line[x] == '\"') && close_quotes(x, line))
+		x += tokenize_quotes(line[x], line + x, tok, lex);
 	else if (line[x] == '|')
-		x += tokenize_pipe(token, lex);
+		x += tokenize_pipe(tok, lex);
 	else if (line[x] == '<' || line[x] == '>')
-		x += tokenize_red(token, line + x, lex);
-	else if (line[x] == ' ' && (**token) != '\0')
+		x += tokenize_red(line + x, tok, lex);
+	else if (line[x] == ' ')
 	{
-		push_que(0, *token, lex);
-		free(*token);
-		(*token) = ft_strdup("\0");
+		if (*tok)
+		{
+			if (**tok != '\0')
+				push_que(0, *tok, lex);
+			free(*tok);
+			(*tok) = NULL;
+		}
+		(*tok) = ft_strdup("\0");
 	}
 	else if (line[x] != ' ')
-		do_join(1, token, ft_charstr(line[x]));
+		do_join(1, tok, ft_charstr(line[x]));
 	return (x);
 }
 
@@ -124,17 +144,21 @@ static int	special_char(int x, char *line, char **token, t_que **lex)
 
 void	call_lexer(char *line, t_que **lex)
 {
-	char	*token;
+	char	*tok;
 	int		x;
 
-	token = ft_strdup("\0");
+	tok = ft_strdup("\0");
 	x = 0;
 	while (line[x])
 	{
-		x = special_char(x, line, &token, lex);
+		x = special_char(x, line, &tok, lex);
 		x++;
 	}
-	if (*token != '\0')
-		push_que(0, token, lex);
-	free(token);
+	if (tok)
+	{
+		if (*tok != '\0')
+			push_que(0, tok, lex);
+		free(tok);
+		tok = NULL;
+	}
 }

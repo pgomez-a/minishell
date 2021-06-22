@@ -43,16 +43,16 @@ void	set_prompt(int tty_fd)
  ** Check if there are close quotes or not
  **/
 
-int	close_quotes(char quot, char *line)
+int	close_quotes(int x, char *line)
 {
-	int	count;
+	char	quot;
 
-	count = 1;
-	while (line[count])
+	quot = line[x++];
+	while (line[x])
 	{
-		if (line[count] == quot)
+		if (line[x] == quot)
 			return (1);
-		count++;
+		x++;
 	}
 	return (0);
 }

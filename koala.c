@@ -49,7 +49,7 @@ int	main(void)
 		set_prompt(tty_fd);
 		line = ft_strdup("");
 		read_command_line(tty_fd, &line);
-		if (*line == 'q') // esto borrar
+		if (*line == 'q' && ft_strlen(line) == 1) // esto borrar
 		{
 			free(line);
 			prepare_terminal(tty_fd, 1);
