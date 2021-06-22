@@ -37,10 +37,14 @@ void	man_command_line(char *line);
 /* lexer.c */
 void	call_lexer(char *line, t_que **lex);
 
+/* check_lexer.c */
+int		tokenize_pipe(char **tok, t_que **lex);
+int		tokenize_quot(char quot, char *line, char **tok, t_que **lex);
+int		tokenize_red(char *line, char **tok, t_que **lex);
+
 /* parser.c */
 void	init_cmd(t_cmd **par);
 void	call_parser(t_que **lex, t_cmd **par);
-
 
 /* ko_utils.c */
 void	do_join(int mode, char **src, char *dst);

@@ -16,13 +16,15 @@ M =
 
 CC = clang
 
-#CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g
+
 NAME = koala
 
 SOURCE = koala.c				\
 	 read_prompt.c 				\
 	 manipulate_line.c			\
 	 lexer.c				\
+	 check_lexer.c				\
 	 parser.c 				\
 	 ko_utils.c				\
 	 queue/queue.c

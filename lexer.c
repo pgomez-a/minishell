@@ -13,111 +13,13 @@
 #include "koala.h"
 
 /**
- ** Create token of closed quotes
- **/
-
-/**
- ** Create a token of a pipe
- **/
-
-static int	tokenize_pipe(char **tok, t_que **lex)
-{
-	if (*tok)
-	{
-		if (**tok != '\0')
-			push_que(0, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	(*tok) = ft_strdup("|");
-	if (*tok)
-	{
-		push_que(0, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	(*tok) = ft_strdup("\0");
-	return (0);
-}
-
-/**
- ** Create a token of the redirection < << > >>
- **/
-
-static int	tokenize_red(char *line, char **tok, t_que **lex)
-{
-	int	out;
-
-	if (*tok)
-	{
-		if (**tok != '\0')
-			push_que(0, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	if (line[0] == '<' && line[1] == '<')
-		(*tok) = ft_strdup("<<");
-	else if (line[0] == '>' && line[1] == '>')
-		(*tok) = ft_strdup(">>");
-	else if (line[0] == '<')
-		(*tok) = ft_strdup("<");
-	else if (line[0] == '>')
-		(*tok) = ft_strdup(">");
-	out = 0;
-	if (*tok)
-	{
-		out = ft_strlen(*tok);
-		push_que(0, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	(*tok) = ft_strdup("\0");
-	return (out - 1);
-}
-
-/**
- ** Create a token for closed quotes
- **/
-
-static int	tokenize_quotes(char quot, char *line, char **tok, t_que **lex)
-{
-	int	count;
-
-	if (*tok)
-	{
-		if (**tok != '\0')
-			push_que(0, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	(*tok) = ft_strdup("\0");
-	count = 1;
-	while (line[count] != quot)
-	{
-		do_join(1, tok, ft_charstr(line[count]));
-		count++;	
-	}
-	if (*tok)
-	{
-		if (quot == '\'' && **tok != '\0')
-			push_que(2, *tok, lex);
-		else
-			push_que(1, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	(*tok) = ft_strdup("\0");
-	return (count);
-}
-
-/**
  ** Identify special char that is valid
  **/
 
 static int	special_char(int x, char *line, char **tok, t_que **lex)
 {
 	if ((line[x] == '\'' || line[x] == '\"') && close_quotes(x, line))
-		x += tokenize_quotes(line[x], line + x, tok, lex);
+		x += tokenize_quot(line[x], line + x, tok, lex);
 	else if (line[x] == '|')
 		x += tokenize_pipe(tok, lex);
 	else if (line[x] == '<' || line[x] == '>')

@@ -37,7 +37,7 @@ static void	free_cmd(int mode, t_cmd **par)
 static void	free_parser(t_cmd **par)
 {
 	t_cmd	*tmp;
-	int	mode;
+	int		mode;
 
 	mode = 0;
 	if (*par)
@@ -51,18 +51,6 @@ static void	free_parser(t_cmd **par)
 		(*par) = (*par)->next;
 		free(tmp);
 		tmp = NULL;
-	}
-}
-
-static void	free_lexer(t_que **lex)
-{
-	if (*lex)
-	{
-		while (*lex)
-		{
-			ft_printf("%d --> **%s**\n", (*lex)->op, (*lex)->line);
-			free(pop_que(lex));
-		}
 	}
 }
 
@@ -81,7 +69,6 @@ void	man_command_line(char *line)
 		par = (t_cmd *)malloc(sizeof(t_cmd));
 		init_cmd(&par);
 		call_lexer(line, &lex);
-		//free_lexer(&lex);
 		call_parser(&lex, &par);
 		free_parser(&par);
 	}

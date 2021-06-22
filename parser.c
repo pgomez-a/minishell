@@ -46,7 +46,8 @@ static int	valid_red(t_que **lex)
 
 static void	manage_red(int mode, t_que **lex, t_cmd **lnode, t_cmd **par)
 {
-	if (!(*lex)->next || ((*lex)->next && (*lex)->next->op == 0 && valid_red(lex)))
+	if (((*lex)->next && (*lex)->next->op == 0 && valid_red(lex))
+		|| !(*lex)->next)
 	{
 		(*par)->err = 1;
 		if (mode == 1)
