@@ -1,37 +1,18 @@
 #include "koala.h"
 
 /**
- ** Check if the current character is affected by backslash or not
- **/
-
-int	look_back_slash(char *beg, char *end)
-{
-	char	*tmp;
-	int		count;
-
-	tmp = end;
-	count = 0;
-	while (tmp >= beg)
-	{
-		if ((*tmp) != '\\')
-			return (count % 2);
-		count++;
-		tmp--;
-	}
-	return (count % 2);
-}
-
-/**
  ** Join the two given stings and avoid memory leaks
  **/
 
-void	do_join(char **src, char *dst)
+void	do_join(int mode, char **src, char *dst)
 {
 	char	*tmp;
 
 	tmp = *src;
 	(*src) = ft_strjoin(*src, dst);
 	free(tmp);
+	if (mode == 1)
+		free(dst);
 }
 
 /**
@@ -64,4 +45,22 @@ char	*ko_delete_ch(const char *str, int d)
 	}
 	new_str[j] = 0;
 	return (new_str);
+}
+
+/**
+ ** Check if there are close quotes or not
+ **/
+
+int	close_quotes(int x, char *line)
+{
+	char	quot;
+
+	quot = line[x++];
+	while (line[x])
+	{
+		if (line[x] == quot)
+			return (1);
+		x++;
+	}
+	return (0);
 }

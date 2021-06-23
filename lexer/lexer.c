@@ -1,60 +1,54 @@
 #include "../koala.h"
 
 /**
- ** Check if a redirection is valid and if so set op to 1
+ ** Identify special char that is valid
  **/
 
-static int	check_redirections(int *x, char *line, char **out, t_que **lex)
+static int	special_char(int x, char *line, char **tok, t_que **lex)
 {
-	int	back;
-
-	back = look_back_slash(line, line + x[0] - 1);
-	if (back == 0)
+	if ((line[x] == '\'' || line[x] == '\"') && close_quotes(x, line))
+		x += tokenize_quot(line[x], line + x, tok, lex);
+	else if (line[x] == '|')
+		x += tokenize_pipe(tok, lex);
+	else if (line[x] == '<' || line[x] == '>')
+		x += tokenize_red(line + x, tok, lex);
+	else if (line[x] == ' ')
 	{
-		check_if_push(1, x, out, lex);
-		check_if_join(x, back, line, out);
-		if (line[x[0]] == '>' && line[x[0] + 1] == '>')
+		if (*tok)
 		{
-			check_if_join(x, back, line, out);
-			x[0] += 1;
+			if (**tok != '\0')
+				push_que(0, *tok, lex);
+			free(*tok);
+			(*tok) = NULL;
 		}
-		x[1] = 1;
-		check_if_push(1, x, out, lex);
-		return (x[0]);
+		(*tok) = ft_strdup("\0");
 	}
-	check_if_join(x, back, line, out);
-	return (x[0]);
+	else if (line[x] != ' ')
+		do_join(1, tok, ft_charstr(line[x]));
+	return (x);
 }
 
 /**
- ** Check command line to tokenize it --> lexer
+ ** Tokenize the line read
  **/
 
 void	call_lexer(char *line, t_que **lex)
 {
-	char	*out;
-	int		back;
-	int		x[3];
+	char	*tok;
+	int		x;
 
-	x[0] = 0;
-	x[1] = 0;
-	x[2] = 0;
-	back = 0;
-	out = ft_strdup("");
-	while (line[x[0]])
+	tok = ft_strdup("\0");
+	x = 0;
+	while (line[x])
 	{
-		back = look_back_slash(line, line + x[0] - 1);
-		if (line[x[0]] == '\'')
-			x[0] = check_sin_quote(x, line, &out, lex);
-		else if (line[x[0]] == '\"')
-			x[0] = check_dob_quote(x, line, &out, lex);
-		else if (line[x[0]] == '<' || line[x[0]] == '>' || line[x[0]] == '|')
-			x[0] = check_redirections(x, line, &out, lex);
-		else if (line[x[0]] == ' ' && back == 0)
-			check_if_push(1, x, &out, lex);
-		else if (line[x[0]] != '\\' || (line[x[0]] == '\\' && back != 0))
-			check_if_join(x, back, line, &out);
-		x[0]++;
+		x = special_char(x, line, &tok, lex);
+		x++;
 	}
-	check_if_push(0, x, &out, lex);
+	if (tok)
+	{
+		if (*tok != '\0')
+			push_que(0, tok, lex);
+		free(tok);
+		tok = NULL;
+	}
 }

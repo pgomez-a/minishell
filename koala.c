@@ -48,9 +48,9 @@ void	set_prompt(void)
 
 int	main(void)
 {
-	t_que			*cmds;
 	t_tty_info		*tty_info;
 
+	tty_info = 0;
 	tty_info = init_terminal(tty_info, 0);
 	while (1)
 	{
@@ -63,9 +63,7 @@ int	main(void)
 			free(tty_info);
 			return (0);
 		}
-		cmds = 0;
-		check_command_line(tty_info->history->content, &cmds);
-		man_command_line(&cmds);
+		man_command_line(tty_info->history->content);
 	}
 	return (0);
 }

@@ -3,22 +3,19 @@ TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 
 CC = clang
-CFLAGS = -g -fsanitize=address
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 
 SOURCE = koala.c							\
-	ko_utils.c								\
+	ko_utils.c							\
 	manipulate_line.c						\
 	queue/queue.c							\
 	dlists/dlists.c							\
-	dlists/more_dlists.c					\
-	parser/check_prompt.c					\
-	lexer/lexer.c lexer/check_lexer.c		\
-	parser/parser.c parser/check_parser.c	\
+	dlists/more_dlists.c			\
+	lexer/lexer.c lexer/check_lexer.c	\
+	parser/parser.c				\
 	reader/read_cmds.c						\
-	reader/termcaps_op.c					\
-	reader/check_line.c						\
+	reader/termcaps_op.c						\
 	reader/koala_history.c
 	#read_prompt.c
 

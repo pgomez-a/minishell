@@ -12,11 +12,11 @@
 
 #include "koala.h"
 
-static void	free_cmd(t_cmd **par)
+static void	free_cmd(int mode, t_cmd **par)
 {
 	while ((*par)->cmd != NULL)
 	{
-		if ((*par)->err != 1)
+		if (!mode)
 		{
 			ft_printf("mode: %d -->", (*par)->cmd->op);
 			ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
@@ -25,7 +25,7 @@ static void	free_cmd(t_cmd **par)
 	}
 	while ((*par)->red != NULL)
 	{
-		if ((*par)->err != 1)
+		if (!mode)
 		{
 			ft_printf("mode: %d -->", (*par)->red->op);
 			ft_printf(" red: **%s**\n", (*par)->red->line);
@@ -37,11 +37,16 @@ static void	free_cmd(t_cmd **par)
 static void	free_parser(t_cmd **par)
 {
 	t_cmd	*tmp;
+	int		mode;
 
+	mode = 0;
+	if (*par)
+		mode = (*par)->err;
 	while (*par != NULL)
 	{
-		ft_printf("\nNUEVO COMANDO\n");
-		free_cmd(par);
+		if (!mode)
+			ft_printf("\nNUEVO COMANDO\n");
+		free_cmd(mode, par);
 		tmp = *par;
 		(*par) = (*par)->next;
 		free(tmp);
@@ -53,20 +58,18 @@ static void	free_parser(t_cmd **par)
  ** Calls the lexer, the parser and the executor programs
  **/
 
-void	man_command_line(t_que **tail)
+void	man_command_line(char *line)
 {
 	t_que	*lex;
 	t_cmd	*par;
-	char	*line;
 
-	while (*tail)
+	if (line)
 	{
-		line = pop_que(tail);
 		lex = NULL;
 		par = (t_cmd *)malloc(sizeof(t_cmd));
+		init_cmd(&par);
 		call_lexer(line, &lex);
 		call_parser(&lex, &par);
 		free_parser(&par);
-		free(line);
 	}
 }

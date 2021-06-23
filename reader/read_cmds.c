@@ -8,8 +8,8 @@ void	add_character(t_tty_info *tty_info, char c)
 {
 	char	*tmp;
 	int		len;
-	int		i;
-	int		j;
+	unsigned int	i;
+	unsigned int	j;
 
 	tmp = tty_info->strings->content;
 	len = ft_strlen(tmp) + 1;

@@ -1,120 +1,105 @@
 #include "../koala.h"
 
 /**
- ** Push a token if it's valid and create a new one
+ ** Create a token of a pipe
  **/
 
-void	check_if_push(int mode, int *x, char **out, t_que **lex)
+int	tokenize_pipe(char **tok, t_que **lex)
 {
-	if (*(*out) != '\0')
+	if (*tok)
 	{
-		push_que(x[1], *out, lex);
-		x[2] = 0;
+		if (**tok != '\0')
+			push_que(0, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
 	}
-	free(*out);
-	if (mode == 1)
+	(*tok) = ft_strdup("|");
+	if (*tok)
 	{
-		(*out) = ft_strdup("");
-		x[1] = 0;
+		push_que(0, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
 	}
-	else if (mode == 0)
-		(*out) = NULL;
+	(*tok) = ft_strdup("\0");
+	return (0);
 }
 
 /**
- ** Check if a char should be joined to the token string
+ ** Create a token for closed quotes
  **/
 
-void	check_if_join(int *x, int back, char *line, char **out)
+static void	check_push_quot(char quot, char **tok, t_que **lex)
 {
-	char	*str;
-	int		ct;
-
-	str = ft_charstr(line[x[0]]);
-	if (line[x[0]] != '\n' || (line[x[0]] == '\n' && back == 0))
-		do_join(out, str);
-	if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
+	if (*tok)
 	{
-		ct = 1;
-		ct = ct << x[2];
-		x[1] |= ct;
+		if (quot == '\'' && (**tok) != '\0')
+			push_que(2, *tok, lex);
+		else
+			push_que(1, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
 	}
-	if (line[x[0]] == '$')
-		x[2] += 1;
-	free(str);
+	(*tok) = ft_strdup("\0");
+}
+
+int	tokenize_quot(char quot, char *line, char **tok, t_que **lex)
+{
+	int	count;
+
+	if (*tok)
+	{
+		if (**tok != '\0')
+			push_que(0, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
+	}
+	(*tok) = ft_strdup("\0");
+	count = 1;
+	while (line[count] != quot)
+	{
+		do_join(1, tok, ft_charstr(line[count]));
+		count++;
+	}
+	check_push_quot(quot, tok, lex);
+	return (count);
 }
 
 /**
- ** Tokenize when valid sin quote is found with no special elements
+ ** Create a token of the redirection < << > >>
  **/
 
-int	check_sin_quote(int *x, char *line, char **out, t_que **lex)
+static int	check_push_red(char **tok, t_que **lex)
 {
-	int	back;
+	int	out;
 
-	back = look_back_slash(line, line + x[0] - 1);
-	if (back == 0)
+	out = 0;
+	if (*tok)
 	{
-		check_if_push(1, x, out, lex);
-		x[0]++;
-		while (line[x[0]] != '\'')
-		{
-			check_if_join(x, back, line, out);
-			x[0] += 1;
-		}
-		x[1] = 0;
-		check_if_push(1, x, out, lex);
-		return (x[0]);
+		out = ft_strlen(*tok);
+		push_que(0, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
 	}
-	check_if_join(x, back, line, out);
-	return (x[0]);
+	(*tok) = ft_strdup("\0");
+	return (out - 1);
 }
 
-/**
- ** Tokenize when valid dob quote is found and count number of valid $
- **/
-
-static int	bool_dob_quote(int *x, char *line, char **out, t_que **lex)
+int	tokenize_red(char *line, char **tok, t_que **lex)
 {
-	int	op;
-	int	var;
-	int	back;
-
-	op = 0;
-	var = 0;
-	back = look_back_slash(line, line + x[0] - 1);
-	while ((line[x[0]] && line[x[0]] != '\"')
-		|| (line[x[0]] == '\"' && back != 0))
+	if (*tok)
 	{
-		if ((line[x[0]] == '\\' && line[x[0] + 1] != '\n'
-				&& line[x[0] + 1] != '$' && line[x[0] + 1] != '\"'
-				&& back == 0) || line[x[0]] != '\\')
-			check_if_join(x, back, line, out);
-		if (line[x[0]] == '$' && back == 0 && line[x[0] + 1])
-			var |= (1 << op);
-		if (line[x[0]] == '$')
-			op++;
-		x[0]++;
-		back = look_back_slash(line, line + x[0] - 1);
+		if (**tok != '\0')
+			push_que(0, *tok, lex);
+		free(*tok);
+		(*tok) = NULL;
 	}
-	return (var);
-}
-
-int	check_dob_quote(int *x, char *line, char **out, t_que **lex)
-{
-	int	op;
-	int	back;
-
-	op = 0;
-	back = look_back_slash(line, line + x[0] - 1);
-	if (back == 0)
-	{
-		check_if_push(1, x, out, lex);
-		x[0]++;
-		x[1] = bool_dob_quote(x, line, out, lex);
-		check_if_push(1, x, out, lex);
-		return (x[0]);
-	}
-	check_if_join(x, back, line, out);
-	return (x[0]);
+	if (line[0] == '<' && line[1] == '<')
+		(*tok) = ft_strdup("<<");
+	else if (line[0] == '>' && line[1] == '>')
+		(*tok) = ft_strdup(">>");
+	else if (line[0] == '<')
+		(*tok) = ft_strdup("<");
+	else if (line[0] == '>')
+		(*tok) = ft_strdup(">");
+	return (check_push_red(tok, lex));
 }
