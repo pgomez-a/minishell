@@ -3,21 +3,21 @@ TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+#CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 
-SOURCE = koala.c							\
-	ko_utils.c							\
-	manipulate_line.c						\
-	queue/queue.c							\
-	dlists/dlists.c							\
+SOURCE = koala.c				\
+	ko_utils.c				\
+	manipulate_line.c			\
+	queue/queue.c				\
+	dlists/dlists.c				\
 	dlists/more_dlists.c			\
 	lexer/lexer.c lexer/check_lexer.c	\
 	parser/parser.c				\
-	reader/read_cmds.c						\
-	reader/termcaps_op.c						\
+	parser/expand.c				\
+	reader/read_cmds.c			\
+	reader/termcaps_op.c			\
 	reader/koala_history.c
-	#read_prompt.c
 
 OBJS_SOURCE = $(SOURCE:.c=.o)
 

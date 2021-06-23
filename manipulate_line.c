@@ -70,6 +70,7 @@ void	man_command_line(char *line)
 		init_cmd(&par);
 		call_lexer(line, &lex);
 		call_parser(&lex, &par);
+		call_env(&par);
 		free_parser(&par);
 	}
 }

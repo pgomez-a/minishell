@@ -63,6 +63,9 @@ int		tokenize_red(char *line, char **tok, t_que **lex);
 void	init_cmd(t_cmd **par);
 void	call_parser(t_que **lex, t_cmd **par);
 
+/* expand.c */
+void	call_env(t_cmd **par);
+
 /* ko_utils.c */
 void	add_character(t_tty_info *tty_info, char dst);
 int		ko_putchar(int c);
