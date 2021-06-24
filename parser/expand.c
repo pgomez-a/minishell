@@ -9,7 +9,9 @@ static void	multiple_expansion(int count, char *copy, char **result)
 	{
 		if (copy[count] == '$')
 		{
-			if (getenv(env))
+			if (env[0] == '\0')
+				do_join(1, result, ft_charstr('$'));
+			else if (getenv(env))
 				do_join(0, result, getenv(env));
 			free(env);
 			env = ft_strdup("");
@@ -18,7 +20,9 @@ static void	multiple_expansion(int count, char *copy, char **result)
 			do_join(1, &env, ft_charstr(copy[count]));
 		count++;
 	}
-	if (getenv(env))
+	if (env[0] == '\0')
+		do_join(1, result, ft_charstr('$'));
+	else if (getenv(env))
 		do_join(0, result, getenv(env));
 	free(env);
 }
