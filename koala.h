@@ -66,6 +66,9 @@ void	call_parser(t_que **lex, t_cmd **par);
 /* expand.c */
 void	call_env(t_cmd **par);
 
+/* executor.c */
+void	call_executor(t_cmd **par);
+
 /* ko_utils.c */
 void	add_character(t_tty_info *tty_info, char dst);
 int		ko_putchar(int c);
