@@ -54,6 +54,16 @@ static void	free_parser(t_cmd **par)
 	}
 }
 
+static void	free_lexer(t_que **lex)
+{
+	printf("\n");
+	while (*lex)
+	{
+		printf("**%s**\n", (*lex)->line);
+		free(pop_que(lex));
+	}
+}
+
 /**
  ** Calls the lexer, the parser and the executor programs
  **/
@@ -69,6 +79,7 @@ void	man_command_line(char *line)
 		par = (t_cmd *)malloc(sizeof(t_cmd));
 		init_cmd(&par);
 		call_lexer(line, &lex);
+		//free_lexer(&lex);
 		call_parser(&lex, &par);
 		call_env(&par);
 		call_executor(&par);
