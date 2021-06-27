@@ -64,3 +64,17 @@ int	close_quotes(int x, char *line)
 	}
 	return (0);
 }
+
+/**
+ ** Frees a simple char* array
+ **/
+
+void	free_split(char **split)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (split[i])
+		free(split[i++]);
+	free(split);
+}

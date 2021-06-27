@@ -2,13 +2,31 @@
 
 static void	look_for_cmd(char **div_path, t_que *cmd)
 {
-	if (cmd && cmd->line)
+	int	i;
+	char	**builtins; //does not change, so maybe its better to charge it earlier and free when koala closes
+	char	**argv;
+
+	if (!cmd || !cmd->line)
+		return ;
+	i = 0;
+	builtins = ft_split(M_IMPLEMENTED_BUILTINS, ' ');
+	while (builtins[i])
 	{
-		if (fork() > 0)
-			wait(NULL);
-		else
-			find_path_cmd(div_path, cmd);
+		if (ft_strcmp(builtins[i], cmd->line))
+		{
+			create_argc(&argv, cmd);
+			exec_builtin(argv);
+			free_split(builtins);
+			free_argc(&argv, cmd);
+			return ;
+		}
+		i++;
 	}
+	free_split(builtins);
+	if (fork() > 0)
+		wait(NULL);
+	else
+		find_path_cmd(div_path, cmd);
 }
 
 static void	free_env(char *path, char **div_path)

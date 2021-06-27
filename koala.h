@@ -25,6 +25,8 @@
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
 
+# define M_IMPLEMENTED_BUILTINS "echo pwd"
+
 typedef struct s_cmd
 {
 	t_que			*cmd;
@@ -54,6 +56,7 @@ void		set_prompt(void);
  **/
 
 void		read_command_line(t_tty_info *tty_info);
+void		add_character(t_tty_info *tty_info, char dst);
 
 /**
  ** manipulate_line.c
@@ -98,17 +101,19 @@ void		call_executor(t_cmd **par);
  ** find_cmd.c
  **/
 
+void		create_argc(char ***argc, t_que *cmd);
+void		free_argc(char ***argc, t_que *cmd);
 void		find_path_cmd(char **div_path, t_que *cmd);
 
 /**
  ** ko_utils.c
  **/
 
-void		add_character(t_tty_info *tty_info, char dst);
 void		do_join(int mode, char **src, char *dst);
 char		*ko_delete_ch(const char *str, int d);
 int			close_quotes(int x, char *line);
 int			ko_putchar(int c);
+void		free_split(char **split);
 
 /**
  ** termcaps_op.c
@@ -125,5 +130,11 @@ int			arrow_functions(t_tty_info *tty_info, char n);
 t_dlist		*charge_history(void);
 void		save_history(t_dlist **list);
 void		put_history(t_tty_info *tty_info, char n);
+
+/**
+ ** exec_builtins.c
+ **/
+
+void	exec_builtin(char **argv);
 
 #endif

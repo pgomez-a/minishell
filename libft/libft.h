@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:06:58 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/04/28 14:13:03 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/06/27 19:03:42 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,7 @@ int					ft_pot(int n, int pot);
 int					get_next_line(int fd, char **line);
 
 int					ft_printf(const char *format, ...);
+
+int					ft_strcmp(const char *s1, const char *s2);
 
 #endif

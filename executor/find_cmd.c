@@ -1,6 +1,6 @@
 #include "../koala.h"
 
-static void	create_argc(char ***argc, t_que *cmd)
+void	create_argc(char ***argc, t_que *cmd)
 {
 	t_que	*tmp;
 	int		count;
@@ -23,7 +23,7 @@ static void	create_argc(char ***argc, t_que *cmd)
 	(*argc)[count] = NULL;
 }
 
-static void	free_argc(char ***argc, t_que *cmd)
+void	free_argc(char ***argc, t_que *cmd)
 {
 	t_que	*tmp;
 	int		count;
