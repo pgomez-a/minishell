@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manipulate_line.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 16:18:19 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/06/02 16:35:36 by mmunoz-f         ###   ########.fr       */
+/*   Updated: 2021/06/27 11:21:10 by miguel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	free_parser(t_cmd **par)
 	while (*par != NULL)
 	{
 		if (!mode)
-			ft_printf("\nNUEVO COMANDO\n");
+			ft_printf("NUEVO COMANDO\n");
 		free_cmd(mode, par);
 		tmp = *par;
 		(*par) = (*par)->next;

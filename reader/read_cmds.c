@@ -96,4 +96,6 @@ void	read_command_line(t_tty_info *tty_info)
 	//check_valid_line(tty_info); Con termcaps se complica revisar mas tarde
 	init_terminal(tty_info, 2);
 	ft_dlstclear(&tty_info->strings, free);
+	tputs("\n", 1, ko_putchar);
+	tputs(carriage_return, 1, ko_putchar);
 }

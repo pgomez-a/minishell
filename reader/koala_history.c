@@ -44,6 +44,7 @@ void	save_history(t_dlist **list)
 void	put_history(t_tty_info *tty_info, char n)
 {
 	tputs(delete_line, 1, ko_putchar);
+	tputs(carriage_return, 1, ko_putchar);
 	set_prompt();
 	if (n == 'A' && tty_info->strings->next)
 	{

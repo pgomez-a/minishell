@@ -13,12 +13,12 @@ static void	manage_pipe(t_que **lex, t_cmd **lnode, t_cmd **par)
 	if ((*lnode)->cmd == NULL && (*lnode)->red == NULL)
 	{
 		(*par)->err = 1;
-		ft_printf("\nkoala: syntax error near unexpected token `|\'\n");
+		ft_printf("koala: syntax error near unexpected token `|\'\n");
 	}
 	else if (!(*lex)->next)
 	{
 		(*par)->err = 1;
-		ft_printf("\nkoala: syntax error near unexpected token `|\'\n");
+		ft_printf("koala: syntax error near unexpected token `|\'\n");
 	}
 	else
 	{
@@ -51,17 +51,17 @@ static void	manage_red(int mode, t_que **lex, t_cmd **lnode, t_cmd **par)
 	{
 		(*par)->err = 1;
 		if (mode == 1)
-			ft_printf("\nkoala: syntax error near unexpected token `<\'\n");
+			ft_printf("koala: syntax error near unexpected token `<\'\n");
 		else if (mode == 2)
-			ft_printf("\nkoala: syntax error near unexpected token `>\'\n");
+			ft_printf("koala: syntax error near unexpected token `>\'\n");
 		else if (mode == 3)
-			ft_printf("\nkoala: syntax error near unexpected token `<<\'\n");
+			ft_printf("koala: syntax error near unexpected token `<<\'\n");
 		else if (mode == 4)
-			ft_printf("\nkoala: syntax error near unexpected token `>>\'\n");
+			ft_printf("koala: syntax error near unexpected token `>>\'\n");
 	}
 	else if (!ft_strncmp("|\0", (*lex)->next->line, 2))
 	{
-		ft_printf("\nkoala: syntax error near unexpected token `|\'\n");
+		ft_printf("koala: syntax error near unexpected token `|\'\n");
 		(*par)->err = 1;
 	}
 	else
