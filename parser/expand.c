@@ -31,7 +31,7 @@ static void	manage_expansion(t_que **var)
 {
 	char	*copy;
 	char	*result;
-	int	count;
+	int		count;
 
 	copy = ft_strdup((*var)->line);
 	count = 0;

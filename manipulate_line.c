@@ -18,8 +18,8 @@ static void	free_cmd(int mode, t_cmd **par)
 	{
 		if (!mode)
 		{
-			ft_printf("mode: %d -->", (*par)->cmd->op);
-			ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
+			//ft_printf("mode: %d -->", (*par)->cmd->op);
+			//ft_printf(" cmd: **%s**\n", (*par)->cmd->line);
 		}
 		free(pop_que(&((*par)->cmd)));
 	}
@@ -27,8 +27,8 @@ static void	free_cmd(int mode, t_cmd **par)
 	{
 		if (!mode)
 		{
-			ft_printf("mode: %d -->", (*par)->red->op);
-			ft_printf(" red: **%s**\n", (*par)->red->line);
+			//ft_printf("mode: %d -->", (*par)->red->op);
+			//ft_printf(" red: **%s**\n", (*par)->red->line);
 		}
 		free(pop_que(&((*par)->red)));
 	}
@@ -44,13 +44,23 @@ static void	free_parser(t_cmd **par)
 		mode = (*par)->err;
 	while (*par != NULL)
 	{
-		if (!mode)
-			ft_printf("NUEVO COMANDO\n");
+		//if (!mode)
+			//ft_printf("\nNUEVO COMANDO\n");
 		free_cmd(mode, par);
 		tmp = *par;
 		(*par) = (*par)->next;
 		free(tmp);
 		tmp = NULL;
+	}
+}
+
+static void	free_lexer(t_que **lex)
+{
+	printf("\n");
+	while (*lex)
+	{
+		printf("**%s**\n", (*lex)->line);
+		free(pop_que(lex));
 	}
 }
 
@@ -69,8 +79,10 @@ void	man_command_line(char *line)
 		par = (t_cmd *)malloc(sizeof(t_cmd));
 		init_cmd(&par);
 		call_lexer(line, &lex);
+		//free_lexer(&lex);
 		call_parser(&lex, &par);
 		call_env(&par);
+		call_executor(&par);
 		free_parser(&par);
 	}
 }

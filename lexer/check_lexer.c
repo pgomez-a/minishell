@@ -46,21 +46,14 @@ int	tokenize_quot(char quot, char *line, char **tok, t_que **lex)
 {
 	int	count;
 
-	if (*tok)
-	{
-		if (**tok != '\0')
-			push_que(0, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
-	}
-	(*tok) = ft_strdup("\0");
 	count = 1;
 	while (line[count] != quot)
 	{
 		do_join(1, tok, ft_charstr(line[count]));
 		count++;
 	}
-	check_push_quot(quot, tok, lex);
+	if (line[count + 1] == ' ' || line[count] == '\0')
+		check_push_quot(quot, tok, lex);
 	return (count);
 }
 

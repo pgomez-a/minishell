@@ -32,7 +32,7 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
-typedef struct	s_tty_info
+typedef struct s_tty_info
 {
 	struct termios	read_tty_settings;
 	struct termios	output_tty_settings;
@@ -41,46 +41,88 @@ typedef struct	s_tty_info
 	unsigned int	xcursor;
 }	t_tty_info;
 
-/* koala.c */
+/**
+ ** koala.c 
+ **/
+
 t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode);
-void	set_prompt(void);
+void		set_prompt(void);
 
-/* read_cmds.c */
-void	read_command_line(t_tty_info *tty_info);
+/**
+ ** read_cmds.c
+ **/
 
-/* manipulate_line.c */
-void	man_command_line(char *line);
+void		read_command_line(t_tty_info *tty_info);
 
-/* lexer.c */
-void	call_lexer(char *line, t_que **lex);
+/** 
+ ** manipulate_line.c 
+ **/
 
-/* check_lexer.c */
-int		tokenize_pipe(char **tok, t_que **lex);
-int		tokenize_quot(char quot, char *line, char **tok, t_que **lex);
-int		tokenize_red(char *line, char **tok, t_que **lex);
+void		man_command_line(char *line);
 
-/* parser.c */
-void	init_cmd(t_cmd **par);
-void	call_parser(t_que **lex, t_cmd **par);
+/**
+ ** lexer.c 
+ **/
 
-/* expand.c */
-void	call_env(t_cmd **par);
+void		call_lexer(char *line, t_que **lex);
 
-/* ko_utils.c */
-void	add_character(t_tty_info *tty_info, char dst);
-int		ko_putchar(int c);
-char	*ko_delete_ch(const char *str, int d);
-void	do_join(int mode, char **src, char *dst);
-int		close_quotes(int x, char *line);
+/**
+ ** check_lexer.c
+ **/
 
-/* termcaps_op.c */
-char	delete_tc(t_tty_info *tty_info);
-char	reset_line_tc(t_tty_info *tty_info);
-int		arrow_functions(t_tty_info *tty_info, char n);
+int			tokenize_pipe(char **tok, t_que **lex);
+int			tokenize_quot(char quot, char *line, char **tok, t_que **lex);
+int			tokenize_red(char *line, char **tok, t_que **lex);
 
-/* koala_history.c */
-void	save_history(t_dlist **list);
-t_dlist	*charge_history(void);
-void	put_history(t_tty_info *tty_info, char n);
+/**
+ ** parser.c
+ **/
+
+void		init_cmd(t_cmd **par);
+void		call_parser(t_que **lex, t_cmd **par);
+
+/**
+ ** expand.c
+ **/
+
+void		call_env(t_cmd **par);
+
+/**
+ ** executor.c
+ **/
+
+void		call_executor(t_cmd **par);
+
+/**
+ ** find_cmd.c
+ **/
+
+void		find_path_cmd(char **div_path, t_que *cmd);
+
+/**
+ ** ko_utils.c 
+ **/
+
+void		add_character(t_tty_info *tty_info, char dst);
+void		do_join(int mode, char **src, char *dst);
+char		*ko_delete_ch(const char *str, int d);
+int			close_quotes(int x, char *line);
+int			ko_putchar(int c);
+
+/**
+ ** termcaps_op.c 
+ **/
+
+char		delete_tc(t_tty_info *tty_info);
+char		reset_line_tc(t_tty_info *tty_info);
+int			arrow_functions(t_tty_info *tty_info, char n);
+
+/**
+ ** koala_history.c
+ **/
+
+t_dlist		*charge_history(void);
+void		save_history(t_dlist **list);
+void		put_history(t_tty_info *tty_info, char n);
 
 #endif
