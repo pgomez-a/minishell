@@ -20,6 +20,7 @@
 # include <termios.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 # include "libft/libft.h"
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
@@ -42,7 +43,7 @@ typedef struct s_tty_info
 }	t_tty_info;
 
 /**
- ** koala.c 
+ ** koala.c
  **/
 
 t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode);
@@ -54,14 +55,14 @@ void		set_prompt(void);
 
 void		read_command_line(t_tty_info *tty_info);
 
-/** 
- ** manipulate_line.c 
+/**
+ ** manipulate_line.c
  **/
 
 void		man_command_line(char *line);
 
 /**
- ** lexer.c 
+ ** lexer.c
  **/
 
 void		call_lexer(char *line, t_que **lex);
@@ -100,7 +101,7 @@ void		call_executor(t_cmd **par);
 void		find_path_cmd(char **div_path, t_que *cmd);
 
 /**
- ** ko_utils.c 
+ ** ko_utils.c
  **/
 
 void		add_character(t_tty_info *tty_info, char dst);
@@ -110,7 +111,7 @@ int			close_quotes(int x, char *line);
 int			ko_putchar(int c);
 
 /**
- ** termcaps_op.c 
+ ** termcaps_op.c
  **/
 
 char		delete_tc(t_tty_info *tty_info);
