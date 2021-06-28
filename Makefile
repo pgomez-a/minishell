@@ -17,6 +17,7 @@ SOURCE = koala.c				\
 	parser/expand.c				\
 	executor/executor.c			\
 	executor/find_cmd.c			\
+	executor/find_red.c			\
 	reader/read_cmds.c			\
 	reader/termcaps_op.c			\
 	reader/koala_history.c

@@ -1,14 +1,31 @@
 #include "../koala.h"
 
-static void	look_for_cmd(char **div_path, t_que *cmd)
+static void	look_for_cmd(char **div_path, t_que *red, t_que *cmd)
 {
-	if (cmd && cmd->line)
+	int	save_in;
+	int	save_out;
+	int	save_err;
+	int	err;
+
+	save_in = dup(STDIN_FILENO);
+	save_out = dup(STDOUT_FILENO);
+	save_err = dup(STDERR_FILENO);
+	err = 0;
+	if (red)
+		err = look_for_red(red);
+	if (cmd && cmd->line && err != -1)
 	{
 		if (fork() > 0)
 			wait(NULL);
 		else
 			find_path_cmd(div_path, cmd);
 	}
+	dup2(save_in, STDIN_FILENO);
+	dup2(save_out, STDOUT_FILENO);
+	dup2(save_err, STDERR_FILENO);
+	close(save_in);
+	close(save_out);
+	close(save_err);
 }
 
 static void	free_env(char *path, char **div_path)
@@ -38,7 +55,7 @@ void	call_executor(t_cmd **par)
 		tmp = *par;
 		while (tmp && mode != -1)
 		{
-			look_for_cmd(div_path, tmp->cmd);
+			look_for_cmd(div_path, tmp->red, tmp->cmd);
 			tmp = tmp->next;
 		}
 	}
