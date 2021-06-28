@@ -12,7 +12,7 @@ static void	look_for_cmd(char **div_path, t_que *red, t_que *cmd)
 	save_err = dup(STDERR_FILENO);
 	err = 0;
 	if (red)
-		err = look_for_red(red);
+		err = look_for_red(save_out, red);
 	if (cmd && cmd->line && err != -1)
 	{
 		if (fork() > 0)
@@ -53,7 +53,7 @@ void	call_executor(t_cmd **par)
 	{
 		mode = (*par)->err;
 		tmp = *par;
-		while (tmp && mode != -1)
+		while (tmp && mode != 1)
 		{
 			look_for_cmd(div_path, tmp->red, tmp->cmd);
 			tmp = tmp->next;

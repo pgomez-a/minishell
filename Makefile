@@ -35,7 +35,7 @@ $(NAME): libft/libft.a $(OBJS_SOURCE)
 	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:
-	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) .koala_history
+	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) .koala_history .tmp
 	make fclean -C ./libft
 
 fclean: clean

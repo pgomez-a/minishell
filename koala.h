@@ -104,7 +104,7 @@ void		find_path_cmd(char **div_path, t_que *cmd);
  ** find_red.c
  **/
 
-int		look_for_red(t_que *red);
+int		look_for_red(int std_in, t_que *red);
 
 /**
  ** ko_utils.c

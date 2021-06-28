@@ -127,4 +127,6 @@ int					get_next_line(int fd, char **line);
 
 int					ft_printf(const char *format, ...);
 
+int					ft_strcmp(const char *s1, const char *s2);
+
 #endif
