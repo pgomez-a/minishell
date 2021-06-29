@@ -25,7 +25,7 @@
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
 
-# define M_IMPLEMENTED_BUILTINS "echo pwd"
+# define M_IMPLEMENTED_BUILTINS "pwd echo exit"
 
 typedef struct s_cmd
 {
@@ -102,7 +102,7 @@ void		call_executor(t_cmd **par);
  **/
 
 void		create_argc(char ***argc, t_que *cmd);
-void		free_argc(char ***argc, t_que *cmd);
+void		free_argc(char ***argc);
 void		find_path_cmd(char **div_path, t_que *cmd);
 
 /**
@@ -135,6 +135,6 @@ void		put_history(t_tty_info *tty_info, char n);
  ** exec_builtins.c
  **/
 
-void	exec_builtin(char **argv);
+void	exec_builtin(char ***argv);
 
 #endif

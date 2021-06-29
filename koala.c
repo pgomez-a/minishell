@@ -42,7 +42,6 @@ void	set_prompt(void)
 	char	*prompt;
 
 	prompt = "koala# ";
-	tputs(delete_line, 1, ko_putchar);
 	write(STDIN_FILENO, prompt, ft_strlen(prompt));
 }
 

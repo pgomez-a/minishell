@@ -12,12 +12,12 @@ static void	look_for_cmd(char **div_path, t_que *cmd)
 	builtins = ft_split(M_IMPLEMENTED_BUILTINS, ' ');
 	while (builtins[i])
 	{
-		if (ft_strcmp(builtins[i], cmd->line))
+		if (!ft_strcmp(builtins[i], cmd->line))
 		{
 			create_argc(&argv, cmd);
-			exec_builtin(argv);
+			exec_builtin(&argv);
 			free_split(builtins);
-			free_argc(&argv, cmd);
+			free_argc(&argv);
 			return ;
 		}
 		i++;

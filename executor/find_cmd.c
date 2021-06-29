@@ -12,7 +12,7 @@ void	create_argc(char ***argc, t_que *cmd)
 		count++;
 		tmp = tmp->next;
 	}
-	(*argc) = (char **)malloc(sizeof(char *) * count);
+	(*argc) = (char **)malloc(sizeof(char *) * (count + 1));
 	count = 0;
 	tmp = cmd;
 	while (tmp)
@@ -23,28 +23,14 @@ void	create_argc(char ***argc, t_que *cmd)
 	(*argc)[count] = NULL;
 }
 
-void	free_argc(char ***argc, t_que *cmd)
+void	free_argc(char ***argc)
 {
-	t_que	*tmp;
 	int		count;
 
-	tmp = cmd;
 	count = 0;
-	while (tmp)
-	{
+	while ((*argc)[count])
 		free((*argc)[count++]);
-		tmp = tmp->next;
-	}
 	free(*argc);
-}
-
-static void	execute_cmd(char *path, char ***argc, t_que *cmd)
-{
-	if (execve(path, (*argc), NULL) != -1)
-	{
-		free_argc(argc, cmd);
-		exit(0);
-	}
 }
 
 void	find_path_cmd(char **div_path, t_que *cmd)
@@ -56,17 +42,17 @@ void	find_path_cmd(char **div_path, t_que *cmd)
 
 	count = 0;
 	create_argc(&argc, cmd);
-	execute_cmd(cmd->line, &argc, cmd);
+	execve(path, (argc), NULL);
 	while (div_path[count])
 	{
 		path = ft_strjoin(div_path[count], "/");
 		tmp = path;
 		path = ft_strjoin(path, cmd->line);
-		execute_cmd(path, &argc, cmd);
+		execve(path, (argc), NULL);
 		free(tmp);
 		free(path);
 		count++;
 	}
-	free_argc(&argc, cmd);
+	free_argc(&argc);
 	exit(0);
 }
