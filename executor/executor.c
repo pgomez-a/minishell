@@ -23,7 +23,7 @@ static int	look_for_red(int std_in, t_que *red)
 	return (out);
 }
 
-static void	look_for_cmd(char **div_path, char ***envp, t_que *cmd)
+static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que *cmd)
 {
 	int	i;
 	char	**builtins; //does not change, so maybe its better to charge it earlier and free when koala closes
@@ -38,7 +38,7 @@ static void	look_for_cmd(char **div_path, char ***envp, t_que *cmd)
 		if (!ft_strcmp(builtins[i], cmd->line))
 		{
 			create_argv(&argv, cmd);
-			exec_builtin(&argv);
+			exec_builtin(history, &argv);
 			free_split(builtins);
 			free_argv(&argv);
 			return ;
@@ -52,7 +52,7 @@ static void	look_for_cmd(char **div_path, char ***envp, t_que *cmd)
 		find_path_cmd(div_path, envp, cmd);
 }
 
-static void	set_red_fd(char **div_path, char ***envp, t_que *red, t_que *cmd)
+static void	set_red_fd(t_dlist *history, char **div_path, char ***envp, t_cmd *tmp)
 {
 	int	save_in;
 	int	save_out;
@@ -63,10 +63,10 @@ static void	set_red_fd(char **div_path, char ***envp, t_que *red, t_que *cmd)
 	save_out = dup(STDOUT_FILENO);
 	save_err = dup(STDERR_FILENO);
 	err = 0;
-	if (red)
-		err = look_for_red(save_out, red);
+	if (tmp->red)
+		err = look_for_red(save_out, tmp->red);
 	if (err != -1)
-		look_for_cmd(div_path, envp, cmd); //preguntar a pablo que
+		look_for_cmd(history, div_path, envp, tmp->cmd); //preguntar a pablo que
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	dup2(save_err, STDERR_FILENO);
@@ -86,7 +86,7 @@ static void	free_env(char *path, char **div_path)
 	free(path);
 }
 
-void	call_executor(char ***envp, t_cmd **par)
+void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 {
 	t_cmd	*tmp;
 	char	*path;
@@ -102,7 +102,7 @@ void	call_executor(char ***envp, t_cmd **par)
 		tmp = *par;
 		while (tmp && mode != 1)
 		{
-			set_red_fd(div_path, envp, tmp->red, tmp->cmd);
+			set_red_fd(history, div_path, envp, tmp);
 			tmp = tmp->next;
 		}
 	}

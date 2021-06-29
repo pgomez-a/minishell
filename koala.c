@@ -55,14 +55,7 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		set_prompt();
 		read_command_line(tty_info);
-		if (tty_info->history->content && *(tty_info->history->content) == 'q') // salida temporal para probar hasta tener el builtin de exit
-		{
-			save_history(&tty_info->history);
-			init_terminal(tty_info, 3);
-			free(tty_info);
-			return (0);
-		}
-		man_command_line(tty_info->history->content, &envp);
+		man_command_line(tty_info->history, &envp);
 	}
 	return (0);
 }

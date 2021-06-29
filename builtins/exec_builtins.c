@@ -1,6 +1,6 @@
 #include "../koala.h"
 
-static void	ko_echo(char ***argv)
+static void	koala_echo(char ***argv)
 {
 	unsigned int	i;
 
@@ -17,24 +17,27 @@ static void	ko_echo(char ***argv)
 		printf("\n");
 }
 
-static void	ko_pwd()
+static void	koala_pwd()
 {
 	printf("%s\n", getenv("PWD"));
 }
 
-static void	ko_exit()
+static void	koala_exit(t_dlist *history)
 {
+	save_history(&history);
 	init_terminal(0, 3);
 	system("leaks koala");
 	exit(0); //this exit not clean, we need to pass all the allocated memory to be freed
 }
 
-void	exec_builtin(char ***argv)
+void	exec_builtin(t_dlist *history, char ***argv)
 {
 	if (!ft_strcmp("echo", (*argv)[0]))
-		ko_echo(argv);
+		koala_echo(argv);
 	else if (!ft_strcmp("pwd", (*argv)[0]))
-		ko_pwd();
+		koala_pwd();
 	else if (!ft_strcmp("exit", (*argv)[0]))
-		ko_exit();
+		koala_exit(history);
+	// else if (!ft_strcmp("cd", (*argv)[0]))
+	// 	koala_cd();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manipulate_line.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 16:18:19 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/06/27 11:21:10 by miguel           ###   ########.fr       */
+/*   Updated: 2021/06/29 19:05:32 by mmunoz-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,21 @@ static void	free_lexer(t_que **lex)
  ** Calls the lexer, the parser and the executor programs
  **/
 
-void	man_command_line(char *line, char ***envp)
+void	man_command_line(t_dlist *history, char ***envp)
 {
 	t_que	*lex;
 	t_cmd	*par;
 
-	if (line)
+	if (history->content)
 	{
 		lex = NULL;
 		par = (t_cmd *)malloc(sizeof(t_cmd));
 		init_cmd(&par);
-		call_lexer(line, &lex);
+		call_lexer(history->content, &lex);
 		//free_lexer(&lex);
 		call_parser(&lex, &par);
 		call_env(&par);
-		call_executor(envp, &par);
+		call_executor(history, envp, &par);
 		free_parser(&par);
 	}
 }
