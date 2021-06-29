@@ -21,7 +21,9 @@ SOURCE = koala.c				\
 	reader/read_cmds.c			\
 	reader/termcaps_op.c			\
 	reader/koala_history.c		\
-	builtins/exec_builtins.c
+	builtins/exec_builtins.c	\
+	builtins/cd_builtin.c		\
+	builtins/env_builtin.c
 
 OBJS_SOURCE = $(SOURCE:.c=.o)
 

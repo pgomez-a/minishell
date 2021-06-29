@@ -25,7 +25,7 @@
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
 
-# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd"
+# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env"
 
 typedef struct s_cmd
 {
@@ -144,6 +144,18 @@ void		put_history(t_tty_info *tty_info, char n);
  ** exec_builtins.c
  **/
 
-void	exec_builtin(t_dlist *history, char ***argv);
+void		exec_builtin(t_dlist *history, char ***argv, char ***envp);
+
+/**
+ ** cd_builtin.c
+ **/
+
+void		koala_cd();
+
+/**
+ ** env_builtin.c
+ **/
+
+void		koala_env(char ***envp, char ***argv);
 
 #endif

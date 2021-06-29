@@ -30,7 +30,7 @@ static void	koala_exit(t_dlist *history)
 	exit(0); //this exit not clean, we need to pass all the allocated memory to be freed
 }
 
-void	exec_builtin(t_dlist *history, char ***argv)
+void	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 {
 	if (!ft_strcmp("echo", (*argv)[0]))
 		koala_echo(argv);
@@ -38,6 +38,8 @@ void	exec_builtin(t_dlist *history, char ***argv)
 		koala_pwd();
 	else if (!ft_strcmp("exit", (*argv)[0]))
 		koala_exit(history);
-	// else if (!ft_strcmp("cd", (*argv)[0]))
-	// 	koala_cd();
+	else if (!ft_strcmp("cd", (*argv)[0]))
+		koala_cd();
+	else if (!ft_strcmp("env", (*argv)[0]))
+		koala_env(envp, argv);
 }
