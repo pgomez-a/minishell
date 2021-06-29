@@ -45,7 +45,7 @@ void	set_prompt(void)
 	write(STDIN_FILENO, prompt, ft_strlen(prompt));
 }
 
-int	main(void)
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_tty_info		*tty_info;
 
@@ -62,7 +62,7 @@ int	main(void)
 			free(tty_info);
 			return (0);
 		}
-		man_command_line(tty_info->history->content);
+		man_command_line(tty_info->history->content, &envp);
 	}
 	return (0);
 }

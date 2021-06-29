@@ -68,7 +68,7 @@ static void	free_lexer(t_que **lex)
  ** Calls the lexer, the parser and the executor programs
  **/
 
-void	man_command_line(char *line)
+void	man_command_line(char *line, char ***envp)
 {
 	t_que	*lex;
 	t_cmd	*par;
@@ -82,7 +82,7 @@ void	man_command_line(char *line)
 		//free_lexer(&lex);
 		call_parser(&lex, &par);
 		call_env(&par);
-		call_executor(&par);
+		call_executor(envp, &par);
 		free_parser(&par);
 	}
 }

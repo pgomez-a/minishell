@@ -1,6 +1,6 @@
 #include "../koala.h"
 
-void	create_argc(char ***argc, t_que *cmd)
+void	create_argv(char ***argv, t_que *cmd)
 {
 	t_que	*tmp;
 	int		count;
@@ -12,18 +12,18 @@ void	create_argc(char ***argc, t_que *cmd)
 		count++;
 		tmp = tmp->next;
 	}
-	(*argc) = (char **)malloc(sizeof(char *) * (count + 1));
+	(*argv) = (char **)malloc(sizeof(char *) * (count + 1));
 	count = 0;
 	tmp = cmd;
 	while (tmp)
 	{
-		(*argc)[count++] = ft_strdup(tmp->line);
+		(*argv)[count++] = ft_strdup(tmp->line);
 		tmp = tmp->next;
 	}
-	(*argc)[count] = NULL;
+	(*argv)[count] = NULL;
 }
 
-void	free_argc(char ***argc)
+void	free_argv(char ***argc)
 {
 	int		count;
 
@@ -33,26 +33,26 @@ void	free_argc(char ***argc)
 	free(*argc);
 }
 
-void	find_path_cmd(char **div_path, t_que *cmd)
+void		find_path_cmd(char **div_path, char ***envp, t_que *cmd)
 {
-	char	**argc;
+	char	**argv;
 	char	*path;
 	char	*tmp;
 	int		count;
 
 	count = 0;
-	create_argc(&argc, cmd);
-	execve(path, (argc), NULL);
+	create_argv(&argv, cmd);
+	execve(path, (argv), NULL);
 	while (div_path[count])
 	{
 		path = ft_strjoin(div_path[count], "/");
 		tmp = path;
 		path = ft_strjoin(path, cmd->line);
-		execve(path, (argc), NULL);
+		execve(path, (argv), NULL);
 		free(tmp);
 		free(path);
 		count++;
 	}
-	free_argc(&argc);
+	free_argv(&argv);
 	exit(0);
 }

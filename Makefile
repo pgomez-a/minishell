@@ -17,6 +17,7 @@ SOURCE = koala.c				\
 	parser/expand.c				\
 	executor/executor.c			\
 	executor/find_cmd.c			\
+	executor/find_red.c			\
 	reader/read_cmds.c			\
 	reader/termcaps_op.c			\
 	reader/koala_history.c		\
@@ -35,7 +36,7 @@ $(NAME): libft/libft.a $(OBJS_SOURCE)
 	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:
-	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) .koala_history
+	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) .koala_history .tmp
 	make fclean -C ./libft
 
 fclean: clean
