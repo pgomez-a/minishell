@@ -38,7 +38,7 @@ static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que 
 		if (!ft_strcmp(builtins[i], cmd->line))
 		{
 			create_argv(&argv, cmd);
-			exec_builtin(history, &argv);
+			exec_builtin(history, &argv, envp);
 			free_split(builtins);
 			free_argv(&argv);
 			return ;
@@ -66,7 +66,7 @@ static void	set_red_fd(t_dlist *history, char **div_path, char ***envp, t_cmd *t
 	if (tmp->red)
 		err = look_for_red(save_out, tmp->red);
 	if (err != -1)
-		look_for_cmd(history, div_path, envp, tmp->cmd); //preguntar a pablo que
+		look_for_cmd(history, div_path, envp, tmp->cmd); //preguntar a pablo que ocurre con los fd abiertos si se hace exit
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	dup2(save_err, STDERR_FILENO);
