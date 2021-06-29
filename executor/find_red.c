@@ -1,6 +1,6 @@
 #include "../koala.h"
 
-static int	redirect_inp(t_que *red)
+int	redirect_inp(t_que *red)
 {
 	int	file;
 
@@ -15,7 +15,7 @@ static int	redirect_inp(t_que *red)
 	return (0);
 }
 
-static int	redirect_add(t_que *red)
+int	redirect_add(t_que *red)
 {
 	int	file;
 
@@ -31,7 +31,7 @@ static int	redirect_add(t_que *red)
 	return (0);
 }
 
-static int	redirect_app(t_que *red)
+int	redirect_app(t_que *red)
 {
 	int	file;
 
@@ -66,7 +66,7 @@ static void	launch_prompt(int std_in, int file, t_que *red)
 	}
 }
 
-static int	redirect_rdin(int std_in, t_que *red)
+int	redirect_rdin(int std_in, t_que *red)
 {
 	int		file;
 
@@ -82,27 +82,4 @@ static int	redirect_rdin(int std_in, t_que *red)
 	dup2(file, STDIN_FILENO);
 	close(file);
 	return (0);
-}
-
-int	look_for_red(int std_in, t_que *red)
-{
-	t_que	*tmp;
-	int		file;
-	int		out;
-
-	tmp = red;
-	out = 0;
-	while (tmp && out >= 0)
-	{
-		if (tmp->op == 1)
-			out = redirect_inp(tmp);
-		else if (tmp->op == 2)
-			out = redirect_add(tmp);
-		else if (tmp->op == 3)
-			out = redirect_rdin(std_in, tmp);
-		else if (tmp->op == 4)
-			out = redirect_app(tmp);
-		tmp = tmp->next;
-	}
-	return (out);
 }

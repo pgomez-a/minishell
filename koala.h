@@ -59,7 +59,7 @@ void		read_command_line(t_tty_info *tty_info);
  ** manipulate_line.c
  **/
 
-void		man_command_line(char *line);
+void		man_command_line(char *line, char ***envp);
 
 /**
  ** lexer.c
@@ -92,19 +92,22 @@ void		call_env(t_cmd **par);
  ** executor.c
  **/
 
-void		call_executor(t_cmd **par);
+void		call_executor(char ***envp, t_cmd **par);
 
 /**
  ** find_cmd.c
  **/
 
-void		find_path_cmd(char **div_path, t_que *cmd);
+void		find_path_cmd(char **div_path, char ***envp, t_que *cmd);
 
 /**
  ** find_red.c
  **/
 
-int		look_for_red(int std_in, t_que *red);
+int			redirect_inp(t_que *red);
+int			redirect_add(t_que *red);
+int			redirect_app(t_que *red);
+int			redirect_rdin(int std_in, t_que *red);
 
 /**
  ** ko_utils.c
