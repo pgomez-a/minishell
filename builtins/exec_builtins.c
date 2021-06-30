@@ -1,25 +1,37 @@
 #include "../koala.h"
 
-static void	koala_echo(char ***argv)
+static void	koala_echo(char **argv)
 {
 	unsigned int	i;
 
 	i = 1;
-	if (!ft_strcmp((*argv)[i], "-n"))
+	if (!ft_strcmp(argv[i], "-n"))
 		i++;
-	while ((*argv)[i])
+	while (argv[i])
 	{
-		ft_putstr_fd((*argv)[i], 0);
-		if ((*argv)[++i])
+		ft_putstr_fd(argv[i], 0);
+		if (argv[++i])
 			write(1, " ", 1);
 	}
-	if (ft_strcmp((*argv)[1], "-n"))
+	if (ft_strcmp(argv[1], "-n"))
 		printf("\n");
 }
 
 static void	koala_pwd()
 {
-	printf("%s\n", getenv("PWD"));
+	int		size;
+	char	*path;
+
+	size = 10;
+	path = malloc(sizeof(char) * 16);
+	while (!getcwd(path, size))
+	{
+		free(path);
+		size *= 2;
+		path = malloc(sizeof(char) * size);
+	}
+	printf("%s\n", path);
+	free(path);
 }
 
 static void	koala_exit(t_dlist *history)
@@ -30,16 +42,31 @@ static void	koala_exit(t_dlist *history)
 	exit(0); //this exit not clean, we need to pass all the allocated memory to be freed
 }
 
+static void	koala_env(char ***envp, char ***argv)
+{
+	int	i;
+
+	i = 0;
+	while ((*envp)[i])
+	{
+		if (ft_strchr((*envp)[i], '='))
+			printf("%s\n", (*envp)[i]);
+		i++;
+	}
+}
+
 void	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 {
 	if (!ft_strcmp("echo", (*argv)[0]))
-		koala_echo(argv);
+		koala_echo(*argv);
 	else if (!ft_strcmp("pwd", (*argv)[0]))
 		koala_pwd();
 	else if (!ft_strcmp("exit", (*argv)[0]))
 		koala_exit(history);
 	else if (!ft_strcmp("cd", (*argv)[0]))
-		koala_cd();
+		koala_cd(*argv);
 	else if (!ft_strcmp("env", (*argv)[0]))
 		koala_env(envp, argv);
+	else if (!ft_strcmp("export", (*argv)[0]))
+		koala_export(envp, *argv);
 }

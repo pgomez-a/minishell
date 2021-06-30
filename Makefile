@@ -3,6 +3,7 @@ TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 M =
 
 CC = clang
+CFLAGS =
 #CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 
@@ -23,7 +24,7 @@ SOURCE = koala.c				\
 	reader/koala_history.c		\
 	builtins/exec_builtins.c	\
 	builtins/cd_builtin.c		\
-	builtins/env_builtin.c
+	builtins/export_builtin.c
 
 OBJS_SOURCE = $(SOURCE:.c=.o)
 

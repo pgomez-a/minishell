@@ -21,11 +21,12 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <errno.h>
 # include "libft/libft.h"
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
 
-# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env"
+# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export"
 
 typedef struct s_cmd
 {
@@ -150,12 +151,12 @@ void		exec_builtin(t_dlist *history, char ***argv, char ***envp);
  ** cd_builtin.c
  **/
 
-void		koala_cd();
+void		koala_cd(char **argv);
 
 /**
- ** env_builtin.c
+ ** export_builtin.c
  **/
 
-void		koala_env(char ***envp, char ***argv);
+void	koala_export(char ***envp, char **argv);
 
 #endif

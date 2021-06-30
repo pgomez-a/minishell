@@ -27,7 +27,7 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
 		tty_info->read_tty_settings.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
 		tty_info->read_tty_settings.c_oflag &= ~(OPOST);
 		ft_memcpy(&tty_info->output_tty_settings, &original_tty_settings, sizeof(struct termios));
-		tty_info->output_tty_settings.c_lflag &= ~ISIG;
+		//tty_info->output_tty_settings.c_lflag &= ~ISIG;
 		tty_info->history = charge_history();
 	}
 	return (tty_info);
@@ -45,12 +45,32 @@ void	set_prompt(void)
 	write(STDIN_FILENO, prompt, ft_strlen(prompt));
 }
 
+static char	**alloc_envp(char	**envp)
+{
+	int		size;
+	char	**new_envp;
+
+	size = 0;
+	while (envp[size])
+		size++;
+	new_envp = malloc(sizeof(char *) * (size + 1));
+	size = 0;
+	while (envp[size])
+	{
+		new_envp[size] = ft_strdup(envp[size]);
+		size++;
+	}
+	new_envp[size] = 0;
+	return (new_envp);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_tty_info		*tty_info;
 
 	tty_info = 0;
 	tty_info = init_terminal(tty_info, 0);
+	envp = alloc_envp(envp);
 	while (1)
 	{
 		set_prompt();
