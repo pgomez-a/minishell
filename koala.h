@@ -125,6 +125,7 @@ int			close_quotes(int x, char *line);
 int			ko_putchar(int c);
 void		free_split(char **split);
 char		*koala_getenv(char *variable, char **envp);
+char		*koala_getcwd();
 
 
 /**
@@ -153,26 +154,26 @@ void		exec_builtin(t_dlist *history, char ***argv, char ***envp);
  ** cd_builtin.c
  **/
 
-void		koala_cd(char **argv);
+void		koala_cd(char **argv, char ***envp);
 
 /**
  ** export_builtin.c
  **/
 
-void	koala_export(char ***envp, char **argv);
-void	split_env(const char *string, char **variable, char **value);
+void		koala_export(char ***envp, char **argv);
+void		split_env(const char *string, char **variable, char **value);
 
 /**
  ** export_builtin_utils.c
  **/
 
-int		compare_env_var(char *env, char *new_env);
-void	print_export(char **envp);
+int			compare_env_var(char *env, char *new_env);
+void		print_export(char **envp);
 
 /**
  ** unset_builtin.c
  **/
 
-void	koala_unset(char ***envp, char **argv);
+void		koala_unset(char ***envp, char **argv);
 
 #endif

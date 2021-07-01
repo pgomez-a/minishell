@@ -19,17 +19,9 @@ static void	koala_echo(char **argv)
 
 static void	koala_pwd()
 {
-	int		size;
 	char	*path;
 
-	size = 10;
-	path = malloc(sizeof(char) * 16);
-	while (!getcwd(path, size))
-	{
-		free(path);
-		size *= 2;
-		path = malloc(sizeof(char) * size);
-	}
+	path = koala_getcwd();
 	printf("%s\n", path);
 	free(path);
 }
@@ -64,7 +56,7 @@ void	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 	else if (!ft_strcmp("exit", (*argv)[0]))
 		koala_exit(history);
 	else if (!ft_strcmp("cd", (*argv)[0]))
-		koala_cd(*argv);
+		koala_cd(*argv, envp);
 	else if (!ft_strcmp("env", (*argv)[0]))
 		koala_env(envp, argv);
 	else if (!ft_strcmp("export", (*argv)[0]))

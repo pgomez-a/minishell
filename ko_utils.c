@@ -97,3 +97,19 @@ char	*koala_getenv(char *env_var, char **envp)
 	}
 	return ("=");
 }
+
+char	*koala_getcwd()
+{
+	int		size;
+	char	*string;
+
+	size = 10;
+	string = malloc(sizeof(char) * 16);
+	while (!getcwd(string, size))
+	{
+		free(string);
+		size *= 2;
+		string = malloc(sizeof(char) * size);
+	}
+	return (string);
+}
