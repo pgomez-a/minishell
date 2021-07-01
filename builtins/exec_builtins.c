@@ -69,4 +69,6 @@ void	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 		koala_env(envp, argv);
 	else if (!ft_strcmp("export", (*argv)[0]))
 		koala_export(envp, *argv);
+	else if (!ft_strcmp("unset", (*argv)[0]))
+		koala_unset(envp, *argv);
 }

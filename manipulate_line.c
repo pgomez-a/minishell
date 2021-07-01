@@ -6,7 +6,7 @@
 /*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 16:18:19 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/06/29 19:05:32 by mmunoz-f         ###   ########.fr       */
+/*   Updated: 2021/07/01 16:05:56 by mmunoz-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	man_command_line(t_dlist *history, char ***envp)
 		call_lexer(history->content, &lex);
 		//free_lexer(&lex);
 		call_parser(&lex, &par);
-		call_env(&par);
+		call_env(&par, *envp);
 		call_executor(history, envp, &par);
 		free_parser(&par);
 	}

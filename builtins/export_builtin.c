@@ -4,21 +4,22 @@ static int	change_existing_env(char ***envp, char *variable, char *value)
 {
 	int		j;
 	int		done;
-	char	*tmp;
 
 	j = 0;
 	done = 0;
 	while ((*envp)[j] && !done)
 	{
-		if ((!ft_strncmp((*envp)[j], variable, ft_strlen(variable))) && value) //necesitas unn strcmp de verdad
+		if (!compare_env_var((*envp)[j], variable))
 		{
-			free((*envp)[j]);
-			if (value)
-				do_join(1, &variable, value);
-			(*envp)[j] = variable;
-			variable = 0;
-			value = 0;
 			done = 1;
+			if (value)
+			{
+				free((*envp)[j]);
+				do_join(1, &variable, value);
+				(*envp)[j] = variable;
+				variable = 0;
+				value = 0;
+			}
 		}
 		j++;
 	}
@@ -45,7 +46,7 @@ static void	add_env(char ***envp, char *argv)
 	new_envp[size + 1] = 0;
 }
 
-static void	split_env(const char *string, char **variable, char **value)
+void	split_env(const char *string, char **variable, char **value)
 {
 	char	*equal;
 
@@ -62,44 +63,24 @@ static void	split_env(const char *string, char **variable, char **value)
 	}
 }
 
-static void	export_value_mod(char ***envp, char **argv)
+void	koala_export(char ***envp, char **argv)
 {
 	int		i;
 	char	*variable;
 	char	*value;
 	char	*tmp;
 
-	i = 1;
-	while (argv[i])
-	{
-		split_env(argv[i], &variable, &value);
-		if (!change_existing_env(envp, variable, value))
-			add_env(envp, ft_strdup(argv[i]));
-		i++;
-	}
-}
-
-void	koala_export(char ***envp, char **argv)
-{
-	int		i;
-	char	*variable;
-	char	*value;
-
-	i = 0;
 	if (!argv[1])
+		print_export(*envp);
+	else
 	{
-		while ((*envp)[i])
+		i = 1;
+		while (argv[i])
 		{
-			split_env((*envp)[i++], &variable, &value);
-			printf("declare -x %s", variable);
-			if (ft_strchr(variable, '='))
-				printf("\"%s\"", value);
-			printf("\n");
-			free(variable);
-			if (value)
-				free(value);
+			split_env(argv[i], &variable, &value);
+			if (!change_existing_env(envp, variable, value))
+				add_env(envp, ft_strdup(argv[i]));
+			i++;
 		}
 	}
-	else
-		export_value_mod(envp, argv);
 }

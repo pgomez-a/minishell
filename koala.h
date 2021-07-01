@@ -26,7 +26,7 @@
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
 
-# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export"
+# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export unset" //cd cambia $PWD, pwd lee de $PWD
 
 typedef struct s_cmd
 {
@@ -90,7 +90,7 @@ void		call_parser(t_que **lex, t_cmd **par);
  ** expand.c
  **/
 
-void		call_env(t_cmd **par);
+void		call_env(t_cmd **par, char **envp);
 
 /**
  ** executor.c
@@ -124,6 +124,8 @@ char		*ko_delete_ch(const char *str, int d);
 int			close_quotes(int x, char *line);
 int			ko_putchar(int c);
 void		free_split(char **split);
+char		*koala_getenv(char *variable, char **envp);
+
 
 /**
  ** termcaps_op.c
@@ -158,5 +160,19 @@ void		koala_cd(char **argv);
  **/
 
 void	koala_export(char ***envp, char **argv);
+void	split_env(const char *string, char **variable, char **value);
+
+/**
+ ** export_builtin_utils.c
+ **/
+
+int		compare_env_var(char *env, char *new_env);
+void	print_export(char **envp);
+
+/**
+ ** unset_builtin.c
+ **/
+
+void	koala_unset(char ***envp, char **argv);
 
 #endif

@@ -51,7 +51,7 @@ char	*ko_delete_ch(const char *str, int d)
  ** Check if there are close quotes or not
  **/
 
-int	close_quotes(int x, char *line)
+int	close_quotes(int x, char *line) //preguntar pablo si se utiliza
 {
 	char	quot;
 
@@ -77,4 +77,23 @@ void	free_split(char **split)
 	while (split[i])
 		free(split[i++]);
 	free(split);
+}
+
+char	*koala_getenv(char *env_var, char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (!compare_env_var(envp[i], env_var))
+		{
+			if (ft_strchr(envp[i], '='))
+				return (envp[i]);
+			else
+				return ("=");
+		}
+		i++;
+	}
+	return ("=");
 }

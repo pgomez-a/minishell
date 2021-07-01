@@ -42,13 +42,13 @@ void		find_path_cmd(char **div_path, char ***envp, t_que *cmd)
 
 	count = 0;
 	create_argv(&argv, cmd);
-	execve(path, (*argv), (*envp));
+	execve(path, argv, (*envp));
 	while (div_path[count])
 	{
 		path = ft_strjoin(div_path[count], "/");
 		tmp = path;
 		path = ft_strjoin(path, cmd->line);
-		execve(path, (*argv), (*envp));
+		execve(path, argv, (*envp));
 		free(tmp);
 		free(path);
 		count++;

@@ -1,6 +1,6 @@
 #include "../koala.h"
 
-static void	multiple_expansion(int count, char *copy, char **result)
+static void	multiple_expansion(int count, char *copy, char **result, char **envp)
 {
 	char	*env;
 
@@ -11,8 +11,8 @@ static void	multiple_expansion(int count, char *copy, char **result)
 		{
 			if (env[0] == '\0')
 				do_join(1, result, ft_charstr('$'));
-			else if (getenv(env))
-				do_join(0, result, getenv(env));
+			else if (koala_getenv(env, envp))
+				do_join(0, result, ft_strchr(koala_getenv(env, envp), '=') + 1);
 			free(env);
 			env = ft_strdup("");
 		}
@@ -22,12 +22,12 @@ static void	multiple_expansion(int count, char *copy, char **result)
 	}
 	if (env[0] == '\0')
 		do_join(1, result, ft_charstr('$'));
-	else if (getenv(env))
-		do_join(0, result, getenv(env));
+	else if (koala_getenv(env, envp))
+		do_join(0, result, ft_strchr(koala_getenv(env, envp), '=') + 1);
 	free(env);
 }
 
-static void	manage_expansion(t_que **var)
+static void	manage_expansion(t_que **var, char **envp)
 {
 	char	*copy;
 	char	*result;
@@ -39,14 +39,14 @@ static void	manage_expansion(t_que **var)
 		count++;
 	copy[count++] = '\0';
 	result = ft_strdup(copy);
-	multiple_expansion(count, copy, &result);
+	multiple_expansion(count, copy, &result, envp);
 	free((*var)->line);
 	(*var)->line = ft_strdup(result);
 	free(result);
 	free(copy);
 }
 
-static void	expand_cmds(t_cmd **tpar)
+static void	expand_cmds(t_cmd **tpar, char **envp)
 {
 	t_que	*tque;
 
@@ -56,13 +56,13 @@ static void	expand_cmds(t_cmd **tpar)
 		while (tque)
 		{
 			if (tque->op != 2 && ft_strchr(tque->line, '$'))
-				manage_expansion(&tque);
+				manage_expansion(&tque, envp);
 			tque = tque->next;
 		}
 	}
 }
 
-static void	expand_reds(t_cmd **tpar)
+static void	expand_reds(t_cmd **tpar, char **envp)
 {
 	t_que	*tque;
 
@@ -72,13 +72,13 @@ static void	expand_reds(t_cmd **tpar)
 		while (tque)
 		{
 			if (tque->op > 0 && ft_strchr(tque->line, '$'))
-				manage_expansion(&tque);
+				manage_expansion(&tque, envp);
 			tque = tque->next;
 		}
 	}
 }
 
-void	call_env(t_cmd **par)
+void	call_env(t_cmd **par, char **envp)
 {
 	t_cmd	*tpar;
 
@@ -87,8 +87,8 @@ void	call_env(t_cmd **par)
 		tpar = *par;
 		while (tpar)
 		{
-			expand_cmds(&tpar);
-			expand_reds(&tpar);
+			expand_cmds(&tpar, envp);
+			expand_reds(&tpar, envp);
 			tpar = tpar->next;
 		}
 	}
