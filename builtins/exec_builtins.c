@@ -5,15 +5,15 @@ static void	koala_echo(char **argv)
 	unsigned int	i;
 
 	i = 1;
-	if (!ft_strcmp(argv[i], "-n"))
+	if (argv[i] && !ft_strcmp(argv[i], "-n"))
 		i++;
 	while (argv[i])
 	{
 		ft_putstr_fd(argv[i], 0);
 		if (argv[++i])
-			write(1, " ", 1);
+			write(STDIN_FILENO, " ", 1);
 	}
-	if (ft_strcmp(argv[1], "-n"))
+	if (argv[1] && ft_strcmp(argv[1], "-n"))
 		printf("\n");
 }
 
