@@ -9,9 +9,9 @@ static void	koala_echo(char **argv)
 		i++;
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], 0);
+		ft_putstr_fd(argv[i], 1);
 		if (argv[++i])
-			write(STDIN_FILENO, " ", 1);
+			write(1, " ", 1);
 	}
 	if (argv[1] && ft_strcmp(argv[1], "-n"))
 		printf("\n");
