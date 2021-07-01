@@ -8,7 +8,7 @@ t_dlist	*charge_history(void)
 	t_dlist	*history;
 
 	history = 0;
-	fd = open(".koala_history", O_RDONLY);
+	fd = open("/tmp/.koala_history", O_RDONLY);
 	if (fd < 0)
 		return (0);
 	r = get_next_line(fd, &line);
@@ -27,7 +27,7 @@ void	save_history(t_dlist **list)
 	int		fd;
 	t_dlist	*tmp_list;
 
-	fd = open(".koala_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
+	fd = open("/tmp/.koala_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
 	tmp_list = *list;
 	*list = ft_dlstlast(*list);
 	while (*list)
