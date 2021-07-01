@@ -37,19 +37,25 @@ void	print_export(char **envp)
 {
 	int		i;
 	char	*tmp;
+	char	**tmp_env;
 
+	i = -1;
+	while (envp[++i]);
+	tmp_env = malloc(sizeof(char *) * (i + 1));
+	tmp_env = ft_memcpy(tmp_env, envp, sizeof(char *) * (i + 1));
 	i = 1;
-	while (envp[i])
+	while (tmp_env[i])
 	{
-		if (i > 0 && (ft_strcmp(envp[i], envp[i - 1]) < 0))
+		if (i > 0 && (ft_strcmp(tmp_env[i], tmp_env[i - 1]) < 0))
 		{
-			tmp = envp[i - 1];
-			envp[i - 1] = envp[i];
-			envp[i] = tmp;
+			tmp = tmp_env[i - 1];
+			tmp_env[i - 1] = tmp_env[i];
+			tmp_env[i] = tmp;
 			i--;
 		}
 		else
 			i++;
 	}
-	print_export_string(envp);
+	print_export_string(tmp_env);
+	free(tmp_env);
 }
