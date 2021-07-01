@@ -70,10 +70,10 @@ int	redirect_rdin(int std_in, t_que *red)
 {
 	int		file;
 
-	file = open("/tmp/koala_heredoc", O_CREAT | O_TRUNC | O_WRONLY, 0777);
+	file = open("/tmp/.koala_heredoc", O_CREAT | O_TRUNC | O_WRONLY, 0777);
 	launch_prompt(std_in, file, red);
 	close(file);
-	file = open("/tmp/koala_heredoc", O_RDONLY, 0777);
+	file = open("/tmp/.koala_heredoc", O_RDONLY, 0777);
 	if (file < 0)
 	{
 		printf("koala: no such file or directory: %s\n", red->line);

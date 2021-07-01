@@ -52,7 +52,7 @@ int	tokenize_quot(char quot, char *line, char **tok, t_que **lex)
 		do_join(1, tok, ft_charstr(line[count]));
 		count++;
 	}
-	if (line[count + 1] == ' ' || line[count] == '\0')
+	if (line[count] == '\'' || line[count] == '\"')
 		check_push_quot(quot, tok, lex);
 	return (count);
 }
