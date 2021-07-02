@@ -27,9 +27,19 @@ There are also two types of paths that we have to differentiate:
 - **Absolute paths:** identifies the entire path file, including the root directory -> /home/user/Desktop/file.txt
 - **Relative paths:** indicates the path in relation to our current position -> ./Desktop/file.txt (if we are in /home/user). If we want to go to the parent directory, we use '..'
 
-
-
 ### How to use environment variables?
+Shell environment variables are **used to store settable values** used by shell scripts. In addition, we can create our own environment variables, so we could add them in case we need to run them in our programs.<br>
+In bash, we have two types of environment variables:
+- **Local variables**
+- **Global variables**
+
+The main difference between both types is that **a local variable is only visible from the shell in which it was created**, while **global variables are visible from every running process or every process run from that shell**. When you log in to the shell, the shell sets some global environment variables. All these variables are always in uppercase, so it is easier to differentiate them from those defined by the user. The command used to see the environment variables loaded in our session is **env**.<br>
+<br>
+To view the global and local variables defined in the shell session, use the set command. Every local variable that is set in the shell session will not be visible from another shell session.
+
+#### · PATH variable
+PATH is one of the most important environment variables in bash. This variable **contains some paths that will be used to find the commands** that the user wants to execute without specifying its absolute or relative path. For example, if we want to execute ls (whose path is /bin/ls), since a part of the $ PATH variable is the path /bin, it will search /bin and finally execute /bin/ls. This way, the user does not have to worry about the command path. In case you want to know the path of a command, use **which + command**.
+
 ### What is an OS?
 ### Basic bash commands
 ### Bash History
