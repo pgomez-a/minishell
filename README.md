@@ -22,6 +22,13 @@ A prompt is a character or a set of characters that is displayed on a command li
       username@hostname:current_path$
 
 ### Differences between absolute and relative paths
+What we know as a path is the place where a file is stored within the system. In fact, since we are using a file system, each file has a path within this system, which works as an address for the files. Every command we execute is executed considering its path, so if we don't specify any path, bash will consider that the file we are trying to use is located in our current directory.<br>
+There are also two types of paths that we have to differentiate:
+- **Absolute paths:** identifies the entire path file, including the root directory -> /home/user/Desktop/file.txt
+- **Relative paths:** indicates the path in relation to our current position -> ./Desktop/file.txt (if we are in /home/user). If we want to go to the parent directory, we use '..'
+
+
+
 ### How to use environment variables?
 ### What is an OS?
 ### Basic bash commands
