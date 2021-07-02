@@ -41,6 +41,9 @@ To view the global and local variables defined in the shell session, use the set
 PATH is one of the most important environment variables in bash. This variable **contains some paths that will be used to find the commands** that the user wants to execute without specifying its absolute or relative path. For example, if we want to execute ls (whose path is /bin/ls), since a part of the $ PATH variable is the path /bin, it will search /bin and finally execute /bin/ls. This way, the user does not have to worry about the command path. In case you want to know the path of a command, use **which + command**.
 
 ### What is an OS?
+An Operating System is a set of programs that allows us to manipulate the memory, disk, storage devices and other hardware devices of our computer. In other words, an OS is **software that enables communication between the user and the computer**. If the user wants to store a file, the operating system will process the request and finally the file will be stored in memory if it is not full.<br>
+However, in addition to managing hardware resources, an operating system is also **responsible for running processes**. What we know as a process will be seen later in this README file, but it is basically a running program.
+
 ### Basic bash commands
 ### Bash History
 ### Login Shell vs Non-login Shell
