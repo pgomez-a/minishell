@@ -43,6 +43,8 @@ static char	read_fromtty(t_tty_info *tty_info)
 	{
 		if (buff == 3)
 			return (reset_line_tc(tty_info));
+		if (buff == 4)
+			koala_exit(tty_info->history);
 		if (buff == 127)
 			return (delete_tc(tty_info));
 		if (buff == 27)

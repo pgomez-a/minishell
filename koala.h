@@ -143,12 +143,14 @@ int			arrow_functions(t_tty_info *tty_info, char n);
 t_dlist		*charge_history(void);
 void		save_history(t_dlist **list);
 void		put_history(t_tty_info *tty_info, char n);
+void		exit_tc();
 
 /**
  ** exec_builtins.c
  **/
 
 void		exec_builtin(t_dlist *history, char ***argv, char ***envp);
+void		koala_exit(t_dlist *history);
 
 /**
  ** cd_builtin.c

@@ -26,7 +26,7 @@ static void	koala_pwd()
 	free(path);
 }
 
-static void	koala_exit(t_dlist *history)
+void	koala_exit(t_dlist *history)
 {
 	save_history(&history);
 	init_terminal(0, 3);
