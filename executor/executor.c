@@ -46,8 +46,13 @@ static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que 
 		i++;
 	}
 	free_split(builtins);
-	if (fork() > 0)
+	pid = fork();
+	if (pid > 0)
+	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 		wait(NULL);
+	}
 	else
 		find_path_cmd(div_path, envp, cmd);
 }
