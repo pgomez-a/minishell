@@ -22,11 +22,14 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <signal.h>
 # include "libft/libft.h"
 # include "./queue/queue.h"
 # include "./dlists/dlists.h"
 
 # define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export unset" //cd cambia $PWD, pwd lee de $PWD
+
+pid_t	pid;
 
 typedef struct s_cmd
 {
@@ -97,6 +100,12 @@ void		call_env(t_cmd **par, char **envp);
  **/
 
 void		call_executor(t_dlist *history, char ***envp, t_cmd **par);
+
+/**
+ ** signal.c
+ **/
+
+void		ctrlc(int num);
 
 /**
  ** find_cmd.c
