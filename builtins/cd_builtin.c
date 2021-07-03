@@ -32,13 +32,11 @@ static void	change_dir(const char *new_dir, char ***envp)
 void	koala_cd(char **argv, char ***envp)
 {
 	char	*path;
+	char	*next_dir;
 
 	if (!argv[1])
-		return ;
-	path = koala_getcwd();
-	if (argv[2])
-		printf("cd: string not in pwd: %s\n", argv[1]);
+		next_dir = ft_strchr(koala_getenv("HOME", *envp), '=') + 1;
 	else
-		change_dir(argv[1], envp);
-	free(path);
+		next_dir = argv[1];
+	change_dir(next_dir, envp);
 }
