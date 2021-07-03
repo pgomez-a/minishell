@@ -59,5 +59,6 @@ push_to_main: push
 	git checkout main
 	git pull origin $(BRANCH)
 	git push
+	git checkout $(BRANCH)
 
 .PHONY: all clean fclean re bonus push
