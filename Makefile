@@ -1,6 +1,7 @@
 TIME =   $(shell date +'%d/%m/%Y %H:%M:%S')
 
 M =
+BRANCH =
 
 CC = clang
 CFLAGS = -g
@@ -52,6 +53,11 @@ re: fclean all
 push: fclean
 	git add .
 	git commit -m "$(TIME) - $(M)"
+	git push
+
+push_to_main: push
+	git checkout main
+	git pull origin $(BRANCH)
 	git push
 
 .PHONY: all clean fclean re bonus push
