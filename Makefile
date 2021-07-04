@@ -4,7 +4,7 @@ M =
 BRANCH =
 
 CC = clang
-CFLAGS = -g -fsanitize=address
+CFLAGS = -g
 #CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 

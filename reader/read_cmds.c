@@ -90,16 +90,24 @@ void	read_line(t_tty_info *tty_info)
  ** Sets non_canonical mode, and charge the command line
  **/
 
-void	read_command_line(t_tty_info *tty_info)
+int	read_command_line(t_tty_info *tty_info)
 {
+	int r;
+
+	r = 1;
 	tty_info->xcursor = 0;
 	tty_info->strings = ft_dlstmap(tty_info->history, ft_strdup, free);
 	ft_dlstadd_front(&tty_info->strings, ft_dlstnew(ft_strdup("")));
 	init_terminal(tty_info, 1);
 	read_line(tty_info);
-	ft_dlstadd_front(&tty_info->history, ft_dlstnew(ft_strdup(tty_info->strings->content)));
+	if ((tty_info->strings->content)[0])
+	{
+		ft_dlstadd_front(&tty_info->history, ft_dlstnew(ft_strdup(tty_info->strings->content)));
+		r = 0;
+	}
 	init_terminal(tty_info, 2);
 	ft_dlstclear(&tty_info->strings, free);
 	tputs("\n", 1, ko_putchar);
 	tputs(carriage_return, 1, ko_putchar);
+	return (r);
 }

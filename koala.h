@@ -59,7 +59,7 @@ void		set_prompt(void);
  ** read_cmds.c
  **/
 
-void		read_command_line(t_tty_info *tty_info);
+int			read_command_line(t_tty_info *tty_info);
 void		add_character(t_tty_info *tty_info, char dst);
 
 /**

@@ -76,8 +76,8 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		set_prompt();
-		read_command_line(tty_info);
-		man_command_line(tty_info->history, &envp);
+		if (!read_command_line(tty_info))
+			man_command_line(tty_info->history, &envp);
 	}
 	return (0);
 }
