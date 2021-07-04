@@ -58,7 +58,6 @@ static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que 
 	}
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
-	getchar();
 	find_path_cmd(div_path, envp, cmd);
 }
 
