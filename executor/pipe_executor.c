@@ -56,9 +56,9 @@ static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que 
 		free_argv(&argv);
 		return ;
 	}
-	init_terminal(0, 3);
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
+	getchar();
 	find_path_cmd(div_path, envp, cmd);
 }
 
@@ -96,6 +96,8 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 	t_cmd	*tmp;
 	pid_t	pid;
 
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	pid = 0;
 	if (*par)
 	{
