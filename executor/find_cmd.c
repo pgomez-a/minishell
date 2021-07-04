@@ -55,5 +55,4 @@ void		find_path_cmd(char **div_path, char ***envp, t_que *cmd)
 	}
 	free_argv(&argv);
 	printf("koala: %s: command not found\n", cmd->line);
-	exit(0);
 }

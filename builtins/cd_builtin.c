@@ -35,7 +35,7 @@ void	koala_cd(char **argv, char ***envp)
 	char	*next_dir;
 
 	if (!argv[1])
-		next_dir = ft_strchr(koala_getenv("HOME", *envp), '=') + 1;
+		next_dir = koala_getenv("HOME", *envp);
 	else
 		next_dir = argv[1];
 	change_dir(next_dir, envp);

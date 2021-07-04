@@ -12,7 +12,7 @@ static void	multiple_expansion(int count, char *copy, char **result, char **envp
 			if (env[0] == '\0')
 				do_join(1, result, ft_charstr('$'));
 			else if (koala_getenv(env, envp))
-				do_join(0, result, ft_strchr(koala_getenv(env, envp), '=') + 1);
+				do_join(0, result, koala_getenv(env, envp));
 			free(env);
 			env = ft_strdup("");
 		}
@@ -23,7 +23,7 @@ static void	multiple_expansion(int count, char *copy, char **result, char **envp
 	if (env[0] == '\0')
 		do_join(1, result, ft_charstr('$'));
 	else if (koala_getenv(env, envp))
-		do_join(0, result, ft_strchr(koala_getenv(env, envp), '=') + 1);
+		do_join(0, result, koala_getenv(env, envp));
 	free(env);
 }
 

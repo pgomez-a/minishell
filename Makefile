@@ -4,7 +4,7 @@ M =
 BRANCH =
 
 CC = clang
-CFLAGS =
+CFLAGS = -g -fsanitize=address
 #CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 
@@ -17,7 +17,7 @@ SOURCE = koala.c				\
 	lexer/lexer.c lexer/check_lexer.c	\
 	parser/parser.c				\
 	parser/expand.c				\
-	executor/executor.c			\
+	executor/pipe_executor.c			\
 	executor/find_cmd.c			\
 	executor/find_red.c			\
 	executor/signal.c			\

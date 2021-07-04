@@ -27,7 +27,7 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
 		tty_info->read_tty_settings.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
 		tty_info->read_tty_settings.c_oflag &= ~(OPOST);
 		ft_memcpy(&tty_info->output_tty_settings, &original_tty_settings, sizeof(struct termios));
-		//tty_info->output_tty_settings.c_lflag &= ~ISIG;
+		tty_info->output_tty_settings.c_lflag &= ~ISIG;
 		tty_info->history = charge_history();
 	}
 	return (tty_info);
@@ -42,7 +42,9 @@ void	set_prompt(void)
 	char	*prompt;
 
 	prompt = "koala# ";
+	tputs(enter_bold_mode, 1, ko_putchar);
 	write(STDIN_FILENO, prompt, ft_strlen(prompt));
+	tputs(exit_attribute_mode, 1, ko_putchar);
 }
 
 static char	**alloc_envp(char	**envp)

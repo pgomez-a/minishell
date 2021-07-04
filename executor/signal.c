@@ -2,5 +2,5 @@
 
 void	signal_handler(int signum)
 {
-	kill(pid, signum);
+	exit(signum);
 }

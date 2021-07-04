@@ -89,13 +89,13 @@ char	*koala_getenv(char *env_var, char **envp)
 		if (!compare_env_var(envp[i], env_var))
 		{
 			if (ft_strchr(envp[i], '='))
-				return (envp[i]);
+				return (ft_strchr(envp[i], '=') + 1);
 			else
-				return ("=");
+				return (0);
 		}
 		i++;
 	}
-	return ("=");
+	return (0);
 }
 
 char	*koala_getcwd()
