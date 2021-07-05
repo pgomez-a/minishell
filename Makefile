@@ -21,6 +21,7 @@ SOURCE = koala.c				\
 	executor/find_cmd.c			\
 	executor/find_red.c			\
 	executor/signal.c			\
+	executor/manege_pipe.c		\
 	reader/read_cmds.c			\
 	reader/termcaps_op.c			\
 	reader/koala_history.c		\

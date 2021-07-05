@@ -34,3 +34,21 @@ t_dlist	*ft_dlstmap(t_dlist *lst, char *(*f)(const char *), void (*del)(void *))
 	}
 	return (lstcpy);
 }
+
+void	ft_dlstdelone(t_dlist **lst, void (*del)(void *))
+{
+	t_dlist	*tmp;
+	if (!(*lst))
+		return ;
+	if ((*lst)->previous)
+		((*lst)->previous)->next = (*lst)->next;
+	if ((*lst)->next)
+		((*lst)->next)->previous = (*lst)->previous;
+	(*del)((*lst)->content);
+	tmp = *lst;
+	if ((*lst)->next)
+		*lst = (*lst)->next;
+	else
+		*lst = (*lst)->previous;
+	free(tmp);
+}

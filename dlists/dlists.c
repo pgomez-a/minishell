@@ -1,6 +1,6 @@
 #include "dlists.h"
 
-t_dlist	*ft_dlstnew(char *content)
+t_dlist	*ft_dlstnew(void *content)
 {
 	t_dlist	*lst;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   queue.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pgomez-a <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 08:42:24 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/05/26 08:59:00 by pgomez-a         ###   ########.fr       */
+/*   Updated: 2021/07/05 13:51:16 by mmunoz-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ void	push_que(int op, char *line, t_que **que)
 		while (tmp->next)
 			tmp = tmp->next;
 		tmp->next = (t_que *)malloc(sizeof(t_que));
-		tmp->next->line = ft_strdup(line);
+		if (line)
+			tmp->next->line = ft_strdup(line);
 		tmp->next->op = op;
 		tmp->next->next = NULL;
 	}
 	else
 	{
 		(*que) = (t_que *)malloc(sizeof(t_que));
-		(*que)->line = ft_strdup(line);
+		if (line)
+			(*que)->line = ft_strdup(line);
 		(*que)->op = op;
 		(*que)->next = NULL;
 	}
@@ -45,8 +47,11 @@ char	*pop_que(t_que **que)
 	{
 		tmp = *que;
 		(*que) = (*que)->next;
-		out = ft_strdup(tmp->line);
-		free(tmp->line);
+		if (tmp->line)
+		{
+			out = ft_strdup(tmp->line);
+			free(tmp->line);
+		}
 		free(tmp);
 		tmp = NULL;
 	}

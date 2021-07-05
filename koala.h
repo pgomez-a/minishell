@@ -29,8 +29,6 @@
 
 # define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export unset" //cd cambia $PWD, pwd lee de $PWD
 
-pid_t	pid;
-
 typedef struct s_cmd
 {
 	t_que			*cmd;
@@ -186,5 +184,11 @@ void		print_export(char **envp);
  **/
 
 void		koala_unset(char ***envp, char **argv);
+
+/**
+ ** manege_pipe.c
+ **/
+
+void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid);
 
 #endif

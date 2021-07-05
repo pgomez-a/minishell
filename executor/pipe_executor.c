@@ -43,9 +43,10 @@ static int	look_for_red(int std_in, t_que *red)
 	return (out);
 }
 
-static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que *cmd)
+static void	look_for_cmd(t_dlist *history, char ***envp, t_que *cmd)
 {
 	char	**argv;
+	char	**div_path;
 
 	if (!cmd || !cmd->line)
 		return ;
@@ -56,9 +57,11 @@ static void	look_for_cmd(t_dlist *history, char **div_path, char ***envp, t_que 
 		free_argv(&argv);
 		return ;
 	}
+	div_path = ft_split(koala_getenv("PATH", *envp), ':');
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	find_path_cmd(div_path, envp, cmd);
+	free_split(div_path);
 }
 
 static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp)
@@ -67,9 +70,7 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp)
 	int		save_out;
 	int		save_err;
 	int		err;
-	char	**div_path;
 
-	div_path = ft_split(koala_getenv("PATH", *envp), ':');
 	save_in = dup(STDIN_FILENO);
 	save_out = dup(STDOUT_FILENO);
 	save_err = dup(STDERR_FILENO);
@@ -77,14 +78,10 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp)
 	if (tmp->red)
 		err = look_for_red(save_out, tmp->red);
 	if (err != -1)
-		look_for_cmd(history, div_path, envp, tmp->cmd);
+		look_for_cmd(history, envp, tmp->cmd);
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	dup2(save_err, STDERR_FILENO);
-	close(save_in);
-	close(save_out);
-	close(save_err);
-	free_split(div_path);
 	if (is_builtin(tmp->cmd->line) || tmp->next)
 		exit (0);
 }
@@ -94,22 +91,27 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 	char	*path;
 	t_cmd	*tmp;
 	pid_t	pid;
+	int		pipe_fd[2];
 
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
-	pid = 0;
 	if (*par)
 	{
 		tmp = *par;
 		while (tmp && tmp->err != 1)
 		{
+			pid = 0;
 			if (is_builtin(tmp->cmd->line) || tmp->next)
+			{
+				if (tmp->next)
+					pipe(pipe_fd);
 				pid = fork();
+			}
+			//manege_pipe(tmp, pipe_fd, pid);
 			if (!pid)
 				set_red_fd(history, envp, tmp);
 			tmp = tmp->next;
 		}
-		if (pid)
-			while (wait(NULL) != -1);
 	}
+	while (wait(NULL) != -1);
 }
