@@ -107,10 +107,11 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 					pipe(pipe_fd);
 				pid = fork();
 			}
-			//manege_pipe(tmp, pipe_fd, pid);
+			manege_pipe(tmp, pipe_fd, pid);
 			if (!pid)
 				set_red_fd(history, envp, tmp);
 			tmp = tmp->next;
+			reset_fds(0);
 		}
 	}
 	while (wait(NULL) != -1);

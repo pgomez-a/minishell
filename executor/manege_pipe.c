@@ -1,6 +1,6 @@
 # include "../koala.h"
 
-static void	reset_fds(int mode)
+void	reset_fds(int mode)
 {
 	static int	input;
 	static int	output;
@@ -44,8 +44,5 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 		i = 1;
 	}
 	else
-	{
 		i = 0;
-		reset_fds(0);
-	}
 }

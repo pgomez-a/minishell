@@ -190,5 +190,6 @@ void		koala_unset(char ***envp, char **argv);
  **/
 
 void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid);
+void	reset_fds(int mode);
 
 #endif
