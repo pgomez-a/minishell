@@ -11,11 +11,9 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
 {
 	static struct termios	original_tty_settings;
 
-	if (tty_mode == 2)
-		tcsetattr(STDIN_FILENO, TCSANOW, &tty_info->output_tty_settings);
-	else if (tty_mode == 1)
+	if (tty_mode == 1)
 		tcsetattr(STDIN_FILENO, TCSANOW, &tty_info->read_tty_settings);
-	else if (tty_mode == 3)
+	else if (tty_mode == 2)
 		tcsetattr(STDIN_FILENO, TCSANOW, &original_tty_settings);
 	else
 	{
@@ -26,8 +24,6 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
 		tty_info->read_tty_settings.c_iflag &= ~(IXON);
 		tty_info->read_tty_settings.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
 		tty_info->read_tty_settings.c_oflag &= ~(OPOST);
-		ft_memcpy(&tty_info->output_tty_settings, &original_tty_settings, sizeof(struct termios));
-		//tty_info->output_tty_settings.c_lflag &= ~ISIG;
 		tty_info->history = charge_history();
 	}
 	return (tty_info);

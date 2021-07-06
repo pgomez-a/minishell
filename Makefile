@@ -9,7 +9,8 @@ CFLAGS = -g
 NAME = koala
 
 SOURCE = koala.c				\
-	ko_utils.c				\
+	utils/ko_utils.c			\
+	utils/simple_utils.c		\
 	manipulate_line.c			\
 	queue/queue.c				\
 	dlists/dlists.c				\
@@ -17,7 +18,7 @@ SOURCE = koala.c				\
 	lexer/lexer.c lexer/check_lexer.c	\
 	parser/parser.c				\
 	parser/expand.c				\
-	executor/pipe_executor.c			\
+	executor/executor.c			\
 	executor/find_cmd.c			\
 	executor/find_red.c			\
 	executor/signal.c			\

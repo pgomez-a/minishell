@@ -40,7 +40,6 @@ typedef struct s_cmd
 typedef struct s_tty_info
 {
 	struct termios	read_tty_settings;
-	struct termios	output_tty_settings;
 	t_dlist			*history;
 	t_dlist			*strings;
 	unsigned int	xcursor;
@@ -133,6 +132,7 @@ int			ko_putchar(int c);
 void		free_split(char **split);
 char		*koala_getenv(char *variable, char **envp);
 char		*koala_getcwd();
+char		*get_errorvar(int exit_status, int ret);
 
 
 /**
@@ -191,5 +191,7 @@ void		koala_unset(char ***envp, char **argv);
 
 void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid);
 void	reset_fds(int mode);
+pid_t	multi_process_manegment(pid_t **pids);
+void	wait_several_processes(pid_t *pids);
 
 #endif

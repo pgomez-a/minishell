@@ -46,3 +46,51 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 	else
 		i = 0;
 }
+
+pid_t	multi_process_manegment(pid_t **pids)
+{
+	pid_t	*tmp;
+	int		size;
+	int		j;
+
+	size = 0;
+	if (*pids)
+	{
+		while ((*pids)[size])
+			size++;
+	}
+	tmp = *pids;
+	*pids = malloc(sizeof(pid_t) * (++size + 1));
+	j = 0;
+	while (j < (size - 1))
+	{
+		(*pids)[j] = tmp[j];
+		j++;
+	}
+	(*pids)[size - 1] = fork();
+	(*pids)[size] = 0;
+	if (tmp)
+		free(tmp);
+	return ((*pids)[size - 1]);
+}
+
+void	wait_several_processes(pid_t *pids)
+{
+	int	size;
+	int	i;
+	int	exit_status;
+	int	wstatus;
+
+	if (pids)
+	{
+		size = 0;
+		while (pids[size])
+			size++;
+		i = 0;
+		while (i < size)
+			waitpid(pids[i++], &wstatus, 0);
+		free(pids);
+		if (WIFEXITED(wstatus))
+			get_errorvar(WEXITSTATUS(wstatus), 0);
+	}
+}

@@ -30,8 +30,9 @@ void	koala_exit(t_dlist *history)
 {
 	save_history(&history);
 	init_terminal(0, 3);
-	system("leaks koala");
-	exit(0); //this exit not clean, we need to pass all the allocated memory to be freed
+	get_errorvar(0, 0);
+	//system("leaks koala");
+	exit(0);
 }
 
 static void	koala_env(char ***envp, char ***argv)

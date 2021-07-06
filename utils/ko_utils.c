@@ -1,28 +1,4 @@
-#include "koala.h"
-
-/**
- ** Join the two given stings and avoid memory leaks
- **/
-
-void	do_join(int mode, char **src, char *dst)
-{
-	char	*tmp;
-
-	tmp = *src;
-	(*src) = ft_strjoin(*src, dst);
-	free(tmp);
-	if (mode == 1)
-		free(dst);
-}
-
-/**
- ** ft_putchar but for standard output fd
- **/
-
-int	ko_putchar(int c)
-{
-	return (write(1, &c, 1));
-}
+#include "../koala.h"
 
 /**
  ** Deletes the d positoned character in the string
@@ -65,18 +41,19 @@ int	close_quotes(int x, char *line) //preguntar pablo si se utiliza
 	return (0);
 }
 
-/**
- ** Frees a simple char* array
- **/
-
-void	free_split(char **split)
+char	*get_errorvar(int exit_status, int ret)
 {
-	unsigned int	i;
+	static char	*error = 0;
 
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
+	if (ret)
+		return (error);
+	if (error)
+		free(error);
+	if (exit_status)
+		error = ft_itoa(exit_status);
+	else
+		error = 0;
+	return (0);
 }
 
 char	*koala_getenv(char *env_var, char **envp)
@@ -86,6 +63,8 @@ char	*koala_getenv(char *env_var, char **envp)
 	i = 0;
 	while (envp[i])
 	{
+		if (!ft_strcmp(env_var, "?"))
+			return (get_errorvar(0, 1));
 		if (!compare_env_var(envp[i], env_var))
 		{
 			if (ft_strchr(envp[i], '='))

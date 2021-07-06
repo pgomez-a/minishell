@@ -64,7 +64,7 @@ static void	look_for_cmd(t_dlist *history, char ***envp, t_que *cmd)
 	free_split(div_path);
 }
 
-static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp)
+static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp, t_cmd *par)
 {
 	int		save_in;
 	int		save_out;
@@ -82,7 +82,7 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp)
 	dup2(save_in, STDIN_FILENO);
 	dup2(save_out, STDOUT_FILENO);
 	dup2(save_err, STDERR_FILENO);
-	if (is_builtin(tmp->cmd->line) || tmp->next)
+	if (par->next)
 		exit (0);
 }
 
@@ -91,8 +91,10 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 	char	*path;
 	t_cmd	*tmp;
 	pid_t	pid;
+	pid_t		*pids;
 	int		pipe_fd[2];
 
+	pids = 0;
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	if (*par)
@@ -101,18 +103,18 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 		while (tmp && tmp->err != 1)
 		{
 			pid = 0;
-			if (is_builtin(tmp->cmd->line) || tmp->next)
+			if (is_builtin(tmp->cmd->line) || (*par)->next)
 			{
 				if (tmp->next)
 					pipe(pipe_fd);
-				pid = fork();
+				pid = multi_process_manegment(&pids);
 			}
 			manege_pipe(tmp, pipe_fd, pid);
 			if (!pid)
-				set_red_fd(history, envp, tmp);
+				set_red_fd(history, envp, tmp, *par);
 			tmp = tmp->next;
 			reset_fds(0);
 		}
 	}
-	while (wait(NULL) != -1);
+	wait_several_processes(pids);
 }
