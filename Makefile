@@ -4,49 +4,49 @@ M =
 BRANCH =
 
 CC = clang
-CFLAGS = -g
-#CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 
-SOURCE = koala.c				\
-	utils/ko_utils.c			\
-	utils/simple_utils.c		\
-	manipulate_line.c			\
-	queue/queue.c				\
-	dlists/dlists.c				\
-	dlists/more_dlists.c			\
-	lexer/lexer.c lexer/check_lexer.c	\
-	parser/parser.c				\
-	parser/expand.c				\
-	executor/executor.c			\
-	executor/find_cmd.c			\
-	executor/find_red.c			\
-	executor/signal.c			\
-	executor/manege_pipe.c		\
-	reader/read_cmds.c			\
-	reader/termcaps_op.c			\
-	reader/koala_history.c		\
-	builtins/exec_builtins.c	\
-	builtins/cd_builtin.c		\
-	builtins/export_builtin.c	\
-	builtins/export_builtin_utils.c	\
-	builtins/unset_builtin.c
+SOURCE = srcs/koala.c				\
+	srcs/utils/ko_utils.c			\
+	srcs/utils/simple_utils.c		\
+	srcs/manipulate_line.c			\
+	srcs/queue/queue.c				\
+	srcs/dlists/dlists.c				\
+	srcs/dlists/more_dlists.c			\
+	srcs/lexer/lexer.c					\
+	srcs/lexer/check_lexer.c			\
+	srcs/parser/parser.c				\
+	srcs/parser/expand.c				\
+	srcs/executor/executor.c			\
+	srcs/executor/find_cmd.c			\
+	srcs/executor/find_red.c			\
+	srcs/executor/signal.c			\
+	srcs/executor/manege_pipe.c		\
+	srcs/reader/read_cmds.c			\
+	srcs/reader/termcaps_op.c			\
+	srcs/reader/koala_history.c		\
+	srcs/builtins/exec_builtins.c	\
+	srcs/builtins/cd_builtin.c		\
+	srcs/builtins/export_builtin.c	\
+	srcs/builtins/export_builtin_utils.c	\
+	srcs/builtins/unset_builtin.c
 
 OBJS_SOURCE = $(SOURCE:.c=.o)
 
-LIBFT_PATH = libft
+LIBFT_PATH = ./srcs/libft
 
 all: $(NAME)
 
 libft/libft.a:
-	make -C ./libft
+	make -C ./srcs/libft
 
 $(NAME): libft/libft.a $(OBJS_SOURCE)
 	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:
 	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) /tmp/.koala_history /tmp/.koala_heredoc
-	make fclean -C ./libft
+	make fclean -C ./srcs/libft
 
 fclean: clean
 	rm -f $(NAME)
