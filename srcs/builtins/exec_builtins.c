@@ -29,7 +29,7 @@ static void	koala_pwd()
 void	koala_exit(t_dlist *history)
 {
 	save_history(&history);
-	init_terminal(0, 3);
+	init_terminal(0, 2);
 	get_errorvar(0, 0);
 	exit(0);
 }
