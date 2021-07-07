@@ -33,7 +33,7 @@ void	free_argv(char ***argc)
 	free(*argc);
 }
 
-void		find_path_cmd(char **div_path, char ***envp, t_que *cmd)
+void	find_path_cmd(char **div_path, char ***envp, t_que *cmd)
 {
 	char	**argv;
 	char	*path;

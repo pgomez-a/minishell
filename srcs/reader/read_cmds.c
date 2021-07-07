@@ -6,8 +6,8 @@
 
 void	add_character(t_tty_info *tty_info, char c)
 {
-	char	*tmp;
-	int		len;
+	char			*tmp;
+	int				len;
 	unsigned int	i;
 	unsigned int	j;
 
@@ -28,7 +28,6 @@ void	add_character(t_tty_info *tty_info, char c)
 	tty_info->strings->content[i] = 0;
 	free(tmp);
 }
-
 
 /**
  ** Reads from STDIN_FILENO each character
@@ -64,7 +63,8 @@ static char	read_fromtty(t_tty_info *tty_info)
 }
 
 /**
- ** Charge characters in the output string and in the buffer, stops when lines breaks
+ ** Charge characters in the output string and in the buffer,
+ ** stops when lines breaks
  **/
 
 void	read_line(t_tty_info *tty_info)
@@ -92,7 +92,7 @@ void	read_line(t_tty_info *tty_info)
 
 int	read_command_line(t_tty_info *tty_info)
 {
-	int r;
+	int	r;
 
 	r = 1;
 	tty_info->xcursor = 0;
@@ -102,7 +102,8 @@ int	read_command_line(t_tty_info *tty_info)
 	read_line(tty_info);
 	if ((tty_info->strings->content)[0])
 	{
-		ft_dlstadd_front(&tty_info->history, ft_dlstnew(ft_strdup(tty_info->strings->content)));
+		ft_dlstadd_front(&tty_info->history,
+			ft_dlstnew(ft_strdup(tty_info->strings->content)));
 		r = 0;
 	}
 	init_terminal(tty_info, 2);

@@ -4,7 +4,8 @@
  ** Sets terminal in read_mode(1) for reading the input form the client
  ** exec-output_mode(2) for for the ecution of commands
  ** or resets the terminal to its original status(3)
- ** When tty_mode value is NULL, inits the main structure and charge the command history
+ ** When tty_mode value is NULL, inits the main structure and charge the
+ ** command history
  **/
 
 t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
@@ -20,7 +21,8 @@ t_tty_info	*init_terminal(t_tty_info *tty_info, int tty_mode)
 		tty_info = ft_calloc(1, sizeof(t_tty_info));
 		tcgetattr(STDIN_FILENO, &original_tty_settings);
 		tgetent(0, getenv("TERM"));
-		ft_memcpy(&tty_info->read_tty_settings, &original_tty_settings, sizeof(struct termios));
+		ft_memcpy(&tty_info->read_tty_settings,
+			&original_tty_settings, sizeof(struct termios));
 		tty_info->read_tty_settings.c_iflag &= ~(IXON);
 		tty_info->read_tty_settings.c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
 		tty_info->read_tty_settings.c_oflag &= ~(OPOST);

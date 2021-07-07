@@ -17,7 +17,7 @@ static void	koala_echo(char **argv)
 		printf("\n");
 }
 
-static void	koala_pwd()
+static void	koala_pwd(void)
 {
 	char	*path;
 

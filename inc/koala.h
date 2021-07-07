@@ -27,7 +27,7 @@
 # include "../srcs/queue/queue.h"
 # include "../srcs/dlists/dlists.h"
 
-# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export unset" //cd cambia $PWD, pwd lee de $PWD
+# define M_IMPLEMENTED_BUILTINS "pwd echo exit cd env export unset"
 
 typedef struct s_cmd
 {
@@ -131,9 +131,8 @@ int			close_quotes(int x, char *line);
 int			ko_putchar(int c);
 void		free_split(char **split);
 char		*koala_getenv(char *variable, char **envp);
-char		*koala_getcwd();
+char		*koala_getcwd(void);
 char		*get_errorvar(int exit_status, int ret);
-
 
 /**
  ** termcaps_op.c
@@ -150,7 +149,7 @@ int			arrow_functions(t_tty_info *tty_info, char n);
 t_dlist		*charge_history(void);
 void		save_history(t_dlist **list);
 void		put_history(t_tty_info *tty_info, char n);
-void		exit_tc();
+void		exit_tc(void);
 
 /**
  ** exec_builtins.c

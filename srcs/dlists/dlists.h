@@ -1,5 +1,5 @@
-#ifndef LISTS_H
-# define LISTS_H
+#ifndef DLISTS_H
+# define DLISTS_H
 
 # include "../libft/libft.h"
 
@@ -20,7 +20,8 @@ t_dlist	*ft_dlstlast(t_dlist *lst);
 
 t_dlist	*ft_dlstfirst(t_dlist *lst);
 
-t_dlist	*ft_dlstmap(t_dlist *lst, char *(*f)(const char *), void (*del)(void *));
+t_dlist	*ft_dlstmap(t_dlist *lst, char *(*f)(const char *),
+			void (*del)(void *));
 
 void	ft_dlstadd_back(t_dlist **lst, t_dlist *new);
 

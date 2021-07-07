@@ -93,7 +93,7 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 {
 	t_cmd	*tmp;
 	pid_t	pid;
-	pid_t		*pids;
+	pid_t	*pids;
 	int		pipe_fd[2];
 
 	pids = 0;

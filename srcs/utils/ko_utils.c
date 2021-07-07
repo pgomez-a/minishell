@@ -77,7 +77,7 @@ char	*koala_getenv(char *env_var, char **envp)
 	return (0);
 }
 
-char	*koala_getcwd()
+char	*koala_getcwd(void)
 {
 	int		size;
 	char	*string;

@@ -1,6 +1,6 @@
 #include "../../inc/koala.h"
 
-static void	multiple_expansion(int count, char *copy, char **result, char **envp)
+static void	multiple(int count, char *copy, char **result, char **envp)
 {
 	char	*env;
 
@@ -39,7 +39,7 @@ static void	manage_expansion(t_que **var, char **envp)
 		count++;
 	copy[count++] = '\0';
 	result = ft_strdup(copy);
-	multiple_expansion(count, copy, &result, envp);
+	multiple(count, copy, &result, envp);
 	free((*var)->line);
 	(*var)->line = ft_strdup(result);
 	free(result);

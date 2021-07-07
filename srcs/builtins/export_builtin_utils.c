@@ -2,7 +2,7 @@
 
 int	compare_env_var(char *env, char *new_env)
 {
-	int r;
+	int	r;
 
 	env = ft_strjoin(env, "=");
 	new_env = ft_strjoin(new_env, "=");
@@ -39,8 +39,9 @@ void	print_export(char **envp)
 	char	*tmp;
 	char	**tmp_env;
 
-	i = -1;
-	while (envp[++i]);
+	i = 0;
+	while (envp[i])
+		i++;
 	tmp_env = malloc(sizeof(char *) * (i + 1));
 	tmp_env = ft_memcpy(tmp_env, envp, sizeof(char *) * (i + 1));
 	i = 1;

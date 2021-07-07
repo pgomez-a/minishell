@@ -1,4 +1,4 @@
-# include "dlists.h"
+#include "dlists.h"
 
 void	ft_dlstadd_back(t_dlist **lst, t_dlist *new)
 {
@@ -38,6 +38,7 @@ t_dlist	*ft_dlstmap(t_dlist *lst, char *(*f)(const char *), void (*del)(void *))
 void	ft_dlstdelone(t_dlist **lst, void (*del)(void *))
 {
 	t_dlist	*tmp;
+
 	if (!(*lst))
 		return ;
 	if ((*lst)->previous)

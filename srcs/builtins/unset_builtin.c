@@ -1,13 +1,13 @@
 #include "../../inc/koala.h"
 
-static void delete_env(char ***envp, int pos)
+static void	delete_env(char ***envp, int pos)
 {
 	int		i;
 	int		j;
 	char	**new_envp;
 
 	i = 0;
-	while((*envp)[i])
+	while ((*envp)[i])
 		i++;
 	new_envp = malloc(sizeof(char *) * i);
 	new_envp[i] = 0;
