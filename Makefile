@@ -18,6 +18,7 @@ SOURCE = srcs/koala.c				\
 	srcs/lexer/check_lexer.c			\
 	srcs/parser/parser.c				\
 	srcs/parser/expand.c				\
+	srcs/parser/split_expand.c			\
 	srcs/executor/executor.c			\
 	srcs/executor/find_cmd.c			\
 	srcs/executor/find_red.c			\

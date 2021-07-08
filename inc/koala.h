@@ -93,6 +93,12 @@ void		call_parser(t_que **lex, t_cmd **par);
 void		call_env(t_cmd **par, char **envp);
 
 /**
+ ** split_expand.c
+ **/
+
+void		split_for_expansion(char **result, t_que **var);
+
+/**
  ** executor.c
  **/
 

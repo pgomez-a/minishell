@@ -40,8 +40,7 @@ static void	manage_expansion(t_que **var, char **envp)
 	copy[count++] = '\0';
 	result = ft_strdup(copy);
 	multiple(count, copy, &result, envp);
-	free((*var)->line);
-	(*var)->line = ft_strdup(result);
+	split_for_expansion(&result, var);
 	free(result);
 	free(copy);
 }
