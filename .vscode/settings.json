@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"koala.h": "c",
-		"libft.h": "c",
-		"queue.h": "c"
-	}
-}

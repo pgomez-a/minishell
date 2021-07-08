@@ -97,26 +97,21 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 	int		pipe_fd[2];
 
 	pids = 0;
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, SIG_IGN);
-	if (*par)
+	tmp = *par;
+	while (tmp && tmp->err != 1)
 	{
-		tmp = *par;
-		while (tmp && tmp->err != 1)
+		pid = 0;
+		if (is_builtin(tmp->cmd->line) || (*par)->next)
 		{
-			pid = 0;
-			if (is_builtin(tmp->cmd->line) || (*par)->next)
-			{
-				if (tmp->next)
-					pipe(pipe_fd);
-				pid = multi_process_manegment(&pids);
-			}
-			manege_pipe(tmp, pipe_fd, pid);
-			if (!pid)
-				set_red_fd(history, envp, tmp, *par);
-			tmp = tmp->next;
-			reset_fds(0);
+			if (tmp->next)
+				pipe(pipe_fd);
+			pid = multi_process_manegment(&pids);
 		}
-		wait_several_processes(pids);
+		manege_pipe(tmp, pipe_fd, pid);
+		if (!pid)
+			set_red_fd(history, envp, tmp, *par);
+		tmp = tmp->next;
+		reset_fds(0);
 	}
+	wait_several_processes(pids);
 }

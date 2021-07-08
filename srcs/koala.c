@@ -78,6 +78,8 @@ int	main(int argc, char *argv[], char *envp[])
 		printf("Not valid arguments\n");
 		return (1);
 	}
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	tty_info = 0;
 	tty_info = init_terminal(tty_info, 0);
 	envp = alloc_envp(envp);
