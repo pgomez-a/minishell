@@ -7,45 +7,54 @@ CC = clang
 CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 NAME = koala
 
-SOURCE = srcs/koala.c				\
-	srcs/utils/ko_utils.c			\
-	srcs/utils/simple_utils.c		\
-	srcs/manipulate_line.c			\
-	srcs/queue/queue.c				\
-	srcs/dlists/dlists.c				\
-	srcs/dlists/more_dlists.c			\
-	srcs/lexer/lexer.c					\
-	srcs/lexer/check_lexer.c			\
-	srcs/parser/parser.c				\
-	srcs/parser/expand.c				\
-	srcs/executor/executor.c			\
-	srcs/executor/find_cmd.c			\
-	srcs/executor/find_red.c			\
-	srcs/executor/signal.c			\
-	srcs/executor/manege_pipe.c		\
-	srcs/reader/read_cmds.c			\
-	srcs/reader/termcaps_op.c			\
-	srcs/reader/koala_history.c		\
-	srcs/builtins/exec_builtins.c	\
-	srcs/builtins/cd_builtin.c		\
-	srcs/builtins/export_builtin.c	\
-	srcs/builtins/export_builtin_utils.c	\
-	srcs/builtins/unset_builtin.c
+SRC_PATH = srcs
+OBJ_PATH = objs
 
-OBJS_SOURCE = $(SOURCE:.c=.o)
+SRCS = $(SRC_PATH)/koala.c				\
+	$(SRC_PATH)/utils/ko_utils.c			\
+	$(SRC_PATH)/utils/simple_utils.c		\
+	$(SRC_PATH)/manipulate_line.c			\
+	$(SRC_PATH)/queue/queue.c				\
+	$(SRC_PATH)/dlists/dlists.c				\
+	$(SRC_PATH)/dlists/more_dlists.c			\
+	$(SRC_PATH)/lexer/lexer.c					\
+	$(SRC_PATH)/lexer/check_lexer.c			\
+	$(SRC_PATH)/parser/parser.c				\
+	$(SRC_PATH)/parser/expand.c				\
+	$(SRC_PATH)/executor/executor.c			\
+	$(SRC_PATH)/executor/find_cmd.c			\
+	$(SRC_PATH)/executor/find_red.c			\
+	$(SRC_PATH)/executor/signal.c			\
+	$(SRC_PATH)/executor/manege_pipe.c		\
+	$(SRC_PATH)/reader/read_cmds.c			\
+	$(SRC_PATH)/reader/termcaps_op.c			\
+	$(SRC_PATH)/reader/koala_history.c		\
+	$(SRC_PATH)/builtins/exec_builtins.c	\
+	$(SRC_PATH)/builtins/cd_builtin.c		\
+	$(SRC_PATH)/builtins/export_builtin.c	\
+	$(SRC_PATH)/builtins/export_builtin_utils.c	\
+	$(SRC_PATH)/builtins/unset_builtin.c
+
+OBJS = $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 
 LIBFT_PATH = ./srcs/libft
+
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
 
 libft/libft.a:
-	make -C ./srcs/libft
+	make -C $(LIBFT_PATH)
 
-$(NAME): libft/libft.a $(OBJS_SOURCE)
-	$(CC) $(CFLAGS) -o $@ $(OBJS_SOURCE) -L$(LIBFT_PATH) -lft -ltermcap
+prebuild:
+	mkdir -p objs/utils objs/queue objs/dlists objs/lexer objs/parser objs/executor objs/reader objs/builtins
+
+$(NAME): libft/libft.a prebuild $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:
-	rm -f $(OBJS_SOURCE) $(OBJS_BONUS) /tmp/.koala_history /tmp/.koala_heredoc
+	rm -rf $(OBJ_PATH) /tmp/.koala_history /tmp/.koala_heredoc
 	make fclean -C ./srcs/libft
 
 fclean: clean

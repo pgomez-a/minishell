@@ -39,7 +39,8 @@ void	man_command_line(t_dlist *history, char ***envp)
 		call_lexer(history->content, &lex);
 		call_parser(&lex, &par);
 		call_env(&par, *envp);
-		call_executor(history, envp, &par);
+		if (par)
+			call_executor(history, envp, &par);
 		free_parser(&par);
 	}
 }

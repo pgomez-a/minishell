@@ -38,7 +38,6 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 		if (!pid)
 			close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-		dup2(fd[1], STDERR_FILENO);
 		next_input = fd[0];
 		previous_output = fd[1];
 		i = 1;

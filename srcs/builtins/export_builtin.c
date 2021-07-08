@@ -5,9 +5,9 @@ static int	change_existing_env(char ***envp, char *variable, char *value)
 	int		j;
 	int		done;
 
-	j = 0;
+	j = -1;
 	done = 0;
-	while ((*envp)[j] && !done)
+	while ((*envp)[++j] && !done)
 	{
 		if (!compare_env_var((*envp)[j], variable))
 		{
@@ -21,7 +21,6 @@ static int	change_existing_env(char ***envp, char *variable, char *value)
 				value = 0;
 			}
 		}
-		j++;
 	}
 	if (variable)
 		free(variable);
