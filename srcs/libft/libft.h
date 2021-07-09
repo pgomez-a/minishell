@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miguel <miguel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mmunoz-f <mmunoz-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 10:06:58 by pgomez-a          #+#    #+#             */
-/*   Updated: 2021/06/27 19:03:42 by miguel           ###   ########.fr       */
+/*   Updated: 2021/07/09 19:52:16 by mmunoz-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,7 @@ int					get_next_line(int fd, char **line);
 int					ft_printf(const char *format, ...);
 
 int					ft_strcmp(const char *s1, const char *s2);
+
+int					ft_strisdigit(char *str);
 
 #endif

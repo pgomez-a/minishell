@@ -13,12 +13,16 @@ static int	koala_echo(char **argv)
 		n = 1;
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], 1);
-		if (argv[++i])
+		if (*argv[i])
 		{
-			if ((write(1, " ", 1) == -1))
-				return (1);
+			ft_putstr_fd(argv[i], 1);
+			if (argv[i + 1])
+			{
+				if ((write(1, " ", 1) == -1))
+					return (1);
+			}
 		}
+		i++;
 	}
 	if (!n)
 		write(1, "\n", 1);
@@ -32,14 +36,6 @@ static void	koala_pwd(void)
 	path = koala_getcwd();
 	printf("%s\n", path);
 	free(path);
-}
-
-void	koala_exit(t_dlist *history)
-{
-	save_history(&history);
-	init_terminal(0, 2);
-	get_errorvar(0, 0);
-	exit(0);
 }
 
 static int	koala_env(char **argv, char ***envp)
@@ -71,7 +67,7 @@ int	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 	else if (!ft_strcmp("pwd", (*argv)[0]))
 		koala_pwd();
 	else if (!ft_strcmp("exit", (*argv)[0]))
-		koala_exit(history);
+		exit_status = koala_exit(history, *argv);
 	else if (!ft_strcmp("cd", (*argv)[0]))
 		exit_status = koala_cd(*argv, envp);
 	else if (!ft_strcmp("env", (*argv)[0]))

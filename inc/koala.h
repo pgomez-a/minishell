@@ -163,7 +163,7 @@ void		exit_tc(void);
  **/
 
 int			exec_builtin(t_dlist *history, char ***argv, char ***envp);
-void		koala_exit(t_dlist *history);
+int			koala_exit(t_dlist *history, char **argv);
 
 /**
  ** cd_builtin.c
@@ -190,6 +190,12 @@ void		print_export(char **envp);
  **/
 
 void		koala_unset(char ***envp, char **argv);
+
+/**
+ ** exit_builtin.c
+ **/
+
+int			koala_exit(t_dlist *history, char **argv);
 
 /**
  ** manege_pipe.c

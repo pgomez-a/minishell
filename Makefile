@@ -34,7 +34,8 @@ SRCS = $(SRC_PATH)/koala.c				\
 	$(SRC_PATH)/builtins/export_builtin.c	\
 	$(SRC_PATH)/builtins/export_builtin_utils.c	\
 	$(SRC_PATH)/builtins/unset_builtin.c	\
-	$(SRC_PATH)/parser/split_expand.c
+	$(SRC_PATH)/parser/split_expand.c		\
+	$(SRC_PATH)/builtins/exit_builtin.c
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -74,4 +75,4 @@ push_to_main: push
 	git push
 	git checkout $(BRANCH)
 
-.PHONY: all clean fclean re bonus push
+.PHONY: all clean fclean re bonus push push_to_main
