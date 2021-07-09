@@ -6,6 +6,8 @@ int	compare_env_var(char *env, char *new_env)
 
 	env = ft_strjoin(env, "=");
 	new_env = ft_strjoin(new_env, "=");
+	if (!env || !new_env)
+		exit(1);
 	r = ft_strncmp(env, new_env, ft_strchr(new_env, '=') - new_env + 1);
 	free(env);
 	free(new_env);
@@ -43,6 +45,8 @@ void	print_export(char **envp)
 	while (envp[i])
 		i++;
 	tmp_env = malloc(sizeof(char *) * (i + 1));
+	if (!tmp_env)
+		exit(1);
 	tmp_env = ft_memcpy(tmp_env, envp, sizeof(char *) * (i + 1));
 	i = 1;
 	while (tmp_env[i])
@@ -51,8 +55,7 @@ void	print_export(char **envp)
 		{
 			tmp = tmp_env[i - 1];
 			tmp_env[i - 1] = tmp_env[i];
-			tmp_env[i] = tmp;
-			i--;
+			tmp_env[i--] = tmp;
 		}
 		else
 			i++;

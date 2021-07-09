@@ -38,6 +38,8 @@ void	call_lexer(char *line, t_que **lex)
 	int		x;
 
 	tok = ft_strdup("\0");
+	if (!tok)
+		exit(1);
 	x = 0;
 	while (line[x])
 	{

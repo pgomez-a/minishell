@@ -14,6 +14,8 @@ int	tokenize_pipe(char **tok, t_que **lex)
 		(*tok) = NULL;
 	}
 	(*tok) = ft_strdup("|");
+	if (!(*tok))
+		exit(1);
 	if (*tok)
 	{
 		push_que(0, *tok, lex);
@@ -21,6 +23,8 @@ int	tokenize_pipe(char **tok, t_que **lex)
 		(*tok) = NULL;
 	}
 	(*tok) = ft_strdup("\0");
+	if (!(*tok))
+		exit(1);
 	return (0);
 }
 
@@ -40,6 +44,8 @@ static void	check_push_quot(char quot, char **tok, t_que **lex)
 		(*tok) = NULL;
 	}
 	(*tok) = ft_strdup("\0");
+	if (!(*tok))
+		exit(1);
 }
 
 int	tokenize_quot(char quot, char *line, char **tok, t_que **lex)
@@ -74,6 +80,8 @@ static int	check_push_red(char **tok, t_que **lex)
 		(*tok) = NULL;
 	}
 	(*tok) = ft_strdup("\0");
+	if (!(*tok))
+		exit(1);
 	return (out - 1);
 }
 

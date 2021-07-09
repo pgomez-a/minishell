@@ -5,6 +5,8 @@ static void	multiple(int count, char *copy, char **result, char **envp)
 	char	*env;
 
 	env = ft_strdup("");
+	if (!env)
+		exit(1);
 	while (copy[count])
 	{
 		if (copy[count] == '$')
@@ -34,11 +36,15 @@ static void	manage_expansion(t_que **var, char **envp)
 	int		count;
 
 	copy = ft_strdup((*var)->line);
+	if (!copy)
+		exit(1);
 	count = 0;
 	while (copy[count] != '$')
 		count++;
 	copy[count++] = '\0';
 	result = ft_strdup(copy);
+	if (!result)
+		exit(1);
 	multiple(count, copy, &result, envp);
 	split_for_expansion(&result, var);
 	free(result);

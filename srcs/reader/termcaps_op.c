@@ -33,6 +33,8 @@ char	reset_line_tc(t_tty_info *tty_info)
 	{
 		free(tty_info->strings->content);
 		tty_info->strings->content = ft_strdup("");
+		if (!tty_info->strings->content)
+			exit(1);
 	}
 	return ('\n');
 }

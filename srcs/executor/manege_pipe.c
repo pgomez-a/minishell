@@ -31,13 +31,15 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 	if (i)
 	{
 		close(previous_output);
-		dup2(next_input, STDIN_FILENO);
+		if ((dup2(next_input, STDIN_FILENO)) == -1)
+			exit(4);
 	}
 	if (tmp->next)
 	{
 		if (!pid)
 			close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
+		if ((dup2(fd[1], STDOUT_FILENO)) == -1)
+			exit(4);
 		next_input = fd[0];
 		previous_output = fd[1];
 		i = 1;
@@ -54,12 +56,12 @@ pid_t	multi_process_manegment(pid_t **pids)
 
 	size = 0;
 	if (*pids)
-	{
 		while ((*pids)[size])
 			size++;
-	}
 	tmp = *pids;
 	*pids = malloc(sizeof(pid_t) * (++size + 1));
+	if (!(*pids))
+		exit(1);
 	j = 0;
 	while (j < (size - 1))
 	{

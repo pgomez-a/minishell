@@ -10,7 +10,9 @@ static void	delete_env(char ***envp, int pos)
 	while ((*envp)[i])
 		i++;
 	new_envp = malloc(sizeof(char *) * i);
-	new_envp[i] = 0;
+	if (!new_envp)
+		exit(1);
+	new_envp[i - 1] = 0;
 	i = 0;
 	j = 0;
 	while ((*envp)[j])

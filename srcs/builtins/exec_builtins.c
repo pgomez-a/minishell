@@ -1,6 +1,6 @@
 #include "../../inc/koala.h"
 
-static void	koala_echo(char **argv)
+static int	koala_echo(char **argv)
 {
 	unsigned int	i;
 
@@ -11,10 +11,14 @@ static void	koala_echo(char **argv)
 	{
 		ft_putstr_fd(argv[i], 1);
 		if (argv[++i])
-			write(1, " ", 1);
+		{
+			if ((write(1, " ", 1) == -1))
+				return (1);
+		}
 	}
 	if (argv[1] && ft_strcmp(argv[1], "-n"))
 		printf("\n");
+	return (0);
 }
 
 static void	koala_pwd(void)
@@ -53,7 +57,7 @@ int	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 
 	exit_status = 0;
 	if (!ft_strcmp("echo", (*argv)[0]))
-		koala_echo(*argv);
+		exit_status = koala_echo(*argv);
 	else if (!ft_strcmp("pwd", (*argv)[0]))
 		koala_pwd();
 	else if (!ft_strcmp("exit", (*argv)[0]))
@@ -63,8 +67,10 @@ int	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 	else if (!ft_strcmp("env", (*argv)[0]))
 		koala_env(envp);
 	else if (!ft_strcmp("export", (*argv)[0]))
-		koala_export(envp, *argv);
+		exit_status = koala_export(envp, *argv);
 	else if (!ft_strcmp("unset", (*argv)[0]))
 		koala_unset(envp, *argv);
+	if (exit_status)
+		get_errorvar(exit_status, 0);
 	return (exit_status);
 }

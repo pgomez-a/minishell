@@ -58,10 +58,14 @@ static char	**alloc_envp(char	**envp)
 	while (envp[size])
 		size++;
 	new_envp = malloc(sizeof(char *) * (size + 1));
+	if (!new_envp)
+		exit(1);
 	size = 0;
 	while (envp[size])
 	{
 		new_envp[size] = ft_strdup(envp[size]);
+		if (!new_envp[size])
+			exit(1);
 		size++;
 	}
 	new_envp[size] = 0;

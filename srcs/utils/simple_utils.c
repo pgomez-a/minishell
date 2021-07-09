@@ -10,6 +10,8 @@ void	do_join(int mode, char **src, char *dst)
 
 	tmp = *src;
 	(*src) = ft_strjoin(*src, dst);
+	if (!(*src))
+		exit(1);
 	free(tmp);
 	if (mode == 1)
 		free(dst);

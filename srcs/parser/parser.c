@@ -23,6 +23,8 @@ static void	manage_pipe(t_que **lex, t_cmd **lnode, t_cmd **par)
 	else
 	{
 		(*lnode)->next = (t_cmd *)malloc(sizeof(t_cmd));
+		if (!(*lnode)->next)
+			exit(1);
 		(*lnode) = (*lnode)->next;
 		init_cmd(lnode);
 	}

@@ -84,11 +84,15 @@ char	*koala_getcwd(void)
 
 	size = 10;
 	string = malloc(sizeof(char) * 16);
+	if (!string)
+		exit(1);
 	while (!getcwd(string, size))
 	{
 		free(string);
 		size *= 2;
 		string = malloc(sizeof(char) * size);
+		if (!string)
+			exit(1);
 	}
 	return (string);
 }

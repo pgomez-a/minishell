@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <signal.h>
+# include <string.h>
 # include "../srcs/libft/libft.h"
 # include "../srcs/queue/queue.h"
 # include "../srcs/dlists/dlists.h"
@@ -174,7 +175,7 @@ int			koala_cd(char **argv, char ***envp);
  ** export_builtin.c
  **/
 
-void		koala_export(char ***envp, char **argv);
+int			koala_export(char ***envp, char **argv);
 void		split_env(const char *string, char **variable, char **value);
 
 /**

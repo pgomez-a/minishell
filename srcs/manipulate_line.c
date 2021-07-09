@@ -35,6 +35,8 @@ void	man_command_line(t_dlist *history, char ***envp)
 	{
 		lex = NULL;
 		par = (t_cmd *)malloc(sizeof(t_cmd));
+		if (!par)
+			exit(1);
 		init_cmd(&par);
 		call_lexer(history->content, &lex);
 		call_parser(&lex, &par);

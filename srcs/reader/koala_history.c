@@ -28,6 +28,8 @@ void	save_history(t_dlist **list)
 	t_dlist	*tmp_list;
 
 	fd = open("/tmp/.koala_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
+	if (fd < 0)
+		exit(2);
 	tmp_list = *list;
 	*list = ft_dlstlast(*list);
 	while (*list)

@@ -14,6 +14,8 @@ void	add_character(t_tty_info *tty_info, char c)
 	tmp = tty_info->strings->content;
 	len = ft_strlen(tmp) + 1;
 	tty_info->strings->content = malloc(ft_strlen(tmp) + 2);
+	if (!(tty_info->strings->content))
+		exit(1);
 	i = 0;
 	j = 0;
 	while (len)

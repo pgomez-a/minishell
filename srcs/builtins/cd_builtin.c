@@ -9,6 +9,8 @@ static void	change_pwd_value(char ***envp)
 	argv[0] = "export";
 	pwd = koala_getcwd();
 	argv[1] = ft_strjoin("PWD=", pwd);
+	if (!(argv[1]))
+		exit(1);
 	argv[2] = 0;
 	koala_export(envp, argv);
 	free(argv[1]);
@@ -19,18 +21,7 @@ static void	change_pwd_value(char ***envp)
 static int	change_dir(const char *new_dir, char ***envp)
 {
 	if (chdir(new_dir))
-	{
-		if (errno == ENOENT)
-		{
-			printf("cd: no such file or directory: %s\n", new_dir);
-			get_errorvar(errno, 0);
-		}
-		else if (errno == ENOTDIR)
-		{
-			printf("cd not a directory: %s\n", new_dir);
-			get_errorvar(errno, 0);
-		}
-	}
+		printf("koala: cd: %s\n", strerror(errno));
 	else
 		change_pwd_value(envp);
 	return (errno);
@@ -44,5 +35,7 @@ int	koala_cd(char **argv, char ***envp)
 		next_dir = koala_getenv("HOME", *envp);
 	else
 		next_dir = argv[1];
-	return (change_dir(next_dir, envp));
+	if (change_dir(next_dir, envp))
+		return (1);
+	return (0);
 }
