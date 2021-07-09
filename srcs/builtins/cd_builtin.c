@@ -7,13 +7,16 @@ static void	change_pwd_value(char ***envp)
 
 	argv = malloc(sizeof(char *) * 3);
 	argv[0] = "export";
-	pwd = koala_getcwd();
-	argv[1] = ft_strjoin("PWD=", pwd);
+	argv[1] = ft_strjoin("OLDPWD=", koala_getenv("PWD", *envp));
 	argv[2] = 0;
 	koala_export(envp, argv);
 	free(argv[1]);
-	free(argv);
+	pwd = koala_getcwd();
+	argv[1] = ft_strjoin("PWD=", pwd);
+	koala_export(envp, argv);
+	free(argv[1]);
 	free(pwd);
+	free(argv);
 }
 
 static int	change_dir(const char *new_dir, char ***envp)

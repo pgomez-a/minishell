@@ -44,7 +44,8 @@ static char	read_fromtty(t_tty_info *tty_info)
 			return (reset_line_tc(tty_info));
 		if (buff == 4 && tty_info->xcursor == 0)
 		{
-			tputs("exit", 1, ko_putchar);
+			tputs("exit\n", 1, ko_putchar);
+			tputs(carriage_return, 1, ko_putchar);
 			koala_exit(tty_info->history);
 		}
 		if (buff == 127)

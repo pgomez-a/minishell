@@ -46,7 +46,12 @@ char	*get_errorvar(int exit_status, int ret)
 	static char	*error = 0;
 
 	if (ret)
-		return (error);
+	{
+		if (error)
+			return (error);
+		else
+			return ("0");
+	}
 	if (error)
 		free(error);
 	if (exit_status)
