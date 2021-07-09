@@ -101,7 +101,7 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 	while (tmp && tmp->err != 1)
 	{
 		pid = 0;
-		if (is_builtin(tmp->cmd->line) || (*par)->next)
+		if ((tmp->cmd && is_builtin(tmp->cmd->line)) || (*par)->next)
 		{
 			if (tmp->next)
 				pipe(pipe_fd);
