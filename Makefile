@@ -4,11 +4,13 @@ M =
 BRANCH =
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 NAME = koala
 
 SRC_PATH = srcs
 OBJ_PATH = objs
+LIBFT_PATH = ./srcs/libft
+LIBFT = $(LIBFT_PATH)/libft.a
 
 SRCS = $(SRC_PATH)/koala.c				\
 	$(SRC_PATH)/utils/ko_utils.c			\
@@ -38,21 +40,17 @@ SRCS = $(SRC_PATH)/koala.c				\
 	$(SRC_PATH)/builtins/exit_builtin.c
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 OBJS = $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 
-LIBFT_PATH = ./srcs/libft
-
 all: $(NAME)
 
-libft/libft.a:
+$(LIBFT):
 	make -C $(LIBFT_PATH)
 
-$(OBJ_PATH):
-	mkdir -p objs/utils objs/queue objs/dlists objs/lexer objs/parser objs/executor objs/reader objs/builtins
-
-$(NAME): libft/libft.a $(OBJ_PATH) $(OBJS)
+$(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:

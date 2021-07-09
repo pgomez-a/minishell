@@ -45,16 +45,13 @@ static char	read_fromtty(t_tty_info *tty_info)
 		if (buff == 3)
 			return (reset_line_tc(tty_info));
 		if (buff == 4 && tty_info->xcursor == 0)
-		{
-			printf("exit\n");
-			tputs(carriage_return, 1, ko_putchar);
 			koala_exit(tty_info->history, 0);
-		}
 		if (buff == 127)
 			return (delete_tc(tty_info));
 		if (buff == 27)
 		{
-			read(STDIN_FILENO, &buff, 2);
+			read(STDIN_FILENO, &buff, 1);
+			read(STDIN_FILENO, &buff, 1);
 			if (buff == 'C' || buff == 'D' || buff == 'A' || buff == 'B')
 				arrow_functions(tty_info, buff);
 		}

@@ -115,7 +115,7 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 		if (!pid)
 			set_red_fd(history, envp, tmp, *par);
 		tmp = tmp->next;
-		reset_fds(0);
 	}
+	reset_fds(0);
 	wait_several_processes(pids);
 }

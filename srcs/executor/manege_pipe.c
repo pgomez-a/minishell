@@ -4,13 +4,13 @@ void	reset_fds(int mode)
 {
 	static int	input;
 	static int	output;
-	static int	error;
+	static int	error_fd;
 
 	if (mode)
 	{
 		input = dup(STDIN_FILENO);
 		output = dup(STDOUT_FILENO);
-		errno = dup(STDERR_FILENO);
+		error_fd = dup(STDERR_FILENO);
 	}
 	else
 	{
@@ -30,7 +30,6 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 		reset_fds(1);
 	if (i)
 	{
-		close(previous_output);
 		if ((dup2(next_input, STDIN_FILENO)) == -1)
 			exit(4);
 	}
@@ -41,7 +40,6 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 		if ((dup2(fd[1], STDOUT_FILENO)) == -1)
 			exit(4);
 		next_input = fd[0];
-		previous_output = fd[1];
 		i = 1;
 	}
 	else
