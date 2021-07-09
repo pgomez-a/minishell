@@ -1,5 +1,14 @@
 #include "../../inc/koala.h"
 
+static void	empty_variable(char *variable, t_que **var)
+{
+	if (!variable)
+	{
+		free((*var)->line);
+		(*var)->line = ft_strdup("\0");
+	}
+}
+
 void	split_for_expansion(char **result, t_que **var)
 {
 	t_que	*next;
@@ -22,9 +31,9 @@ void	split_for_expansion(char **result, t_que **var)
 			push_que(0, spaces[x], var);
 			(*var) = (*var)->next;
 		}
-		free(spaces[x]);
-		x++;
+		free(spaces[x++]);
 	}
+	empty_variable(spaces[0], var);
 	free(spaces);
 	(*var)->next = next;
 }
