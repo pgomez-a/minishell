@@ -74,6 +74,7 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp, t_cmd *par)
 	int		err;
 	int		builtin_exit;
 
+	builtin_exit = 0;
 	save_in = dup(STDIN_FILENO);
 	save_out = dup(STDOUT_FILENO);
 	save_err = dup(STDERR_FILENO);

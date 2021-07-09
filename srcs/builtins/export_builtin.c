@@ -12,7 +12,7 @@ static int	change_existing_env(char ***envp, char *variable, char *value)
 		if (!compare_env_var((*envp)[j], variable))
 		{
 			done = 1;
-			if (value)
+			if (value && compare_env_var("_=", variable))
 			{
 				free((*envp)[j]);
 				do_join(1, &variable, value);

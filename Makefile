@@ -36,22 +36,22 @@ SRCS = $(SRC_PATH)/koala.c				\
 	$(SRC_PATH)/builtins/unset_builtin.c	\
 	$(SRC_PATH)/parser/split_expand.c
 
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 OBJS = $(SRCS:$(SRC_PATH)/%.c=$(OBJ_PATH)/%.o)
 
 LIBFT_PATH = ./srcs/libft
-
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
 
 libft/libft.a:
 	make -C $(LIBFT_PATH)
 
-prebuild:
+$(OBJ_PATH):
 	mkdir -p objs/utils objs/queue objs/dlists objs/lexer objs/parser objs/executor objs/reader objs/builtins
 
-$(NAME): libft/libft.a prebuild $(OBJS)
+$(NAME): libft/libft.a $(OBJ_PATH) $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIBFT_PATH) -lft -ltermcap
 
 clean:

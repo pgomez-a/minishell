@@ -3,10 +3,14 @@
 static int	koala_echo(char **argv)
 {
 	unsigned int	i;
+	int				n;
 
 	i = 1;
-	if (argv[i] && !ft_strcmp(argv[i], "-n"))
+	n = 0;
+	while (argv[i] && !ft_strcmp(argv[i], "-n"))
 		i++;
+	if (i > 1)
+		n = 1;
 	while (argv[i])
 	{
 		ft_putstr_fd(argv[i], 1);
@@ -16,8 +20,8 @@ static int	koala_echo(char **argv)
 				return (1);
 		}
 	}
-	if (argv[1] && ft_strcmp(argv[1], "-n"))
-		printf("\n");
+	if (!n)
+		write(1, "\n", 1);
 	return (0);
 }
 
@@ -38,10 +42,15 @@ void	koala_exit(t_dlist *history)
 	exit(0);
 }
 
-static void	koala_env(char ***envp)
+static int	koala_env(char **argv, char ***envp)
 {
 	int	i;
 
+	if (argv[1])
+	{
+		printf("env: «%s»: no existe el archivo o el directorio\n", argv[1]);
+		return (127);
+	}
 	i = 0;
 	while ((*envp)[i])
 	{
@@ -49,6 +58,7 @@ static void	koala_env(char ***envp)
 			printf("%s\n", (*envp)[i]);
 		i++;
 	}
+	return (0);
 }
 
 int	exec_builtin(t_dlist *history, char ***argv, char ***envp)
@@ -65,7 +75,7 @@ int	exec_builtin(t_dlist *history, char ***argv, char ***envp)
 	else if (!ft_strcmp("cd", (*argv)[0]))
 		exit_status = koala_cd(*argv, envp);
 	else if (!ft_strcmp("env", (*argv)[0]))
-		koala_env(envp);
+		exit_status = koala_env(*argv, envp);
 	else if (!ft_strcmp("export", (*argv)[0]))
 		exit_status = koala_export(envp, *argv);
 	else if (!ft_strcmp("unset", (*argv)[0]))
