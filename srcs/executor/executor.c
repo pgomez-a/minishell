@@ -78,8 +78,6 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp, t_cmd *par)
 	save_in = dup(STDIN_FILENO);
 	save_out = dup(STDOUT_FILENO);
 	save_err = dup(STDERR_FILENO);
-	if (save_in == -1 || save_out == -1 || save_err == -1)
-		exit(4);
 	err = 0;
 	if (tmp->red)
 		err = look_for_red(save_out, tmp->red);
@@ -89,6 +87,9 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp, t_cmd *par)
 		|| (dup2(save_out, STDOUT_FILENO)) == -1
 		|| (dup2(save_err, STDERR_FILENO)) == -1)
 		exit(4);
+	close(save_in);
+	close(save_out);
+	close(save_err);
 	if (par->next)
 		exit (builtin_exit);
 }
@@ -110,12 +111,13 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 			if (tmp->next)
 				pipe(pipe_fd);
 			pid = multi_process_manegment(&pids);
+			manege_pipe(tmp, pipe_fd, pid);
 		}
-		manege_pipe(tmp, pipe_fd, pid);
 		if (!pid)
 			set_red_fd(history, envp, tmp, *par);
 		tmp = tmp->next;
 	}
-	reset_fds(0);
+	if ((*par)->next)
+		reset_fds(0);
 	wait_several_processes(pids);
 }

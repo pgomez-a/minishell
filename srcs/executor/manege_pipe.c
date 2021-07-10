@@ -16,7 +16,10 @@ void	reset_fds(int mode)
 	{
 		dup2(input, STDIN_FILENO);
 		dup2(output, STDOUT_FILENO);
-		dup2(error, STDERR_FILENO);
+		dup2(error_fd, STDERR_FILENO);
+		close(input);
+		close(output);
+		close(error_fd);
 	}
 }
 
@@ -24,7 +27,7 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 {
 	static int	i = 0;
 	static int	next_input = 0;
-	static int	previous_output = 0;
+	static int	fd_out = 0;
 
 	if (!i)
 		reset_fds(1);
@@ -32,13 +35,17 @@ void	manege_pipe(t_cmd *tmp, int fd[2], pid_t pid)
 	{
 		if ((dup2(next_input, STDIN_FILENO)) == -1)
 			exit(4);
+		dup2(fd_out, STDOUT_FILENO);
+		close(next_input);
 	}
 	if (tmp->next)
 	{
 		if (!pid)
 			close(fd[0]);
+		fd_out = dup(STDOUT_FILENO);
 		if ((dup2(fd[1], STDOUT_FILENO)) == -1)
 			exit(4);
+		close(fd[1]);
 		next_input = fd[0];
 		i = 1;
 	}
