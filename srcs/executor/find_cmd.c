@@ -11,20 +11,18 @@ static void	clean_argv(char ***argv)
 	size = 0;
 	while ((*argv)[i])
 	{
-		if ((*((*argv)[i])))
+		if ((*((*argv)[i++])))
 			size++;
-		i++;
 	}
-	i = 0;
+	i = -1;
 	j = 0;
 	new_argc = malloc(sizeof(char *) * (size + 1));
-	while ((*argv)[i])
+	while ((*argv)[++i])
 	{
 		if (*((*argv)[i]))
 			new_argc[j++] = (*argv)[i];
 		else
 			free((*argv)[i]);
-		i++;
 	}
 	new_argc[j] = 0;
 	free(*argv);
@@ -56,7 +54,7 @@ void	create_argv(char ***argv, t_que *cmd)
 		tmp = tmp->next;
 	}
 	(*argv)[count] = NULL;
-	clean_argv(argv);
+	//clean_argv(argv); Para vaciar los huecos de array con strings vacios, borrar cuando parser gestione
 }
 
 void	free_argv(char ***argc)

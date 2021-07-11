@@ -23,7 +23,8 @@ static int	greater_than_long(char *string, long long int *exit_status)
 	{
 		n = n * 10 + ((*string) - 48);
 		string++;
-		if ((!negative && n > __LONG_MAX__) || (negative && (n - 1) > __LONG_MAX__))
+		if ((!negative && n > __LONG_MAX__)
+			|| (negative && (n - 1) > __LONG_MAX__))
 			return (1);
 	}
 	*exit_status = n;
@@ -35,7 +36,7 @@ static int	greater_than_long(char *string, long long int *exit_status)
 static int	argumented_exit(char **argv, long long int *error_status)
 {
 	if (greater_than_long(argv[1], error_status) || (!ft_strisdigit(argv[1])
-		&& (!(*argv[1] == '-' && ft_strisdigit(argv[1] + 1))))
+			&& (!(*argv[1] == '-' && ft_strisdigit(argv[1] + 1))))
 		|| (*argv[1] == '-' && !(*(argv[1] + 1))))
 	{
 		printf("koala: exit: %s: numeric argument required\n", argv[1]);

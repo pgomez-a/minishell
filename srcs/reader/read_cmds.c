@@ -54,8 +54,10 @@ static char	read_fromtty(t_tty_info *tty_info)
 			read(STDIN_FILENO, &buff, 1);
 			if (buff == 'C' || buff == 'D' || buff == 'A' || buff == 'B')
 				arrow_functions(tty_info, buff);
+			return (0);
 		}
-		return (0);
+		if (buff == 9)
+			return (0);
 	}
 	tty_info->xcursor++;
 	return (buff);

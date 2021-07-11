@@ -27,7 +27,7 @@ static void	change_pwd_value(char ***envp)
 static int	change_dir(const char *new_dir, char ***envp)
 {
 	if (chdir(new_dir))
-		printf("koala: cd: %s\n", strerror(errno));
+		printf("koala: cd: %s: %s\n", new_dir, strerror(errno));
 	else
 		change_pwd_value(envp);
 	return (errno);

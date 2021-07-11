@@ -8,11 +8,12 @@ int	valid_env(char *line)
 
 	ret = 0;
 	split_env(line, &variable, &value);
-	if (ft_strchr("0123456789", *line))// || line[ft_strlen(line) - 1] == '_')
+	if (ft_strchr("0123456789", *line))
 		ret = 1;
 	while (*line)
 	{
-		if (!ft_isalnum(*line) && *line != '_' && (*line != '=' &&  (*(line + 1))))
+		if (!ft_isalnum(*line) && *line != '_'
+			&& (*line != '=' && (*(line + 1))))
 			ret = 1;
 		line++;
 	}
