@@ -1,5 +1,36 @@
 #include "../../inc/koala.h"
 
+static void	clean_argv(char ***argv)
+{
+	int		i;
+	int		j;
+	int		size;
+	char	**new_argc;
+
+	i = 0;
+	size = 0;
+	while ((*argv)[i])
+	{
+		if ((*((*argv)[i])))
+			size++;
+		i++;
+	}
+	i = 0;
+	j = 0;
+	new_argc = malloc(sizeof(char *) * (size + 1));
+	while ((*argv)[i])
+	{
+		if (*((*argv)[i]))
+			new_argc[j++] = (*argv)[i];
+		else
+			free((*argv)[i]);
+		i++;
+	}
+	new_argc[j] = 0;
+	free(*argv);
+	*argv = new_argc;
+}
+
 void	create_argv(char ***argv, t_que *cmd)
 {
 	t_que	*tmp;
@@ -25,6 +56,7 @@ void	create_argv(char ***argv, t_que *cmd)
 		tmp = tmp->next;
 	}
 	(*argv)[count] = NULL;
+	clean_argv(argv);
 }
 
 void	free_argv(char ***argc)
