@@ -2,16 +2,24 @@
 
 int	valid_env(char *line)
 {
-	printf("puto mono\n");
-	if (ft_strchr("0123456789", *line) || line[ft_strlen(line) - 1] == '_')
-		return (1);
+	char	*variable;
+	char	*value;
+	int		ret;
+
+	ret = 0;
+	split_env(line, &variable, &value);
+	if (ft_strchr("0123456789", *line))// || line[ft_strlen(line) - 1] == '_')
+		ret = 1;
 	while (*line)
 	{
-		if (!ft_isalnum(*line) && *line != '_')
-			return (1);
+		if (!ft_isalnum(*line) && *line != '_' && (*line != '=' &&  (*(line + 1))))
+			ret = 1;
 		line++;
 	}
-	return (0);
+	free(variable);
+	if (value)
+		free(value);
+	return (ret);
 }
 
 int	compare_env_var(char *env, char *new_env)
