@@ -86,7 +86,7 @@ static void	set_red_fd(t_dlist *history, char ***envp, t_cmd *tmp, t_cmd *par)
 	if ((dup2(save_in, STDIN_FILENO)) == -1
 		|| (dup2(save_out, STDOUT_FILENO)) == -1
 		|| (dup2(save_err, STDERR_FILENO)) == -1)
-		exit(4);
+		exit(errno);
 	close(save_in);
 	close(save_out);
 	close(save_err);
@@ -111,7 +111,8 @@ void	call_executor(t_dlist *history, char ***envp, t_cmd **par)
 			if (tmp->next)
 				pipe(pipe_fd);
 			pid = multi_process_manegment(&pids);
-			manege_pipe(tmp, pipe_fd, pid);
+			if ((*par)->next)
+				manege_pipe(tmp, pipe_fd, pid);
 		}
 		if (!pid)
 			set_red_fd(history, envp, tmp, *par);

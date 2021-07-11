@@ -4,7 +4,7 @@ M =
 BRANCH =
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 NAME = koala
 
 SRC_PATH = srcs

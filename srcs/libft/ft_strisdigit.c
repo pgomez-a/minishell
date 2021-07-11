@@ -5,8 +5,8 @@ int	ft_strisdigit(char *str)
 	while (*str)
 	{
 		if (*str < 48 || *str > 57)
-			return (1);
+			return (0);
 		str++;
 	}
-	return (0);
+	return (1);
 }

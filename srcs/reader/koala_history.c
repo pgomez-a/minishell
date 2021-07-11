@@ -50,22 +50,20 @@ void	put_history(t_tty_info *tty_info, char n)
 	len = ft_strlen(tty_info->strings->content);
 	if (n == 'A' && tty_info->strings->next)
 	{
-		while (len--)
-		{
+		while (tty_info->xcursor--)
 			tputs(cursor_left, 1, ko_putchar);
+		while (len--)
 			tputs(delete_character, 1, ko_putchar);
-		}
 		tty_info->strings = tty_info->strings->next;
 		tputs(tty_info->strings->content, 1, ko_putchar);
 		tty_info->xcursor = ft_strlen(tty_info->strings->content);
 	}
 	else if (n == 'B' && tty_info->strings->previous)
 	{
-		while (len--)
-		{
+		while (tty_info->xcursor--)
 			tputs(cursor_left, 1, ko_putchar);
+		while (len--)
 			tputs(delete_character, 1, ko_putchar);
-		}
 		tty_info->strings = tty_info->strings->previous;
 		tputs(tty_info->strings->content, 1, ko_putchar);
 		tty_info->xcursor = ft_strlen(tty_info->strings->content);
