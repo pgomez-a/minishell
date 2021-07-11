@@ -34,7 +34,7 @@ int	add_env(char ***envp, char *argv)
 	int		size;
 	char	**new_envp;
 
-	if (ft_strchr("0123456789", *argv))
+	if (valid_env(argv))
 	{
 		free(argv);
 		return (1);

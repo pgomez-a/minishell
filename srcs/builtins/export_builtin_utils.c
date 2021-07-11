@@ -1,5 +1,19 @@
 #include "../../inc/koala.h"
 
+int	valid_env(char *line)
+{
+	printf("puto mono\n");
+	if (ft_strchr("0123456789", *line) || line[ft_strlen(line) - 1] == '_')
+		return (1);
+	while (*line)
+	{
+		if (!ft_isalnum(*line) && *line != '_')
+			return (1);
+		line++;
+	}
+	return (0);
+}
+
 int	compare_env_var(char *env, char *new_env)
 {
 	int	r;

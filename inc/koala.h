@@ -184,6 +184,8 @@ void		split_env(const char *string, char **variable, char **value);
 
 int			compare_env_var(char *env, char *new_env);
 void		print_export(char **envp);
+int			valid_env(char *line);
+
 
 /**
  ** unset_builtin.c
