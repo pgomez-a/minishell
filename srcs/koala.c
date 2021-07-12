@@ -82,6 +82,7 @@ int	main(int argc, char *argv[], char *envp[])
 		printf("Not valid arguments\n");
 		return (1);
 	}
+	signal(SIGILL, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, SIG_IGN);
 	tty_info = 0;

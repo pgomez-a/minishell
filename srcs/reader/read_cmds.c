@@ -40,11 +40,12 @@ static char	read_fromtty(t_tty_info *tty_info)
 	char	buff;
 
 	read(STDIN_FILENO, &buff, 1);
-	if (!ft_isprint(buff) && buff != '\n')
+	if ((!ft_isprint(buff) && buff != '\n') || buff == 9)
 	{
 		if (buff == 3)
 			return (reset_line_tc(tty_info));
-		if (buff == 4 && tty_info->xcursor == 0)
+		if ((buff == 4 && !tty_info->xcursor)
+			|| (buff == 28 && tty_info->xcursor))
 			koala_exit(tty_info->history, 0);
 		if (buff == 127)
 			return (delete_tc(tty_info));
@@ -56,8 +57,7 @@ static char	read_fromtty(t_tty_info *tty_info)
 				arrow_functions(tty_info, buff);
 			return (0);
 		}
-		if (buff == 9)
-			return (0);
+		return (0);
 	}
 	tty_info->xcursor++;
 	return (buff);

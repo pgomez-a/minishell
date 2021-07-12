@@ -34,7 +34,7 @@ void	koala_unset(char ***envp, char **argv)
 	char	*variable;
 	char	*value;
 
-	i = 0;
+	i = 1;
 	while (argv[i])
 	{
 		j = 0;
@@ -42,8 +42,8 @@ void	koala_unset(char ***envp, char **argv)
 		{
 			if (!compare_env_var((*envp)[j], argv[i]))
 			{
-				split_env((*envp)[i], &variable, &value);
-				if (!compare_env_var("_=", variable))
+				split_env((*envp)[j], &variable, &value);
+				if (compare_env_var("_=", variable))
 					delete_env(envp, j);
 				free(variable);
 				if (value)
