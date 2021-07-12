@@ -47,7 +47,7 @@ void	find_path_cmd(char **div_path, char ***envp, t_que *cmd)
 	count = 0;
 	create_argv(&argv, cmd);
 	execve(cmd->line, argv, (*envp));
-	if (div_path)
+	if (div_path && *(cmd->line) != '.')
 	{
 		while (div_path[count])
 		{
