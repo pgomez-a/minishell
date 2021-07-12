@@ -22,6 +22,32 @@ static void	free_parser(t_cmd **par)
 	}
 }
 
+static void	clean_par(t_cmd **par)
+{
+	t_que	*tmp;
+	t_que	*prev;
+	t_que	*empty;
+
+	if ((*par) && (*par)->cmd)
+	{
+		tmp = (*par)->cmd;
+		while (tmp)
+		{
+			if (tmp->op == 0 && *(tmp->line) == '\0')
+			{
+				empty = tmp->next;
+				prev->next = empty;
+				free(tmp->line);
+				free(tmp);
+				tmp = NULL;
+				tmp = prev;
+			}
+			prev = tmp;
+			tmp = tmp->next;
+		}
+	}
+}
+
 /**
  ** Calls the lexer, the parser and the executor programs
  **/
@@ -41,6 +67,7 @@ void	man_command_line(t_dlist *history, char ***envp)
 		call_lexer(history->content, &lex);
 		call_parser(&lex, &par);
 		call_env(&par, *envp);
+		clean_par(&par);
 		if (par)
 			call_executor(history, envp, &par);
 		free_parser(&par);
