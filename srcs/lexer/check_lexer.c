@@ -32,18 +32,25 @@ int	tokenize_pipe(char **tok, t_que **lex)
  ** Create a token for closed quotes
  **/
 
-static void	check_push_quot(char quot, char **tok, t_que **lex)
+static void	check_push_quot(char quot, char *line, char **tok, t_que **lex)
 {
 	if (*tok)
 	{
 		if (quot == '\'' && (**tok) != '\0')
-			push_que(2, *tok, lex);
-		else
+		{
+			if (!(*(line + 1)) || *(line + 1) == ' ')
+				push_que(2, *tok, lex);
+		}
+		else if (!(*(line + 1)) || *(line + 1) == ' ')
 			push_que(1, *tok, lex);
-		free(*tok);
-		(*tok) = NULL;
+		if (!(*(line + 1)) || *(line + 1) == ' ')
+		{
+			free(*tok);
+			(*tok) = NULL;
+		}
 	}
-	(*tok) = ft_strdup("\0");
+	if (!(*(line + 1)) || *(line + 1) == ' ')
+		(*tok) = ft_strdup("\0");
 	if (!(*tok))
 		exit(1);
 }
@@ -59,7 +66,7 @@ int	tokenize_quot(char quot, char *line, char **tok, t_que **lex)
 		count++;
 	}
 	if (line[count] == '\'' || line[count] == '\"')
-		check_push_quot(quot, tok, lex);
+		check_push_quot(quot, line + count, tok, lex);
 	return (count);
 }
 

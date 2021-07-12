@@ -1,5 +1,6 @@
 #include "../../inc/koala.h"
 
+/*
 static void	clean_argv(char ***argv)
 {
 	int		i;
@@ -27,7 +28,7 @@ static void	clean_argv(char ***argv)
 	new_argc[j] = 0;
 	free(*argv);
 	*argv = new_argc;
-}
+}*/
 
 void	create_argv(char ***argv, t_que *cmd)
 {
