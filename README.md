@@ -75,5 +75,15 @@ There are different types of redirects, but the most important are:
 **Pipelines are a way to use redirects**, but instead of configuring a file as STDIN or STDOUT, **what we want to do is intercommunicate processes**. In this way, the output of one command will be the input of another command. In C, **a pipe is a file in memory that we can read and write to**. So when we create a pipeline, we set two file descriptors (one for read and one for write) for one process and another two file descriptors for the next process. However, all 4 file descriptors will be associated with the same file in memory. In this way, the first process will use the fd set for writing (STDOUT) and the second process will use the fd set for reading (STDIN).
 
 ### Termcaps
+Termcaps is a software library used in Linux operating systems that **provides ways to access and manipulate the properties of the terminals that are available on the system**. This library allows programs to use the terminal independently, helping to facilitate the portability of those programs that need the use of a terminal. **With the termcaps library we get access to an interface that allows us to access the termcaps database**. Some of its most useful functions are:
+<ul>
+      <li><b>Find the description of the type of terminal</b> used by the user.</li>
+      <li>Manage the padding.</li>
+      <li><b>Manipulate the description of the terminal</b> to achieve a customizable use of it.</li>
+      <li>Set numeric values as the cursor position.</li>
+</ul>
+
+A program that is going to use termcaps first needs to find the description of the type of terminal used. This can be done with the tgetent function. This function looks up the description of the terminal and stores it for subsequent requests about the capabilities of the terminal. Also, all the information stored in a terminal descriptor is called a capability. Each capability is assigned a numerical value that works as an identifier. **Using capabilities, we can change the characteristics of the terminal**.
+
 ### Ttys
 ### Processes
