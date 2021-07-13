@@ -1,6 +1,16 @@
 # minishell
 <img width="1354" alt="minishell" src="https://user-images.githubusercontent.com/74931024/125480202-bf59700a-8450-42dc-afc9-55acff226aba.png">
 
+### How to use Koala (our Minishell)?
+To run koala, run the following commands and start using it instead of bash:<br>
+
+    git clone https://github.com/pgomez-a/minishell.git koala && cd koala && make
+Once you have compiled the program, you can run koala with:
+
+    ./koala
+    
+<img width="1162" alt="koala" src="https://user-images.githubusercontent.com/74931024/125488845-8172f6e3-661a-4499-b2ef-f54bfc048c13.png">
+
 ### Basic Concepts
 #### What is a shell?
 A shell, or **command interpreter**, is a software program that provides a user interface to access the services offered by the operating system. Depending on the type of interface used we can find different types of shell:
