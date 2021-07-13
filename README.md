@@ -45,9 +45,22 @@ An Operating System is a set of programs that allows us to manipulate the memory
 However, in addition to managing hardware resources, an operating system is also **responsible for running processes**. What we know as a process will be seen later in this README file, but it is basically a running program.
 
 ### Basic bash commands
+
 ### Bash History
-### Login Shell vs Non-login Shell
+When we write and execute commands in the terminal, these commands are stored in a history called .bash_history. We can move through this history by pressing the up and down arrows on our keyboard. Also, if we want to inspect the contents of the .bash_history file, we can use **less .bash_history** to read this file.<br>
+513 / 5000
+Resultados de traducción
+However, this file is not infinite, so there is a limitation on the number of commands that the bash history can store. This limitation is defined by the **$HISTFILESIZE** variable, whose value sets the maximum number of possible commands stored in .bash_history. To see all these commands we can use the **history command**. This command will show a numeric list with all the commands that have been executed, so if we type !n, the command at position n will be executed. 
+
 ### Globbing
+Technique used to **identify all those files whose names are unknown but match a pattern that we want to identify**. This means that we have a brief idea of the elements that make up the names of these files. To achieve this we use **wildcards**, so that these are used to find patterns in the files that are being searched.<br>
+For example:
+<ul>
+      <li><b>*</b> substitutes a string of characters.</li>
+      <li><b>?</b> substitutes a letter in a word.</li>
+      <li><b>[ ]</b> the values within them are what you are looking for.</li>
+</ul>
+
 ### Quotes
 ### Redirections
 ### Pipes
