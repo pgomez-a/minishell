@@ -72,6 +72,8 @@ There are different types of redirects, but the most important are:
 </ul>
 
 ### Pipes
+**Pipelines are a way to use redirects**, but instead of configuring a file as STDIN or STDOUT, **what we want to do is intercommunicate processes**. In this way, the output of one command will be the input of another command. In C, **a pipe is a file in memory that we can read and write to**. So when we create a pipeline, we set two file descriptors (one for read and one for write) for one process and another two file descriptors for the next process. However, all 4 file descriptors will be associated with the same file in memory. In this way, the first process will use the fd set for writing (STDOUT) and the second process will use the fd set for reading (STDIN).
+
 ### Termcaps
 ### Ttys
 ### Processes
