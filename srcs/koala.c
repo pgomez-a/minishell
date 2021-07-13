@@ -88,6 +88,7 @@ int	main(int argc, char *argv[], char *envp[])
 	tty_info = 0;
 	tty_info = init_terminal(tty_info, 0);
 	envp = alloc_envp(envp);
+	ft_printf("The default interactive shell is now koala.\n");
 	while (1)
 	{
 		set_prompt();
