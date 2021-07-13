@@ -61,8 +61,16 @@ For example:
       <li><b>[ ]</b> the values within them are what you are looking for.</li>
 </ul>
 
-### Quotes
 ### Redirections
+Commands in bash **usually receive their input from STDIN and show the result of their execution in STDOUT**. By default, when a command reads from STDIN we have to send it the information using the keyboard, and when it shows its output in STDOUT, we see it on our computer screen. However, there is a way to set STDIN and STDOUT so that the program does not read from the keyboard but from a file, or so that the program is not displayed on the screen but in another file. **This technique used to change the STDIN and STDOUT of a program is accomplished through redirects**.<br>
+There are different types of redirects, but the most important are:
+<ul>
+      <li><b>&gtfile</b> is used to overwrite a file with the output of a command.</li>
+      <li><b>&gt&gtfile</b> is used to add the output of a command to the content of a file.</li>
+      <li><b>&ltfile</b> sets the stdin of a command, so that it does not read from the keyboard but from the file.</li>
+      <li><b>&lt&ltword</b> creates a temporary file that will not be finished until we write the word on a new line.</li>
+</ul>
+
 ### Pipes
 ### Termcaps
 ### Ttys
