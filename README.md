@@ -44,8 +44,6 @@ PATH is one of the most important environment variables in bash. This variable *
 An Operating System is a set of programs that allows us to manipulate the memory, disk, storage devices and other hardware devices of our computer. In other words, an OS is **software that enables communication between the user and the computer**. If the user wants to store a file, the operating system will process the request and finally the file will be stored in memory if it is not full.<br>
 However, in addition to managing hardware resources, an operating system is also **responsible for running processes**. What we know as a process will be seen later in this README file, but it is basically a running program.
 
-### Basic bash commands
-
 ### Bash History
 When we write and execute commands in the terminal, these commands are stored in a history called .bash_history. We can move through this history by pressing the up and down arrows on our keyboard. Also, if we want to inspect the contents of the .bash_history file, we can use **less .bash_history** to read this file.<br>
 513 / 5000
@@ -85,5 +83,10 @@ Termcaps is a software library used in Linux operating systems that **provides w
 
 A program that is going to use termcaps first needs to find the description of the type of terminal used. This can be done with the tgetent function. This function looks up the description of the terminal and stores it for subsequent requests about the capabilities of the terminal. Also, all the information stored in a terminal descriptor is called a capability. Each capability is assigned a numerical value that works as an identifier. **Using capabilities, we can change the characteristics of the terminal**.
 
-### Ttys
 ### Processes
+**A Linux process is a set of instructions that come from a running program**. There are different items that come along with a process such as the execution priority of a process, which tells the Linux kernel how much CPU the process can use or the maximum time the process can be running. **When running Linux, the kernel has the highest priority, known as PID 1**. Current versions of Linux use systemd to coordinate the way processes are managed.<br>
+<ul>
+      <li>To see the open processes we use <b>ps</b>.</li>
+      <li>To see the available space we use <b>df</b>.</li>
+      <li>To see a list of open processes in real time, we use <b>top</b>.</li>
+</ul>
