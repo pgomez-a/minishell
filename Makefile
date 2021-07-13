@@ -5,7 +5,7 @@ BRANCH =
 
 CC = clang
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
-NAME = minishell
+NAME = koala
 
 SRC_PATH = srcs
 OBJ_PATH = objs
