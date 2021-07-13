@@ -1,4 +1,5 @@
 # minishell
+<img width="1354" alt="minishell" src="https://user-images.githubusercontent.com/74931024/125480202-bf59700a-8450-42dc-afc9-55acff226aba.png">
 
 ### Basic Concepts
 #### What is a shell?
