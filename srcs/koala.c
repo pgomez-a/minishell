@@ -72,6 +72,33 @@ static char	**alloc_envp(char	**envp)
 	return (new_envp);
 }
 
+/**
+ ** Draw banner with koala
+ **/
+
+static void	draw_koala(void)
+{
+	ft_printf("\033[38;5;40m");
+	ft_printf("      ___           ___           ___                         ___      \n");
+	ft_printf("     /__/|         /  /\\         /  /\\                       /  /\\     \n");
+	ft_printf("\033[38;5;41m");
+	ft_printf("    |  |:|        /  /::\\       /  /::\\                     /  /::\\    \n");
+	ft_printf("    |  |:|       /  /:/\\:\\     /  /:/\\:\\    ___     ___    /  /:/\\:\\   \n");
+	ft_printf("\033[38;5;42m");
+	ft_printf("  __|  |:|      /  /:/  \\:\\   /  /:/~/::\\  /__/\\   /  /\\  /  /:/~/::\\  \n");
+	ft_printf(" /__/\\_|:|____ /__/:/ \\__\\:\\ /__/:/ /:/\\:\\ \\  \\:\\ /  /:/ /__/:/ /:/\\:\\ \n");
+	ft_printf("\033[38;5;43m");
+	ft_printf(" \\  \\:\\/:::::/ \\  \\:\\ /  /:/ \\  \\:\\/:/__\\/  \\  \\:\\  /:/  \\  \\:\\/:/__\\/ \n");
+	ft_printf("  \\  \\::/~~~~   \\  \\:\\  /:/   \\  \\::/        \\  \\:\\/:/    \\  \\::/      \n");
+	ft_printf("\033[38;5;44m");
+	ft_printf("   \\  \\:\\        \\  \\:\\/:/     \\  \\:\\         \\  \\::/      \\  \\:\\      \n");
+	ft_printf("    \\  \\:\\        \\  \\::/       \\  \\:\\         \\__\\/        \\  \\:\\     \n");
+	ft_printf("\033[38;5;45m");
+	ft_printf("     \\__\\/         \\__\\/         \\__\\/                       \\__\\/     \n");
+	ft_printf("\n");
+	ft_printf("\033[39m");
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_tty_info		*tty_info;
@@ -79,7 +106,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	if (argc != 1)
 	{
-		printf("Not valid arguments\n");
+		ft_printf("Not valid arguments\n");
 		return (1);
 	}
 	signal(SIGILL, SIG_IGN);
@@ -88,7 +115,7 @@ int	main(int argc, char *argv[], char *envp[])
 	tty_info = 0;
 	tty_info = init_terminal(tty_info, 0);
 	envp = alloc_envp(envp);
-	ft_printf("The default interactive shell is now koala.\n");
+	draw_koala();
 	while (1)
 	{
 		set_prompt();
